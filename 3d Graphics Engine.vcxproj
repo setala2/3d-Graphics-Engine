@@ -160,8 +160,9 @@
   <ItemGroup>
     <ClCompile Include="src\dependencies\glm\glm\detail\glm.cpp" />
     <ClCompile Include="src\Gldebug.cpp" />
+    <ClCompile Include="src\GlfwManager.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="src\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dependencies\glew\include\GL\glew.h" />
@@ -409,7 +410,8 @@
     <ClInclude Include="src\dependencies\glm\glm\vec4.hpp" />
     <ClInclude Include="src\dependencies\glm\glm\vector_relational.hpp" />
     <ClInclude Include="src\Gldebug.h" />
-    <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="src\GlfwManager.h" />
+    <ClInclude Include="src\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dependencies\glm\glm\detail\func_common.inl" />

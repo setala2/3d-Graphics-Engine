@@ -21,10 +21,13 @@
     <ClCompile Include="src\dependencies\glm\glm\detail\glm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBuffer.cpp">
+    <ClCompile Include="src\Gldebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Gldebug.cpp">
+    <ClCompile Include="src\VertexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GlfwManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -761,10 +764,13 @@
     <ClInclude Include="src\dependencies\glm\glm\vector_relational.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VertexBuffer.h">
+    <ClInclude Include="src\Gldebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Gldebug.h">
+    <ClInclude Include="src\VertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GlfwManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
