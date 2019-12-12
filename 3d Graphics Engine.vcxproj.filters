@@ -1154,4 +1154,10 @@
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="src\dependencies\glfw\lib-vc2019\x64\glfw3.lib" />
+    <Library Include="src\dependencies\glfw\lib-vc2019\x86\glfw3.lib" />
+    <Library Include="src\dependencies\glew\lib\Release\Win32\glew32s.lib" />
+    <Library Include="src\dependencies\glew\lib\Release\x64\glew32s.lib" />
+  </ItemGroup>
 </Project>
