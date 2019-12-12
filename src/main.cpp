@@ -1,6 +1,8 @@
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 
+#include "Gldebug.h"
+
 #include <iostream>
 
 int main()
@@ -15,11 +17,11 @@ int main()
 	glfwMakeContextCurrent(window);
 
 	glewInit();
-	glClearColor(0, 1, 0, 1);
+	glCheckError(glClearColor(0, 1, 0, 1));
 
 	while (!glfwWindowShouldClose(window))
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
+		glCheckError(glClear(GL_COLOR_BUFFER_BIT));
 		glfwPollEvents();
 		glfwSwapBuffers(window);
 	}

@@ -21,6 +21,12 @@
     <ClCompile Include="src\dependencies\glm\glm\detail\glm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gldebug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dependencies\glew\include\GL\glew.h">
@@ -753,6 +759,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\dependencies\glm\glm\vector_relational.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gldebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
