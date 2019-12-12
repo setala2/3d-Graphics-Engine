@@ -24,10 +24,16 @@
     <ClCompile Include="src\Gldebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\GlfwManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\VertexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GlfwManager.cpp">
+    <ClCompile Include="src\IndexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -767,10 +773,16 @@
     <ClInclude Include="src\Gldebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\GlfwManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\VertexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\GlfwManager.h">
+    <ClInclude Include="src\IndexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1171,6 +1183,8 @@
     <None Include="src\dependencies\glm\glm\gtx\wrap.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="src\shaders\vertex.glsl" />
+    <None Include="src\shaders\frag.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\dependencies\glfw\lib-vc2019\x64\glfw3.lib" />

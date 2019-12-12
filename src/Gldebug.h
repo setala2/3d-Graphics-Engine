@@ -5,6 +5,7 @@
 
 #include <string>
 #include <iostream>
+#include "GL/glew.h"
 
 unsigned int glCheckError_(const char* file, int line);
 

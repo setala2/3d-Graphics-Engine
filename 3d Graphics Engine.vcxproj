@@ -161,7 +161,9 @@
     <ClCompile Include="src\dependencies\glm\glm\detail\glm.cpp" />
     <ClCompile Include="src\Gldebug.cpp" />
     <ClCompile Include="src\GlfwManager.cpp" />
+    <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -411,6 +413,8 @@
     <ClInclude Include="src\dependencies\glm\glm\vector_relational.hpp" />
     <ClInclude Include="src\Gldebug.h" />
     <ClInclude Include="src\GlfwManager.h" />
+    <ClInclude Include="src\IndexBuffer.h" />
+    <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -546,6 +550,8 @@
     <None Include="src\dependencies\glm\glm\gtx\vector_angle.inl" />
     <None Include="src\dependencies\glm\glm\gtx\vector_query.inl" />
     <None Include="src\dependencies\glm\glm\gtx\wrap.inl" />
+    <None Include="src\shaders\frag.glsl" />
+    <None Include="src\shaders\vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\dependencies\glew\lib\Release\Win32\glew32s.lib" />

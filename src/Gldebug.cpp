@@ -1,5 +1,4 @@
 #include "gldebug.h"
-#include "GL/glew.h"
 
 unsigned int glCheckError_(const char* file, int line)
 {
