@@ -1,2 +1,2 @@
-* linguist-vendored
+*.vcxproj linguist-vendored
 src/dependencies/* linguist-vendored
