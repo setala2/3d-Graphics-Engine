@@ -11,6 +11,6 @@ public:
 	ImguiManager(GLFWwindow* window);
 	~ImguiManager();
 
-	void Begin();
-	void End();
+	void BeginFrame();
+	void EndFrame();
 };

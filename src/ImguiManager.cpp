@@ -25,7 +25,7 @@ ImguiManager::~ImguiManager()
 	}
 }
 
-void ImguiManager::Begin()
+void ImguiManager::BeginFrame()
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
@@ -33,7 +33,7 @@ void ImguiManager::Begin()
 	ImGui::NewFrame();
 }
 
-void ImguiManager::End()
+void ImguiManager::EndFrame()
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

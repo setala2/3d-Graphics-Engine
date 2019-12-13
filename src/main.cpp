@@ -51,39 +51,27 @@ int main()
 	renderer.SetClearColor(0, 1, 0);
 	renderer.EnableBackFaceCull(true);
 
-	float x = 0;
-	bool right = true;
-
 	glm::mat4 translation;
 	shader.Bind();
 
-	bool show_demo_window = true;
+	float triangleOffset[3] = { 0 };
 
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.Clear(GL_COLOR_BUFFER_BIT);
 		
-		if (x > 0.5f)
-			right = false;
-		if (x < -0.5f)
-			right = true;
-
-		if (right)
-			x += 0.01f;
-		else
-			x -= 0.01f;
-		
-		translation = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0, 0));
+		translation = glm::translate(glm::mat4(1.0f), glm::vec3(triangleOffset[0], triangleOffset[1], triangleOffset[2]));
 		shader.SetMatrix4("translation", translation);
 
-		imgui.Begin();
+		imgui.BeginFrame();
 
-		if (show_demo_window)
-			ImGui::ShowDemoWindow(&show_demo_window);
+		ImGui::Begin("triangle");
+		ImGui::SliderFloat3("Triangle position", triangleOffset, -0.5f, 0.5f);
+		ImGui::End();
 
 		renderer.Draw(va, ib, shader);
 
-		imgui.End();
+		imgui.EndFrame();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
