@@ -1,6 +1,7 @@
 #include "GL/glew.h"
 
 #include "GlfwManager.h"
+#include "ImguiManager.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
@@ -10,10 +11,6 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 
 #include <iostream>
 
@@ -27,14 +24,9 @@ int main()
 	GLFWwindow* window = glfwCreateWindow(1600, 900, "Test window", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 
+	ImguiManager imgui(window);
+
 	glewInit();
-
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	ImGui::StyleColorsDark();
-
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init("#version 330 core");
 
 	float vertices[] = { -0.5f, -0.5f, 0.0f,
 						  0.0f,  0.5f, 0.0f,
@@ -65,7 +57,6 @@ int main()
 	glm::mat4 translation;
 	shader.Bind();
 
-
 	bool show_demo_window = true;
 
 	while (!glfwWindowShouldClose(window))
@@ -85,31 +76,18 @@ int main()
 		translation = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0, 0));
 		shader.SetMatrix4("translation", translation);
 
+		imgui.Begin();
 
-		// Start the Dear ImGui frame
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-		// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 		if (show_demo_window)
 			ImGui::ShowDemoWindow(&show_demo_window);
 
-
 		renderer.Draw(va, ib, shader);
 
-
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		imgui.End();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-
 
 	return 0;
 }
