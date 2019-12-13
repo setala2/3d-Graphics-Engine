@@ -28,9 +28,9 @@ int main()
 
 	glewInit();
 
-	float vertices[] = { -0.5f, -0.5f, 0.0f,
-						  0.0f,  0.5f, 0.0f,
-						  0.5f, -0.5f, 0.0f };
+	float vertices[] = { -3.0f, -3.0f, 0.0f,
+						  0.0f,  3.0f, 0.0f,
+						  3.0f, -3.0f, 0.0f };
 
 	unsigned int indices[] = { 0,2,1 };
 
@@ -51,22 +51,40 @@ int main()
 	renderer.SetClearColor(0, 1, 0);
 	renderer.EnableBackFaceCull(true);
 
-	glm::mat4 translation;
 	shader.Bind();
 
-	float triangleOffset[3] = { 0 };
+	float trianglePosition[3] = { 0 };
+	float triangleRotation = 0;
+	float triangleScale[3] = { 1, 1, 1 };
+
+	glm::mat4 translation;
+	glm::mat4 rotation;
+	glm::mat4 scale;
+
+	glm::mat4 model;
+	glm::mat4 view(1.0f);
+	glm::mat4 projection = glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f);
+
+	glm::mat4 mvp;
 
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.Clear(GL_COLOR_BUFFER_BIT);
 		
-		translation = glm::translate(glm::mat4(1.0f), glm::vec3(triangleOffset[0], triangleOffset[1], triangleOffset[2]));
-		shader.SetMatrix4("translation", translation);
+		translation = glm::translate(glm::mat4(1.0f), glm::vec3(trianglePosition[0], trianglePosition[1], trianglePosition[2]));
+		rotation = glm::rotate(glm::mat4(1.0f), glm::radians(triangleRotation), glm::vec3(0,0,1));
+		scale = glm::scale(glm::mat4(1.0f), glm::vec3(triangleScale[0], triangleScale[1], triangleScale[2]));
+
+		model = translation * rotation * scale;
+		mvp = projection * view * model;
+		shader.SetMatrix4("mvp", mvp);
 
 		imgui.BeginFrame();
 
-		ImGui::Begin("triangle");
-		ImGui::SliderFloat3("Triangle position", triangleOffset, -0.5f, 0.5f);
+		ImGui::Begin("Triangle controls");
+		ImGui::SliderFloat3("position", trianglePosition, -3.0f, 3.0f);
+		ImGui::SliderFloat("rotation", &triangleRotation, -180.0f, 180.0f);
+		ImGui::SliderFloat3("scale", triangleScale, 0.5f, 1.5f);
 		ImGui::End();
 
 		renderer.Draw(va, ib, shader);
