@@ -2,6 +2,10 @@
 
 namespace as3d
 {
+	Renderer::Renderer()
+		: clearFlags(GL_COLOR_BUFFER_BIT)
+	{}
+
 	void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& s) const
 	{
 		va.Bind();
@@ -11,9 +15,9 @@ namespace as3d
 		glCheckError(glDrawElements(GL_TRIANGLES, ib.GetCount(), ib.GetType(), NULL));
 	}
 
-	void Renderer::Clear(GLbitfield flags) const 
+	void Renderer::Clear() const 
 	{
-		glCheckError(glClear(flags));
+		glCheckError(glClear(clearFlags));
 	}
 
 	void Renderer::SetClearColor(float r, float g, float b, float a) const
@@ -21,7 +25,7 @@ namespace as3d
 		glCheckError(glClearColor(r, g, b, a));
 	}
 
-	void Renderer::EnableBackFaceCull(bool enable) const
+	void Renderer::EnableBackFaceCulling(bool enable) const
 	{
 		if (enable)
 		{
@@ -32,4 +36,31 @@ namespace as3d
 			glCheckError(glDisable(GL_CULL_FACE));
 		}
 	}
+
+	void Renderer::EnableDepthTesting(bool enable, GLenum depthFunction)
+	{
+		SetFlag(GL_DEPTH_BUFFER_BIT, enable);
+		if (enable)
+		{
+			glCheckError(glEnable(GL_DEPTH_TEST));
+			glCheckError(glDepthFunc(depthFunction));
+		}
+		else
+		{
+			glCheckError(glDisable(GL_DEPTH_TEST));
+		}
+	}
+
+	void Renderer::SetFlag(GLbitfield flag, bool set)
+	{
+		if (set)
+		{
+			clearFlags |= flag;
+		}
+		else
+		{
+			clearFlags &= ~(flag);
+		}
+	}
+
 }
