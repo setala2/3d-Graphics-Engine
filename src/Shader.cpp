@@ -25,15 +25,24 @@ namespace as3d
 		glCheckError(glUseProgram(0));
 	}
 
-	void Shader::SetMatrix4(const std::string name, const glm::mat4& matrix) const
+	void Shader::SetVector3(const std::string& name, const glm::vec3& vector) const
 	{
-		GLint uniform = GetUniformLocation(name);
-		if (uniform == -1)
-		{
-			std::cout << "Could not find uniform: " << name << '\n';
-			return;
-		}
-		glCheckError(glUniformMatrix4fv(uniform, 1, GL_FALSE, &(matrix[0][0])));
+		glCheckError(glUniform3f(GetUniformLocation(name), vector.x, vector.y, vector.z));
+	}
+
+	void Shader::SetVector3(const std::string& name, float x, float y, float z) const
+	{
+		glCheckError(glUniform3f(GetUniformLocation(name), x, y, z));
+	}
+
+	void Shader::SetFloat(const std::string& name, float value) const
+	{
+		glCheckError(glUniform1f(GetUniformLocation(name), value));
+	}
+
+	void Shader::SetMatrix4(const std::string& name, const glm::mat4& matrix) const
+	{
+		glCheckError(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &(matrix[0][0])));
 	}
 
 	GLint Shader::GetUniformLocation(const std::string& name) const
