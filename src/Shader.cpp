@@ -25,9 +25,13 @@ namespace as3d
 		glCheckError(glUseProgram(0));
 	}
 
-	GLint Shader::GetUniformLocation(const char* name) const
+	GLint Shader::GetUniformLocation(const std::string& name)
 	{
-		GLint uniform = glCheckError(glGetUniformLocation(handle, name));
+		if (uniformCache.find(name) != uniformCache.end())
+			return uniformCache[name];
+
+		GLint uniform = glCheckError(glGetUniformLocation(handle, name.c_str()));
+		uniformCache[name] = uniform;
 		return uniform;
 	}
 

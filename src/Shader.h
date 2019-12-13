@@ -1,5 +1,7 @@
 #pragma once
 #include "Gldebug.h"
+#include <unordered_map>
+#include <string>
 
 namespace as3d
 {
@@ -14,10 +16,12 @@ namespace as3d
 		void Bind() const;
 		void Unbind() const;
 
-		GLint GetUniformLocation(const char* name) const;
+		GLint GetUniformLocation(const std::string& name);
 
 	private:
 		void Compile(const char* vertexFile, const char* fragmentFile);
 		std::string ReadFile(const char* path);
+
+		std::unordered_map<std::string, GLint> uniformCache;
 	};
 }
