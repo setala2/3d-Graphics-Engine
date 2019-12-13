@@ -159,6 +159,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\dependencies\glm\glm\detail\glm.cpp" />
+    <ClCompile Include="src\dependencies\imgui\imgui.cpp" />
+    <ClCompile Include="src\dependencies\imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\dependencies\imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\dependencies\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\dependencies\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Gldebug.cpp" />
     <ClCompile Include="src\GlfwManager.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
@@ -414,6 +420,14 @@
     <ClInclude Include="src\dependencies\glm\glm\vec3.hpp" />
     <ClInclude Include="src\dependencies\glm\glm\vec4.hpp" />
     <ClInclude Include="src\dependencies\glm\glm\vector_relational.hpp" />
+    <ClInclude Include="src\dependencies\imgui\imconfig.h" />
+    <ClInclude Include="src\dependencies\imgui\imgui.h" />
+    <ClInclude Include="src\dependencies\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="src\dependencies\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\dependencies\imgui\imgui_internal.h" />
+    <ClInclude Include="src\dependencies\imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\dependencies\imgui\imstb_textedit.h" />
+    <ClInclude Include="src\dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="src\Gldebug.h" />
     <ClInclude Include="src\GlfwManager.h" />
     <ClInclude Include="src\IndexBuffer.h" />
