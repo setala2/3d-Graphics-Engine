@@ -9,6 +9,9 @@
 #include "BufferLayout.h"
 #include "Renderer.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 #include <iostream>
 
 int main()
@@ -46,9 +49,30 @@ int main()
 	renderer.SetClearColor(0, 1, 0);
 	renderer.EnableBackFaceCull(true);
 
+	float x = 0;
+	bool right = true;
+
+	glm::mat4 translation;
+	shader.Bind();
+	GLint u_Translation = shader.GetUniformLocation("translation");
+
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.Clear(GL_COLOR_BUFFER_BIT);
+		
+		if (x > 0.5f)
+			right = false;
+		if (x < -0.5f)
+			right = true;
+
+		if (right)
+			x += 0.01f;
+		else
+			x -= 0.01f;
+		
+		translation = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0, 0));
+		glUniformMatrix4fv(u_Translation, 1, GL_FALSE, &(translation[0][0]));
+
 		renderer.Draw(va, ib, shader);
 
 		glfwSwapBuffers(window);

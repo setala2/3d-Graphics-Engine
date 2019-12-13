@@ -12,8 +12,9 @@ namespace as3d
 		~Shader();
 
 		void Bind() const;
-
 		void Unbind() const;
+
+		GLint GetUniformLocation(const char* name) const;
 
 	private:
 		void Compile(const char* vertexFile, const char* fragmentFile);

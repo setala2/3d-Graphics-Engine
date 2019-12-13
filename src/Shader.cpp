@@ -25,6 +25,12 @@ namespace as3d
 		glCheckError(glUseProgram(0));
 	}
 
+	GLint Shader::GetUniformLocation(const char* name) const
+	{
+		GLint uniform = glCheckError(glGetUniformLocation(handle, name));
+		return uniform;
+	}
+
 	void Shader::Compile(const char* vertexFile, const char* fragmentFile)
 	{
 		// Mostly copied from https://www.khronos.org/opengl/wiki/Shader_Compilation
