@@ -9,6 +9,7 @@ namespace as3d
 	class Renderer
 	{
 		GLbitfield clearFlags;
+		bool wireframe;
 	public:
 		Renderer();
 
@@ -18,6 +19,8 @@ namespace as3d
 		void SetClearColor(float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f) const;
 		void EnableBackFaceCulling(bool enable) const;
 		void EnableDepthTesting(bool enable, GLenum depthFunction = GL_LESS);
+		void EnableWireFrame(bool enable);
+		void ToggleWireFrame();
 
 	private:
 		void SetFlag(GLbitfield flag, bool set);

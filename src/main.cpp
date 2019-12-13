@@ -20,6 +20,7 @@ int main()
 
 	constexpr unsigned int windowWidth = 1600;
 	constexpr unsigned int windowHeight = 900;
+	constexpr float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
 
 	GLFWwindow* window = glfwCreateWindow(1600, 900, "Test window", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
@@ -92,9 +93,8 @@ int main()
 	as3d::Shader shader("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
 
 	as3d::Renderer renderer;
-	renderer.SetClearColor();
 	renderer.EnableDepthTesting(true);
-	renderer.EnableBackFaceCulling(true);
+	renderer.EnableBackFaceCulling(false);
 
 	shader.Bind();
 
@@ -108,7 +108,7 @@ int main()
 
 	glm::mat4 model;
 	glm::mat4 view(1.0f);
-	glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)windowWidth / (float)windowHeight, 0.01f, 20.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(60.0f), aspectRatio, 0.01f, 20.0f);
 
 	glm::mat4 mvp;
 
@@ -132,7 +132,9 @@ int main()
 		ImGui::Begin("Cube controls");
 		ImGui::SliderFloat3("position", cubePosition, -10.0f, 10.0f);
 		ImGui::SliderFloat3("rotation", cubeRotation, -180.0f, 180.0f);
-		ImGui::SliderFloat3("scale", cubeScale, 0.5f, 1.5f);
+		ImGui::SliderFloat3("scale", cubeScale, 0.25f, 4.0f);
+		if (ImGui::Button("Toggle Wireframe"))
+			renderer.ToggleWireFrame();
 		ImGui::End();
 
 		renderer.Draw(va, ib, shader);

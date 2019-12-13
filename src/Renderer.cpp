@@ -3,7 +3,7 @@
 namespace as3d
 {
 	Renderer::Renderer()
-		: clearFlags(GL_COLOR_BUFFER_BIT)
+		: clearFlags(GL_COLOR_BUFFER_BIT), wireframe(false)
 	{}
 
 	void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& s) const
@@ -49,6 +49,24 @@ namespace as3d
 		{
 			glCheckError(glDisable(GL_DEPTH_TEST));
 		}
+	}
+
+	void Renderer::EnableWireFrame(bool enable)
+	{
+		wireframe = enable;
+		if (enable)
+		{
+			glCheckError(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
+		}
+		else
+		{
+			glCheckError(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+		}
+	}
+
+	void Renderer::ToggleWireFrame()
+	{
+		EnableWireFrame(!wireframe);
 	}
 
 	void Renderer::SetFlag(GLbitfield flag, bool set)
