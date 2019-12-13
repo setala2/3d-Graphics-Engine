@@ -54,7 +54,6 @@ int main()
 
 	glm::mat4 translation;
 	shader.Bind();
-	GLint u_Translation = shader.GetUniformLocation("translation");
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -71,7 +70,7 @@ int main()
 			x -= 0.01f;
 		
 		translation = glm::translate(glm::mat4(1.0f), glm::vec3(x, 0, 0));
-		glUniformMatrix4fv(u_Translation, 1, GL_FALSE, &(translation[0][0]));
+		shader.SetMatrix4("translation", translation);
 
 		renderer.Draw(va, ib, shader);
 
