@@ -1,10 +1,12 @@
 #include "gldebug.h"
 
-unsigned int glCheckError_(const char* file, int line)
+bool glCheckError_(const char* file, int line)
 {
 	GLenum errorCode;
+	bool noErrors = true;
 	while ((errorCode = glGetError()) != GL_NO_ERROR)
 	{
+		noErrors = false;
 		std::string error;
 		switch (errorCode)
 		{
@@ -18,5 +20,5 @@ unsigned int glCheckError_(const char* file, int line)
 		}
 		std::cout << error << " | " << file << " (" << line << ")" << std::endl;
 	}
-	return errorCode;
+	return noErrors;
 }

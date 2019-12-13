@@ -7,6 +7,11 @@
 #include <iostream>
 #include "GL/glew.h"
 
-unsigned int glCheckError_(const char* file, int line);
+bool glCheckError_(const char* file, int line);
 
-#define glCheckError(x) x; glCheckError_(__FILE__, __LINE__) 
+#ifdef ASSERT_GL_ERRORS
+	#include <cassert>
+	#define glCheckError(x) x; assert(glCheckError_(__FILE__, __LINE__))
+#else
+	#define glCheckError(x) x; glCheckError_(__FILE__, __LINE__)
+#endif
