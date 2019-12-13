@@ -8,6 +8,8 @@
 #include "VertexArray.h"
 #include "BufferLayout.h"
 #include "Renderer.h"
+#include "Mesh.h"
+#include "Model.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -92,19 +94,14 @@ int main()
 
 	as3d::Shader shader("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
 
+	as3d::Mesh cubeMesh(&va, &ib);
+	as3d::Model cubeModel(&cubeMesh, &shader);
+
 	as3d::Renderer renderer;
 	renderer.EnableDepthTesting(true);
 	renderer.EnableBackFaceCulling(false);
 
 	shader.Bind();
-
-	float cubePosition[3] = { 0 };
-	float cubeRotation[3] = { 0 };
-	float cubeScale[3] = { 1, 1, 1 };
-
-	glm::mat4 translation;
-	glm::mat4 rotation;
-	glm::mat4 scale;
 
 	glm::mat4 model;
 	glm::mat4 view(1.0f);
@@ -115,31 +112,17 @@ int main()
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.Clear();
-		
-		translation = glm::translate(glm::mat4(1.0f), glm::vec3(cubePosition[0], cubePosition[1], cubePosition[2] - 10.0f));
-		rotation = glm::mat4(1.0f);
-		rotation = glm::rotate(rotation, glm::radians(cubeRotation[1]), glm::vec3(0,1,0));
-		rotation = glm::rotate(rotation, glm::radians(cubeRotation[0]), glm::vec3(1,0,0));
-		rotation = glm::rotate(rotation, glm::radians(cubeRotation[2]), glm::vec3(0,0,1));
-		scale = glm::scale(glm::mat4(1.0f), glm::vec3(cubeScale[0], cubeScale[1], cubeScale[2]));
 
-		model = translation * rotation * scale;
+		model = cubeModel.GetModelMatrix();
 		mvp = projection * view * model;
 		shader.SetMatrix4("mvp", mvp);
+		renderer.Draw(cubeModel);
 
 		imgui.BeginFrame();
-
-		ImGui::Begin("Cube controls");
-		ImGui::SliderFloat3("position", cubePosition, -10.0f, 10.0f);
-		ImGui::SliderFloat3("rotation", cubeRotation, -180.0f, 180.0f);
-		ImGui::SliderFloat3("scale", cubeScale, 0.25f, 4.0f);
-		if (ImGui::Button("Toggle Wireframe"))
-			renderer.ToggleWireFrame();
-		ImGui::End();
-
-		renderer.Draw(va, ib, shader);
-
+		cubeModel.DrawControlWindow();
+		renderer.DrawControlWindow();
 		imgui.EndFrame();
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

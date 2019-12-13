@@ -15,9 +15,23 @@ namespace as3d
 		glCheckError(glDrawElements(GL_TRIANGLES, ib.GetCount(), ib.GetType(), NULL));
 	}
 
+	void Renderer::Draw(const Model& m) const
+	{
+		m.Bind();
+		glCheckError(glDrawElements(GL_TRIANGLES, m.GetIndexCount(), m.GetIndexType(), NULL));
+	}
+
 	void Renderer::Clear() const 
 	{
 		glCheckError(glClear(clearFlags));
+	}
+
+	void Renderer::DrawControlWindow()
+	{
+		ImGui::Begin("Renderer settings");
+		if (ImGui::Button("Toggle Wireframe"))
+			ToggleWireFrame();
+		ImGui::End();
 	}
 
 	void Renderer::SetClearColor(float r, float g, float b, float a) const

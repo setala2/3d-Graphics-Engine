@@ -2,7 +2,9 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
+#include "Model.h"
 #include "Gldebug.h"
+#include "imgui.h"
 
 namespace as3d
 {
@@ -14,7 +16,10 @@ namespace as3d
 		Renderer();
 
 		void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& s) const;
+		void Draw(const Model& m) const;
 		void Clear() const;
+
+		void DrawControlWindow();
 
 		void SetClearColor(float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f) const;
 		void EnableBackFaceCulling(bool enable) const;

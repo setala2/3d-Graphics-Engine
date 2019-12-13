@@ -170,6 +170,8 @@
     <ClCompile Include="src\ImguiManager.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
@@ -433,6 +435,8 @@
     <ClInclude Include="src\GlfwManager.h" />
     <ClInclude Include="src\ImguiManager.h" />
     <ClInclude Include="src\IndexBuffer.h" />
+    <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\VertexArray.h" />
