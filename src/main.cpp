@@ -119,8 +119,8 @@ int main()
 		renderer.Draw(cubeModel);
 
 		imgui.BeginFrame();
-		cubeModel.DrawControlWindow();
-		renderer.DrawControlWindow();
+		cubeModel.DrawControlWindow("Cube controls");
+		renderer.DrawControlWindow("Renderer controls");
 		imgui.EndFrame();
 
 

@@ -28,7 +28,7 @@ namespace as3d
 		void Bind() const;
 		void Unbind() const;
 
-		void DrawControlWindow();
+		void DrawControlWindow(const char* title);
 		glm::mat4 GetModelMatrix() const;
 
 		unsigned int GetIndexCount() const;

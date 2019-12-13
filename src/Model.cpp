@@ -21,9 +21,9 @@ namespace as3d
 		shader->Unbind();
 	}
 
-	void Model::DrawControlWindow()
+	void Model::DrawControlWindow(const char* title)
 	{
-		ImGui::Begin("Cube controls");
+		ImGui::Begin(title);
 		if (ImGui::SliderFloat3("position", translation, -10.0f, 10.0f))
 			UpdatePosition();
 		if (ImGui::SliderFloat3("rotation", rotation, -180.0f, 180.0f))
