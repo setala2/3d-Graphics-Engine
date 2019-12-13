@@ -5,6 +5,8 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
+#include "VertexArray.h"
+#include "BufferLayout.h"
 
 #include <iostream>
 
@@ -17,24 +19,25 @@ int main()
 
 	glewInit();
 
-	float vertices[] = { -0.5f, -0.5f,
-						  0.0f,  0.5f,
-						  0.5f, -0.5f };
+	float vertices[] = { -0.5f, -0.5f, 0.0f,
+						  0.0f,  0.5f, 0.0f,
+						  0.5f, -0.5f, 0.0f };
 
 	unsigned int indices[] = { 0,1,2 };
 
-	GLuint vao;
-	glCheckError(glGenVertexArrays(1, &vao));
-	glCheckError(glBindVertexArray(vao));
+	as3d::VertexArray va;
+
+	as3d::BufferLayout layout;
+	layout.Push<float>(3);
 
 	as3d::VertexBuffer vb(vertices, sizeof(vertices));
 	vb.Bind();
 
+	va.AddBuffer(vb, layout);
+	va.Bind();
+
 	as3d::IndexBuffer ib(indices, 3);
 	ib.Bind();
-
-	glCheckError(glEnableVertexAttribArray(0));
-	glCheckError(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0));
 
 	as3d::Shader shader("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
 	shader.Bind();

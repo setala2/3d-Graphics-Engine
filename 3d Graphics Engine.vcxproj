@@ -164,9 +164,11 @@
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BufferLayout.h" />
     <ClInclude Include="src\dependencies\glew\include\GL\glew.h" />
     <ClInclude Include="src\dependencies\glfw\include\GLFW\glfw3.h" />
     <ClInclude Include="src\dependencies\glfw\include\GLFW\glfw3native.h" />
@@ -415,6 +417,7 @@
     <ClInclude Include="src\GlfwManager.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\VertexArray.h" />
     <ClInclude Include="src\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
