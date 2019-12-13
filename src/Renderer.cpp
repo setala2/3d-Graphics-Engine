@@ -15,4 +15,21 @@ namespace as3d
 	{
 		glCheckError(glClear(flags));
 	}
+
+	void Renderer::SetClearColor(float r, float g, float b, float a) const
+	{
+		glCheckError(glClearColor(r, g, b, a));
+	}
+
+	void Renderer::EnableBackFaceCull(bool enable) const
+	{
+		if (enable)
+		{
+			glCheckError(glEnable(GL_CULL_FACE));
+		}
+		else
+		{
+			glCheckError(glDisable(GL_CULL_FACE));
+		}
+	}
 }

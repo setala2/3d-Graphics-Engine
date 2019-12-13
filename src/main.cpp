@@ -27,7 +27,7 @@ int main()
 						  0.0f,  0.5f, 0.0f,
 						  0.5f, -0.5f, 0.0f };
 
-	unsigned int indices[] = { 0,1,2 };
+	unsigned int indices[] = { 0,2,1 };
 
 	as3d::VertexArray va;
 
@@ -43,8 +43,8 @@ int main()
 	as3d::Shader shader("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
 
 	as3d::Renderer renderer;
-
-	glCheckError(glClearColor(0, 1, 0, 1));
+	renderer.SetClearColor(0, 1, 0);
+	renderer.EnableBackFaceCull(true);
 
 	while (!glfwWindowShouldClose(window))
 	{
