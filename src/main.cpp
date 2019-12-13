@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "Mesh.h"
 #include "Model.h"
+#include "Camera.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -104,8 +105,7 @@ int main()
 	shader.Bind();
 
 	glm::mat4 model;
-	glm::mat4 view(1.0f);
-	glm::mat4 projection = glm::perspective(glm::radians(60.0f), aspectRatio, 0.01f, 20.0f);
+	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.01f, 20.0f));
 
 	glm::mat4 mvp;
 
@@ -114,7 +114,7 @@ int main()
 		renderer.Clear();
 
 		model = cubeModel.GetModelMatrix();
-		mvp = projection * view * model;
+		mvp = camera.GetViewProjectionMatrix() * model;
 		shader.SetMatrix4("mvp", mvp);
 		renderer.Draw(cubeModel);
 
