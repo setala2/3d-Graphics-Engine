@@ -38,16 +38,6 @@ namespace as3d
 		return translationMatrix * rotationMatrix * scalingMatrix;
 	}
 
-	unsigned int Model::GetIndexCount() const
-	{
-		return mesh->indexBuffer->GetCount();
-	}
-
-	GLenum Model::GetIndexType() const
-	{
-		return mesh->indexBuffer->GetType();
-	}
-
 	void Model::Update()
 	{
 		UpdatePosition();

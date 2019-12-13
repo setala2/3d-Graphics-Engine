@@ -31,8 +31,8 @@ namespace as3d
 		void DrawControlWindow(const char* title);
 		glm::mat4 GetModelMatrix() const;
 
-		unsigned int GetIndexCount() const;
-		GLenum GetIndexType() const;
+		inline unsigned int GetIndexCount() const { return mesh->indexBuffer->GetCount(); };
+		inline GLenum GetIndexType() const { return mesh->indexBuffer->GetType(); };
 
 	private:
 		void Update();
