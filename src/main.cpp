@@ -15,8 +15,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-#include <iostream>
-
 int main()
 {
 	GlfwManager glfwManager;
@@ -99,8 +97,6 @@ int main()
 	as3d::Model cubeModel(&cubeMesh, &shader);
 
 	as3d::Renderer renderer;
-	renderer.EnableDepthTesting(true);
-	renderer.EnableBackFaceCulling(false);
 
 	shader.Bind();
 
@@ -121,6 +117,7 @@ int main()
 		imgui.BeginFrame();
 		cubeModel.DrawControlWindow("Cube controls");
 		renderer.DrawControlWindow("Renderer controls");
+		camera.DrawControlWindow("Camera controls");
 		imgui.EndFrame();
 
 
