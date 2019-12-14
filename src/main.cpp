@@ -15,6 +15,10 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "Objloader/OBJ_Loader.h"
+
+#include <vector>
+
 int main()
 {
 	GlfwManager glfwManager;
@@ -72,24 +76,33 @@ int main()
 		0,2,6
 	};
 
+	// Load an object file using the loader library
+	objl::Loader objLoader;
+	objLoader.LoadFile("src/models/cube.obj");
+	const auto& vertexVector = objLoader.LoadedVertices;
+	const auto& indexVector = objLoader.LoadedIndices;
 
-	float vertices[] = { -3.0f, -3.0f, 0.0f,
-						  0.0f,  3.0f, 0.0f,
-						  3.0f, -3.0f, 0.0f };
-
-	unsigned int indices[] = { 0,2,1 };
+	// Copy the vertex position data to a local buffer (Ignore normals and texture coordinates for now)
+	float* vertices = new float[vertexVector.size() * 3];
+	for (objl::Vertex v : vertexVector)
+	{
+		static unsigned int index = 0;
+		vertices[index++] = v.Position.X;
+		vertices[index++] = v.Position.Y;
+		vertices[index++] = v.Position.Z;
+	}
 
 	as3d::VertexArray va;
 
-	as3d::VertexBuffer vb(cubeVertices, sizeof(cubeVertices));
+	as3d::VertexBuffer vb(vertices, 3 * sizeof(float) * vertexVector.size());
+
+	delete[] vertices;
 
 	as3d::BufferLayout layout;
 	layout.Push<float>(3);	// Positions
-	layout.Push<float>(3);	// Colors
-
 	va.AddBuffer(vb, layout);
 
-	as3d::IndexBuffer ib(cubeIndices, 36);
+	as3d::IndexBuffer ib(indexVector.data(), indexVector.size());
 
 	as3d::Shader shader("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
 

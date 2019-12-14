@@ -93,7 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>ASSERT_GL_ERRORS;GLEW_STATIC;IMGUI_IMPL_OPENGL_LOADER_GLEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)\src\dependencies\imgui;$(ProjectDir)\src\dependencies\glm;$(ProjectDir)\src\dependencies\glfw\include\;$(ProjectDir)\src\dependencies\glew\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\src\dependencies\objloader;$(ProjectDir)\src\dependencies\imgui;$(ProjectDir)\src\dependencies\glm;$(ProjectDir)\src\dependencies\glfw\include\;$(ProjectDir)\src\dependencies\glew\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -433,6 +433,7 @@
     <ClInclude Include="src\dependencies\imgui\imstb_rectpack.h" />
     <ClInclude Include="src\dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="src\dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\dependencies\objloader\Objloader\OBJ_Loader.h" />
     <ClInclude Include="src\Gldebug.h" />
     <ClInclude Include="src\GlfwManager.h" />
     <ClInclude Include="src\ImguiManager.h" />
