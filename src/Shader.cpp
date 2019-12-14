@@ -181,7 +181,7 @@ namespace as3d
 			return std::string();
 		}
 		// Get the size of the file and allocate memory for it
-		unsigned int size = file.tellg();
+		unsigned int size = static_cast<unsigned int>(file.tellg());
 		char* shaderSource = new char[size + 1];
 		// Go back to the beginning of the file and read the entire thing to the memory
 		file.seekg(0);
