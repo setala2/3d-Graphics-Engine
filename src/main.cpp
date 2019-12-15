@@ -135,7 +135,10 @@ int main()
 
 	as3d::IndexBuffer teapotIb(indexVector.data(), indexVector.size());
 
-	as3d::Shader teapotShader("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
+	as3d::Shader teapotShader("src/shaders/vertex.glsl", "src/shaders/frag_phong.glsl");
+	teapotShader.Bind();
+	teapotShader.SetFloat("ambientIntensity", 0.2f);
+	teapotShader.SetVector3("ambientColor", 0.8f, 1.0f, 0.1f);
 
 	as3d::Mesh teapotMesh(&teapotVa, &teapotIb);
 	as3d::Model teapotModel(&teapotMesh, &teapotShader);
@@ -151,6 +154,12 @@ int main()
 	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.01f, 20.0f));
 
 	glm::mat4 mvp;
+
+	///////////////////////////////////////////////////
+	//
+	//		Start the loop
+	//
+	///////////////////////////////////////////////////
 
 	while (!glfwWindowShouldClose(window))
 	{

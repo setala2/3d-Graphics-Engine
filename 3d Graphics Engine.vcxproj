@@ -589,6 +589,7 @@
     <None Include="src\dependencies\glm\glm\gtx\vector_query.inl" />
     <None Include="src\dependencies\glm\glm\gtx\wrap.inl" />
     <None Include="src\shaders\frag.glsl" />
+    <None Include="src\shaders\frag_phong.glsl" />
     <None Include="src\shaders\vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
