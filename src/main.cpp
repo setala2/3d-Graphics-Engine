@@ -114,29 +114,33 @@ int main()
 	const auto& vertexVector = objLoader.LoadedVertices;
 	const auto& indexVector = objLoader.LoadedIndices;
 
-	// Copy the vertex position data to a local buffer (Ignore normals and texture coordinates for now)
-	float* vertices = new float[vertexVector.size() * 3];
+	// Copy the vertex position and normal data to a local buffer (Ignore texture coordinates for now)
+	float* vertices = new float[vertexVector.size() * 6];
 	for (objl::Vertex v : vertexVector)
 	{
 		static unsigned int index = 0;
 		vertices[index++] = v.Position.X;
 		vertices[index++] = v.Position.Y;
 		vertices[index++] = v.Position.Z;
+		vertices[index++] = v.Normal.X;
+		vertices[index++] = v.Normal.Y;
+		vertices[index++] = v.Normal.Z;
 	}
 
 	// Create the buffer on the GPU and free the memory on the CPU side.
-	as3d::VertexBuffer teapotVb(vertices, 3 * sizeof(float) * vertexVector.size());
+	as3d::VertexBuffer teapotVb(vertices, 6 * sizeof(float) * vertexVector.size());
 	delete[] vertices;
 
 	as3d::VertexArray teapotVa;
 
 	as3d::BufferLayout teapotLayout;
-	teapotLayout.Push<float>(3);
+	teapotLayout.Push<float>(3);	// Position
+	teapotLayout.Push<float>(3);	// Normal
 	teapotVa.AddBuffer(teapotVb, teapotLayout);
 
 	as3d::IndexBuffer teapotIb(indexVector.data(), indexVector.size());
 
-	as3d::Shader teapotShader("src/shaders/vertex.glsl", "src/shaders/frag_phong.glsl");
+	as3d::Shader teapotShader("src/shaders/vertex_phong.glsl", "src/shaders/frag_phong.glsl");
 	teapotShader.Bind();
 	teapotShader.SetFloat("ambientIntensity", 0.2f);
 	teapotShader.SetVector3("ambientColor", 0.8f, 1.0f, 0.1f);
@@ -168,11 +172,13 @@ int main()
 
 		glm::mat4 vpMatrix = camera.GetViewProjectionMatrix();
 
-		mvp = vpMatrix * teapotModel.GetModelMatrix();
+		//mvp = vpMatrix * teapotModel.GetModelMatrix();
 		teapotShader.Bind();
-		teapotShader.SetMatrix4("mvp", mvp);
-		teapotShader.SetVector3("ambientColor", lightModel.GetColor());
+		teapotShader.SetMatrix4("model", teapotModel.GetModelMatrix());
+		teapotShader.SetMatrix4("viewProjection", vpMatrix);
+		teapotShader.SetVector3("lightColor", lightModel.GetColor());
 		teapotShader.SetFloat("ambientIntensity", lightModel.GetAmbientIntensity());
+		teapotShader.SetVector3("lightPosition", lightModel.GetPosition());
 		renderer.Draw(teapotModel);
 
 		mvp = vpMatrix * lightModel.GetModelMatrix();

@@ -32,6 +32,7 @@ namespace as3d
 
 		void DrawControlWindow(const char* title);
 		glm::mat4 GetModelMatrix() const;
+		glm::vec3 GetPosition() const;
 
 		void SetPosition(float x, float y, float z);
 		void SetPosition(glm::vec3 pos);

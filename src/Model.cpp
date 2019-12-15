@@ -33,6 +33,11 @@ namespace as3d
 		return translationMatrix * rotationMatrix * scalingMatrix;
 	}
 
+	glm::vec3 Model::GetPosition() const
+	{
+		return glm::vec3(translation[0], translation[1], translation[2]);
+	}
+
 	void Model::SetPosition(float x, float y, float z)
 	{
 		translation[0] = x;

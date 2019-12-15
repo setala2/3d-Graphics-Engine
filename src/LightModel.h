@@ -14,8 +14,8 @@ namespace as3d
 
 		void DrawControlWindow(const char* title);
 
-		inline glm::vec3 GetColor() { return lightVector; }
-		inline float GetAmbientIntensity() { return ambientIntensity; }
+		inline glm::vec3 GetColor() const { return lightVector; }
+		inline float GetAmbientIntensity() const { return ambientIntensity; }
 
 	private:
 		void UpdateColor();

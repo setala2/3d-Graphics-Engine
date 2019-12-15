@@ -593,6 +593,7 @@
     <None Include="src\shaders\frag.glsl" />
     <None Include="src\shaders\frag_phong.glsl" />
     <None Include="src\shaders\vertex.glsl" />
+    <None Include="src\shaders\vertex_phong.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\dependencies\glew\lib\Release\Win32\glew32s.lib" />
