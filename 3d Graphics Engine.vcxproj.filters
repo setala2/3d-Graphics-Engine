@@ -72,6 +72,9 @@
     <ClCompile Include="src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\LightModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dependencies\glew\include\GL\glew.h">
@@ -867,6 +870,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\dependencies\objloader\Objloader\OBJ_Loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

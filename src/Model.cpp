@@ -24,12 +24,7 @@ namespace as3d
 	void Model::DrawControlWindow(const char* title)
 	{
 		ImGui::Begin(title);
-		if (ImGui::SliderFloat3("position", translation, -10.0f, 10.0f))
-			UpdatePosition();
-		if (ImGui::SliderFloat3("rotation", rotation, -180.0f, 180.0f))
-			UpdateRotation();
-		if (ImGui::SliderFloat3("scale", scaling, 0.25f, 4.0f))
-			UpdateScaling();
+		DrawModelControls();
 		ImGui::End();
 	}
 
@@ -80,6 +75,16 @@ namespace as3d
 	void Model::SetScale(float scale)
 	{
 		SetScale(scale, scale, scale);
+	}
+
+	void Model::DrawModelControls()
+	{
+		if (ImGui::SliderFloat3("position", translation, -10.0f, 10.0f))
+			UpdatePosition();
+		if (ImGui::SliderFloat3("rotation", rotation, -180.0f, 180.0f))
+			UpdateRotation();
+		if (ImGui::SliderFloat3("scale", scaling, 0.25f, 4.0f))
+			UpdateScaling();
 	}
 
 	void Model::Update()

@@ -11,6 +11,7 @@ namespace as3d
 {
 	class Model
 	{
+	protected:
 		Mesh* mesh;
 		Shader* shader;
 
@@ -24,6 +25,7 @@ namespace as3d
 
 	public:
 		Model(Mesh* m, Shader* s);
+		virtual ~Model() = default;
 
 		void Bind() const;
 		void Unbind() const;
@@ -42,8 +44,12 @@ namespace as3d
 		inline unsigned int GetIndexCount() const { return mesh->indexBuffer->GetCount(); };
 		inline GLenum GetIndexType() const { return mesh->indexBuffer->GetType(); };
 
-	private:
-		void Update();
+	protected:
+		// Draws the controls of the model class to an existing window.
+		// Does not call imgui begin or end.
+		void DrawModelControls();
+
+		virtual void Update();
 		void UpdatePosition();
 		void UpdateRotation();
 		void UpdateScaling();

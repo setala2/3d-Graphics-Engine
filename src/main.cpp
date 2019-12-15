@@ -11,6 +11,7 @@
 #include "Mesh.h"
 #include "Model.h"
 #include "Camera.h"
+#include "LightModel.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -96,7 +97,7 @@ int main()
 	as3d::Shader lightShader("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
 
 	as3d::Mesh lightMesh(&lightVa, &lightIb);
-	as3d::Model lightModel(&lightMesh, &lightShader);
+	as3d::LightModel lightModel(&lightMesh, &lightShader);
 
 	lightModel.SetPosition(2, 5, -2);
 	lightModel.SetScale(0.25f);
@@ -170,6 +171,8 @@ int main()
 		mvp = vpMatrix * teapotModel.GetModelMatrix();
 		teapotShader.Bind();
 		teapotShader.SetMatrix4("mvp", mvp);
+		teapotShader.SetVector3("ambientColor", lightModel.GetColor());
+		teapotShader.SetFloat("ambientIntensity", lightModel.GetAmbientIntensity());
 		renderer.Draw(teapotModel);
 
 		mvp = vpMatrix * lightModel.GetModelMatrix();
