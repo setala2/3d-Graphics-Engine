@@ -31,6 +31,14 @@ namespace as3d
 		void DrawControlWindow(const char* title);
 		glm::mat4 GetModelMatrix() const;
 
+		void SetPosition(float x, float y, float z);
+		void SetPosition(glm::vec3 pos);
+		void SetRotation(float u, float v, float w);
+		void SetRotation(glm::vec3 rot);
+		void SetScale(float x, float y, float z);
+		void SetScale(glm::vec3 scale);
+		void SetScale(float scale);
+
 		inline unsigned int GetIndexCount() const { return mesh->indexBuffer->GetCount(); };
 		inline GLenum GetIndexType() const { return mesh->indexBuffer->GetType(); };
 

@@ -38,6 +38,50 @@ namespace as3d
 		return translationMatrix * rotationMatrix * scalingMatrix;
 	}
 
+	void Model::SetPosition(float x, float y, float z)
+	{
+		translation[0] = x;
+		translation[1] = y;
+		translation[2] = z;
+		UpdatePosition();
+	}
+
+	void Model::SetPosition(glm::vec3 pos)
+	{
+		SetPosition(pos.x, pos.y, pos.z);
+	}
+
+	void Model::SetRotation(float x, float y, float z)
+	{
+		rotation[0] = x;
+		rotation[1] = y;
+		rotation[2] = z;
+		UpdateRotation();
+	}
+
+	void Model::SetRotation(glm::vec3 rot)
+	{
+		SetRotation(rot.x, rot.y, rot.z);
+	}
+
+	void Model::SetScale(float x, float y, float z)
+	{
+		scaling[0] = x;
+		scaling[1] = y;
+		scaling[2] = z;
+		UpdateScaling();
+	}
+
+	void Model::SetScale(glm::vec3 scale)
+	{
+		SetScale(scale.x, scale.y, scale.z);
+	}
+
+	void Model::SetScale(float scale)
+	{
+		SetScale(scale, scale, scale);
+	}
+
 	void Model::Update()
 	{
 		UpdatePosition();
