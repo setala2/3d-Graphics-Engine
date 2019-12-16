@@ -45,6 +45,11 @@ namespace as3d
 		glCheckError(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &(matrix[0][0])));
 	}
 
+	void Shader::SetMatrix3(const std::string& name, const glm::mat3& matrix) const
+	{
+		glCheckError(glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, &(matrix[0][0])));
+	}
+
 	GLint Shader::GetUniformLocation(const std::string& name) const
 	{
 		if (uniformCache.find(name) != uniformCache.end())

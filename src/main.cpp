@@ -15,6 +15,7 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/matrix_inverse.hpp"
 
 #include "Objloader/OBJ_Loader.h"
 
@@ -176,6 +177,7 @@ int main()
 		teapotShader.Bind();
 		teapotShader.SetMatrix4("model", teapotModel.GetModelMatrix());
 		teapotShader.SetMatrix4("viewProjection", vpMatrix);
+		teapotShader.SetMatrix3("normalMatrix", glm::inverseTranspose(teapotModel.GetModelMatrix()));
 		teapotShader.SetVector3("lightColor", lightModel.GetColor());
 		teapotShader.SetFloat("ambientIntensity", lightModel.GetAmbientIntensity());
 		teapotShader.SetVector3("lightPosition", lightModel.GetPosition());

@@ -5,6 +5,7 @@ layout(location = 1) in vec3 normal_in;
 
 uniform mat4 model;
 uniform mat4 viewProjection;
+uniform mat3 normalMatrix;
 
 out vec3 normal;
 out vec3 fragPosition;
@@ -12,6 +13,6 @@ out vec3 fragPosition;
 void main()
 {
 	gl_Position = viewProjection * model * vec4(position, 1.0f);
-	normal = -normal_in;
+	normal = normalMatrix * (-normal_in);
 	fragPosition = vec3(model * vec4(position, 1.0f));
 }
