@@ -20,6 +20,7 @@
 #include "Objloader/OBJ_Loader.h"
 
 #include <vector>
+#include <cmath>
 
 int main()
 {
@@ -183,6 +184,7 @@ int main()
 		teapotShader.SetVector3("lightPosition", lightModel.GetPosition());
 		teapotShader.SetFloat("specularIntensity", lightModel.GetSpecularIntensity());
 		teapotShader.SetVector3("viewPosition", camera.GetPosition());
+		teapotShader.SetInt("shineExponent", std::pow(2, lightModel.GetShineExponent()));
 		renderer.Draw(teapotModel);
 
 		mvp = vpMatrix * lightModel.GetModelMatrix();

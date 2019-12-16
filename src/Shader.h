@@ -23,6 +23,7 @@ namespace as3d
 		void SetVector3(const std::string& name, const glm::vec3& vector) const;
 		void SetVector3(const std::string& name, float x, float y, float z) const;
 		void SetFloat(const std::string& name, float value) const;
+		void SetInt(const std::string& name, int value) const;
 
 	private:
 		void Compile(const char* vertexFile, const char* fragmentFile);

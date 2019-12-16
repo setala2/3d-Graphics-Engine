@@ -8,6 +8,7 @@ uniform vec3 lightColor;
 uniform vec3 lightPosition;
 uniform float specularIntensity;
 uniform vec3 viewPosition;
+uniform int shineExponent;
 
 out vec4 fragmentColor;
 
@@ -25,7 +26,7 @@ void main()
 	// Specular
 	vec3 fragToCameraDirection = normalize(viewPosition - fragPosition);
 	vec3 reflectDirection = reflect(-fragToLightDirection, normalDirection);
-	float specularFactor = pow(max(dot(fragToCameraDirection, reflectDirection), 0.0f), 32);
+	float specularFactor = pow(max(dot(fragToCameraDirection, reflectDirection), 0.0f), shineExponent);
 	vec3 specular = specularIntensity * specularFactor * lightColor;
 
 	vec3 result = ambient + diffuse + specular;

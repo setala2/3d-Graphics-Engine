@@ -3,7 +3,8 @@
 namespace as3d
 {
 	LightModel::LightModel(Mesh* mesh, Shader* shader)
-		: Model(mesh, shader), lightColor{0.8f, 0.36f, 0.1f}, ambientIntensity(0.3f)
+		: Model(mesh, shader), lightColor{ 0.8f, 0.36f, 0.1f }, ambientIntensity(0.3f),
+		specularIntensity(0.5f), shineExponent(5)
 	{
 		UpdateColor();
 	}
@@ -16,6 +17,7 @@ namespace as3d
 			UpdateColor();
 		ImGui::SliderFloat("ambient intensity", &ambientIntensity, 0.0f, 1.0f);
 		ImGui::SliderFloat("specular intensity", &specularIntensity, 0.0f, 1.0f);
+		ImGui::SliderInt("shine exponent", &shineExponent, 0, 8);
 		ImGui::End();
 	}
 	void LightModel::UpdateColor()
