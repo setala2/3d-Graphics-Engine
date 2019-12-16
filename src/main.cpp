@@ -112,7 +112,7 @@ int main()
 
 	// Load an object file using the loader library
 	objl::Loader objLoader;
-	objLoader.LoadFile("src/models/teapot.obj");
+	objLoader.LoadFile("src/models/teapot2.obj");
 	const auto& vertexVector = objLoader.LoadedVertices;
 	const auto& indexVector = objLoader.LoadedIndices;
 

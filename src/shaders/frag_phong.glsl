@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec3 normal;
+smooth in vec3 normal;
 in vec3 fragPosition;
 
 uniform float ambientIntensity;
