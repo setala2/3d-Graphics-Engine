@@ -8,6 +8,7 @@ namespace as3d
 		float lightColor[3];
 		glm::vec3 lightVector;
 		float ambientIntensity;
+		float specularIntensity;
 	public:
 		LightModel(Mesh* mesh, Shader* shader);
 		~LightModel() = default;
@@ -16,6 +17,7 @@ namespace as3d
 
 		inline glm::vec3 GetColor() const { return lightVector; }
 		inline float GetAmbientIntensity() const { return ambientIntensity; }
+		inline float GetSpecularIntensity() const { return specularIntensity; }
 
 	private:
 		void UpdateColor();

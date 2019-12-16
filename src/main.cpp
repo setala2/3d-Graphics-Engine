@@ -181,6 +181,8 @@ int main()
 		teapotShader.SetVector3("lightColor", lightModel.GetColor());
 		teapotShader.SetFloat("ambientIntensity", lightModel.GetAmbientIntensity());
 		teapotShader.SetVector3("lightPosition", lightModel.GetPosition());
+		teapotShader.SetFloat("specularIntensity", lightModel.GetSpecularIntensity());
+		teapotShader.SetVector3("viewPosition", camera.GetPosition());
 		renderer.Draw(teapotModel);
 
 		mvp = vpMatrix * lightModel.GetModelMatrix();

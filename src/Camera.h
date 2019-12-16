@@ -24,6 +24,7 @@ namespace as3d
 		void SetRotation(float x, float y, float z);
 
 		inline glm::mat4 GetViewProjectionMatrix() { return projection * view; };
+		inline glm::vec3 GetPosition() { return glm::vec3(translation[0], translation[1], translation[2]); }
 
 	private:
 		inline void UpdateViewMatrix() { view = rotationMatrix * translationMatrix; }

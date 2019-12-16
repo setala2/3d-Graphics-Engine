@@ -15,6 +15,7 @@ namespace as3d
 		if (ImGui::ColorPicker3("light color", lightColor))
 			UpdateColor();
 		ImGui::SliderFloat("ambient intensity", &ambientIntensity, 0.0f, 1.0f);
+		ImGui::SliderFloat("specular intensity", &specularIntensity, 0.0f, 1.0f);
 		ImGui::End();
 	}
 	void LightModel::UpdateColor()
