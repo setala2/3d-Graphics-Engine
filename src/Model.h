@@ -30,9 +30,11 @@ namespace as3d
 		glm::mat4 rotationMatrix;
 		glm::mat4 scalingMatrix;
 
-		float translation[3];
-		float rotation[3];
-		float scaling[3];
+		glm::mat4 modelMatrix;
+
+		glm::vec3 translation;
+		glm::vec3 rotation;
+		glm::vec3 scaling;
 
 		bool useMaterial = true;
 
@@ -44,9 +46,6 @@ namespace as3d
 		void Unbind() const;
 
 		void DrawControlWindow(const char* title);
-		glm::mat4 GetModelMatrix() const;
-		glm::vec3 GetPosition() const;
-		const Material& GetMaterial() const;
 
 		void SetPosition(float x, float y, float z);
 		void SetPosition(glm::vec3 pos);
@@ -56,8 +55,12 @@ namespace as3d
 		void SetScale(glm::vec3 scale);
 		void SetScale(float scale);
 
-		inline unsigned int GetIndexCount() const { return mesh->indexBuffer->GetCount(); };
-		inline GLenum GetIndexType() const { return mesh->indexBuffer->GetType(); };
+		inline const Material& GetMaterial() const { return material; }
+		inline const glm::mat4& GetModelMatrix() const { return modelMatrix; }
+		inline const glm::vec3& GetPosition() const { return translation; }
+
+		inline unsigned int GetIndexCount() const { return mesh->indexBuffer->GetCount(); }
+		inline GLenum GetIndexType() const { return mesh->indexBuffer->GetType(); }
 
 	protected:
 		// Draws the controls of the model class to an existing window.

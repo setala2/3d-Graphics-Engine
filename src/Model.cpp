@@ -35,21 +35,6 @@ namespace as3d
 		ImGui::End();
 	}
 
-	glm::mat4 Model::GetModelMatrix() const
-	{
-		return translationMatrix * rotationMatrix * scalingMatrix;
-	}
-
-	glm::vec3 Model::GetPosition() const
-	{
-		return glm::vec3(translation[0], translation[1], translation[2]);
-	}
-
-	const Material& Model::GetMaterial() const
-	{
-		return material;
-	}
-
 	void Model::SetPosition(float x, float y, float z)
 	{
 		translation[0] = x;
@@ -96,11 +81,11 @@ namespace as3d
 
 	void Model::DrawModelControls()
 	{
-		if (ImGui::SliderFloat3("position", translation, -10.0f, 10.0f))
+		if (ImGui::SliderFloat3("position", &translation[0], -10.0f, 10.0f))
 			UpdatePosition();
-		if (ImGui::SliderFloat3("rotation", rotation, -180.0f, 180.0f))
+		if (ImGui::SliderFloat3("rotation", &rotation[0], -180.0f, 180.0f))
 			UpdateRotation();
-		if (ImGui::SliderFloat3("scale", scaling, 0.25f, 4.0f))
+		if (ImGui::SliderFloat3("scale", &scaling[0], 0.25f, 4.0f))
 			UpdateScaling();
 		if (useMaterial)
 		{
@@ -124,6 +109,7 @@ namespace as3d
 	void Model::UpdatePosition()
 	{
 		translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(translation[0], translation[1], translation[2]));
+		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 	}
 
 	void Model::UpdateRotation()
@@ -132,11 +118,13 @@ namespace as3d
 		rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation[1]), glm::vec3(0, -1.0, 0));
 		rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation[0]), glm::vec3(-1.0, 0, 0));
 		rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation[2]), glm::vec3(0, 0, -1.0));
+		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 	}
 
 	void Model::UpdateScaling()
 	{
 		scalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(scaling[0], scaling[1], scaling[2]));
+		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
 	}
 
 }
