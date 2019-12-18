@@ -142,7 +142,7 @@ int main()
 
 	as3d::IndexBuffer teapotIb(indexVector.data(), indexVector.size());
 
-	as3d::Shader teapotShader("src/shaders/vertex_phong.glsl", "src/shaders/frag_phong.glsl");
+	as3d::Shader teapotShader("src/shaders/vertex_phong.glsl", "src/shaders/frag_phong_material.glsl");
 	teapotShader.Bind();
 	teapotShader.SetFloat("ambientIntensity", 0.2f);
 	teapotShader.SetVector3("ambientColor", 0.8f, 1.0f, 0.1f);
@@ -180,11 +180,12 @@ int main()
 		teapotShader.SetMatrix4("viewProjection", vpMatrix);
 		teapotShader.SetMatrix3("normalMatrix", glm::inverseTranspose(teapotModel.GetModelMatrix()));
 		teapotShader.SetVector3("lightColor", lightModel.GetColor());
-		teapotShader.SetFloat("ambientIntensity", lightModel.GetAmbientIntensity());
 		teapotShader.SetVector3("lightPosition", lightModel.GetPosition());
-		teapotShader.SetFloat("specularIntensity", lightModel.GetSpecularIntensity());
 		teapotShader.SetVector3("viewPosition", camera.GetPosition());
-		teapotShader.SetInt("shineExponent", std::pow(2, lightModel.GetShineExponent()));
+		teapotShader.SetVector3("material.ambient", 1.0f, 0.5f, 0.31f);
+		teapotShader.SetVector3("material.diffuse", 1.0f, 0.5f, 0.31f);
+		teapotShader.SetVector3("material.specular", 0.5f, 0.5f, 0.5f);
+		teapotShader.SetInt("material.shininess", static_cast<int>(std::pow(2, lightModel.GetShineExponent())));
 		renderer.Draw(teapotModel);
 
 		mvp = vpMatrix * lightModel.GetModelMatrix();

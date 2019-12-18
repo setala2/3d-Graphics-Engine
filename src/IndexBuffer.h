@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Gldebug.h"
+#include <cstddef>
 
 namespace as3d
 {
@@ -11,7 +12,7 @@ namespace as3d
 		unsigned int count;
 
 	public:
-		IndexBuffer(const unsigned int* data, unsigned int count);
+		IndexBuffer(const unsigned int* data, std::size_t count);
 		~IndexBuffer();
 
 		void Bind() const;
