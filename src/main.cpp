@@ -179,8 +179,10 @@ int main()
 		teapotShader.SetMatrix4("model", teapotModel.GetModelMatrix());
 		teapotShader.SetMatrix4("viewProjection", vpMatrix);
 		teapotShader.SetMatrix3("normalMatrix", glm::inverseTranspose(teapotModel.GetModelMatrix()));
-		teapotShader.SetVector3("lightColor", lightModel.GetColor());
-		teapotShader.SetVector3("lightPosition", lightModel.GetPosition());
+		teapotShader.SetVector3("light.ambient", lightModel.GetAmbient());
+		teapotShader.SetVector3("light.diffuse", lightModel.GetDiffuse());
+		teapotShader.SetVector3("light.specular", lightModel.GetSpecular());
+		teapotShader.SetVector3("light.position", lightModel.GetPosition());
 		teapotShader.SetVector3("viewPosition", camera.GetPosition());
 		teapotShader.SetVector3("material.ambient", 1.0f, 0.5f, 0.31f);
 		teapotShader.SetVector3("material.diffuse", 1.0f, 0.5f, 0.31f);

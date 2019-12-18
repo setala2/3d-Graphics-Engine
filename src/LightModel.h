@@ -5,10 +5,9 @@ namespace as3d
 {
 	class LightModel : public as3d::Model
 	{
-		float lightColor[3];
-		glm::vec3 lightVector;
-		float ambientIntensity;
-		float specularIntensity;
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
 		int shineExponent;
 	public:
 		LightModel(Mesh* mesh, Shader* shader);
@@ -16,13 +15,14 @@ namespace as3d
 
 		void DrawControlWindow(const char* title);
 
-		inline glm::vec3 GetColor() const { return lightVector; }
-		inline float GetAmbientIntensity() const { return ambientIntensity; }
-		inline float GetSpecularIntensity() const { return specularIntensity; }
+		inline glm::vec3 GetAmbient() const { return ambient; }
+		inline glm::vec3 GetDiffuse() const { return diffuse; }
+		inline glm::vec3 GetSpecular() const { return specular; }
 		inline int GetShineExponent() const { return shineExponent; }
 
+	/*
 	private:
-		void UpdateColor();
 		void Update();
+	*/
 	};
 }

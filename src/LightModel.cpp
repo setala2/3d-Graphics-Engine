@@ -3,32 +3,25 @@
 namespace as3d
 {
 	LightModel::LightModel(Mesh* mesh, Shader* shader)
-		: Model(mesh, shader), lightColor{ 0.8f, 0.36f, 0.1f }, ambientIntensity(0.3f),
-		specularIntensity(0.5f), shineExponent(5)
-	{
-		UpdateColor();
-	}
+		: Model(mesh, shader), ambient(0.2f, 0.2f, 0.2f), diffuse(0.5f, 0.5f, 0.5f),
+		specular(1.0f, 1.0f, 1.0f), shineExponent(5)
+	{	}
 
 	void LightModel::DrawControlWindow(const char* title)
 	{
 		ImGui::Begin(title);
 		DrawModelControls();
-		if (ImGui::ColorPicker3("light color", lightColor))
-			UpdateColor();
-		ImGui::SliderFloat("ambient intensity", &ambientIntensity, 0.0f, 1.0f);
-		ImGui::SliderFloat("specular intensity", &specularIntensity, 0.0f, 1.0f);
-		ImGui::SliderInt("shine exponent", &shineExponent, 0, 8);
+		ImGui::SliderFloat3("ambient", &ambient[0], 0.0f, 1.0f);
+		ImGui::SliderFloat3("diffuse", &diffuse[0], 0.0f, 1.0f);
+		ImGui::SliderFloat3("specular", &specular[0], 0.0f, 1.0f);
+		ImGui::SliderInt("shininess (2^n)", &shineExponent, 0, 8);
 		ImGui::End();
 	}
-	void LightModel::UpdateColor()
-	{
-		lightVector.r = lightColor[0];
-		lightVector.g = lightColor[1];
-		lightVector.b = lightColor[2];
-	}
+
+	/*
 	void LightModel::Update()
 	{
 		Model::Update();
-		UpdateColor();
 	}
+	*/
 }
