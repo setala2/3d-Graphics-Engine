@@ -9,11 +9,22 @@
 
 namespace as3d
 {
+	struct Material
+	{
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
+		int shininess;
+
+		Material();
+	};
+
 	class Model
 	{
 	protected:
 		Mesh* mesh;
 		Shader* shader;
+		Material material;
 
 		glm::mat4 translationMatrix;
 		glm::mat4 rotationMatrix;
@@ -22,6 +33,8 @@ namespace as3d
 		float translation[3];
 		float rotation[3];
 		float scaling[3];
+
+		bool useMaterial = true;
 
 	public:
 		Model(Mesh* m, Shader* s);
@@ -33,6 +46,7 @@ namespace as3d
 		void DrawControlWindow(const char* title);
 		glm::mat4 GetModelMatrix() const;
 		glm::vec3 GetPosition() const;
+		const Material& GetMaterial() const;
 
 		void SetPosition(float x, float y, float z);
 		void SetPosition(glm::vec3 pos);

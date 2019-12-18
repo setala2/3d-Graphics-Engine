@@ -2,6 +2,13 @@
 
 namespace as3d
 {
+	Material::Material()
+		: ambient(1.0f, 0.5f, 0.31f),
+		diffuse(1.0f, 0.5f, 0.31f),
+		specular(1.0f),
+		shininess(5)
+	{}
+
 	Model::Model(Mesh* m, Shader* s)
 		: mesh(m), shader(s), translation{ 0 },
 		rotation{ 0 }, scaling{ 1,1,1 }
@@ -36,6 +43,11 @@ namespace as3d
 	glm::vec3 Model::GetPosition() const
 	{
 		return glm::vec3(translation[0], translation[1], translation[2]);
+	}
+
+	const Material& Model::GetMaterial() const
+	{
+		return material;
 	}
 
 	void Model::SetPosition(float x, float y, float z)
@@ -90,6 +102,16 @@ namespace as3d
 			UpdateRotation();
 		if (ImGui::SliderFloat3("scale", scaling, 0.25f, 4.0f))
 			UpdateScaling();
+		if (useMaterial)
+		{
+			ImGui::Text("Material");
+			ImGui::BeginChild("material");
+			ImGui::SliderFloat3("ambient", &material.ambient[0], 0.0f, 1.0f);
+			ImGui::SliderFloat3("diffuse", &material.diffuse[0], 0.0f, 1.0f);
+			ImGui::SliderFloat3("specular", &material.specular[0], 0.0f, 1.0f);
+			ImGui::SliderInt("shininess (2^n)", &material.shininess, 0, 8);
+			ImGui::EndChild();
+		}
 	}
 
 	void Model::Update()

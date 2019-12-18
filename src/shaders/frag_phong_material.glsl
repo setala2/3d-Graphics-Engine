@@ -46,4 +46,5 @@ void main()
 	
 	vec3 result = ambient + diffuse + specular;
 	fragmentColor = vec4(result, 1.0f);
+
 }

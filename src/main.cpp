@@ -184,10 +184,10 @@ int main()
 		teapotShader.SetVector3("light.specular", lightModel.GetSpecular());
 		teapotShader.SetVector3("light.position", lightModel.GetPosition());
 		teapotShader.SetVector3("viewPosition", camera.GetPosition());
-		teapotShader.SetVector3("material.ambient", 1.0f, 0.5f, 0.31f);
-		teapotShader.SetVector3("material.diffuse", 1.0f, 0.5f, 0.31f);
-		teapotShader.SetVector3("material.specular", 0.5f, 0.5f, 0.5f);
-		teapotShader.SetInt("material.shininess", static_cast<int>(std::pow(2, lightModel.GetShineExponent())));
+		teapotShader.SetVector3("material.ambient", teapotModel.GetMaterial().ambient);
+		teapotShader.SetVector3("material.diffuse", teapotModel.GetMaterial().diffuse);
+		teapotShader.SetVector3("material.specular",teapotModel.GetMaterial().specular);
+		teapotShader.SetInt("material.shininess", static_cast<int>(std::pow(2, teapotModel.GetMaterial().shininess)));
 		renderer.Draw(teapotModel);
 
 		mvp = vpMatrix * lightModel.GetModelMatrix();
