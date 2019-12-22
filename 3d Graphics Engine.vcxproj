@@ -93,7 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>ASSERT_GL_ERRORS;GLEW_STATIC;IMGUI_IMPL_OPENGL_LOADER_GLEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)\src\dependencies\objloader;$(ProjectDir)\src\dependencies\imgui;$(ProjectDir)\src\dependencies\glm;$(ProjectDir)\src\dependencies\glfw\include\;$(ProjectDir)\src\dependencies\glew\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\src\dependencies\stbimage;$(ProjectDir)\src\dependencies\objloader;$(ProjectDir)\src\dependencies\imgui;$(ProjectDir)\src\dependencies\glm;$(ProjectDir)\src\dependencies\glfw\include\;$(ProjectDir)\src\dependencies\glew\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -111,7 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>ASSERT_GL_ERRORS;GLEW_STATIC;IMGUI_IMPL_OPENGL_LOADER_GLEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\src\dependencies\objloader;$(ProjectDir)\src\dependencies\imgui;$(ProjectDir)\src\dependencies\glm;$(ProjectDir)\src\dependencies\glfw\include\;$(ProjectDir)\src\dependencies\glew\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\src\dependencies\stbimage;$(ProjectDir)\src\dependencies\objloader;$(ProjectDir)\src\dependencies\imgui;$(ProjectDir)\src\dependencies\glm;$(ProjectDir)\src\dependencies\glfw\include\;$(ProjectDir)\src\dependencies\glew\include\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -130,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>ASSERT_GL_ERRORS;GLEW_STATIC;IMGUI_IMPL_OPENGL_LOADER_GLEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\src\dependencies\objloader;$(ProjectDir)\src\dependencies\imgui;$(ProjectDir)\src\dependencies\glm;$(ProjectDir)\src\dependencies\glfw\include\;$(ProjectDir)\src\dependencies\glew\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\src\dependencies\stbimage;$(ProjectDir)\src\dependencies\objloader;$(ProjectDir)\src\dependencies\imgui;$(ProjectDir)\src\dependencies\glm;$(ProjectDir)\src\dependencies\glfw\include\;$(ProjectDir)\src\dependencies\glew\include\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -151,7 +151,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>ASSERT_GL_ERRORS;GLEW_STATIC;IMGUI_IMPL_OPENGL_LOADER_GLEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\src\dependencies\objloader;$(ProjectDir)\src\dependencies\imgui;$(ProjectDir)\src\dependencies\glm;$(ProjectDir)\src\dependencies\glfw\include\;$(ProjectDir)\src\dependencies\glew\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\src\dependencies\stbimage;$(ProjectDir)\src\dependencies\objloader;$(ProjectDir)\src\dependencies\imgui;$(ProjectDir)\src\dependencies\glm;$(ProjectDir)\src\dependencies\glfw\include\;$(ProjectDir)\src\dependencies\glew\include\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -172,6 +172,7 @@
     <ClCompile Include="src\dependencies\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\dependencies\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\dependencies\stbimage\stb_image.cpp" />
     <ClCompile Include="src\Gldebug.cpp" />
     <ClCompile Include="src\GlfwManager.cpp" />
     <ClCompile Include="src\ImguiManager.cpp" />
@@ -182,11 +183,14 @@
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
+    <None Include="src\shaders\frag_lighting_map.glsl" />
     <None Include="src\shaders\frag_phong_material.glsl">
       <FileType>Document</FileType>
     </None>
+    <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
+    <None Include="src\shaders\vertex_lighting_map.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BufferLayout.h" />
@@ -444,6 +448,7 @@
     <ClInclude Include="src\dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="src\dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="src\dependencies\objloader\Objloader\OBJ_Loader.h" />
+    <ClInclude Include="src\dependencies\stbimage\stb_image.h" />
     <ClInclude Include="src\Gldebug.h" />
     <ClInclude Include="src\GlfwManager.h" />
     <ClInclude Include="src\ImguiManager.h" />
@@ -453,6 +458,7 @@
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\VertexArray.h" />
     <ClInclude Include="src\VertexBuffer.h" />
   </ItemGroup>

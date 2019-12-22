@@ -12,6 +12,7 @@
 #include "Model.h"
 #include "Camera.h"
 #include "LightModel.h"
+#include "Texture.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -106,18 +107,18 @@ int main()
 
 	///////////////////////////////////////////////////
 	//
-	//		Load and configure the teapot model
+	//		Load and configure the textureCube model
 	//
 	///////////////////////////////////////////////////
 
 	// Load an object file using the loader library
 	objl::Loader objLoader;
-	objLoader.LoadFile("src/models/teapot2.obj");
+	objLoader.LoadFile("src/models/cube2.obj");
 	const auto& vertexVector = objLoader.LoadedVertices;
 	const auto& indexVector = objLoader.LoadedIndices;
 
 	// Copy the vertex position and normal data to a local buffer (Ignore texture coordinates for now)
-	float* vertices = new float[vertexVector.size() * 6];
+	float* vertices = new float[vertexVector.size() * 8];
 	for (objl::Vertex v : vertexVector)
 	{
 		static unsigned int index = 0;
@@ -127,26 +128,33 @@ int main()
 		vertices[index++] = v.Normal.X;
 		vertices[index++] = v.Normal.Y;
 		vertices[index++] = v.Normal.Z;
+		vertices[index++] = v.TextureCoordinate.X;
+		vertices[index++] = v.TextureCoordinate.Y;
 	}
 
 	// Create the buffer on the GPU and free the memory on the CPU side.
-	as3d::VertexBuffer teapotVb(vertices, 6 * sizeof(float) * vertexVector.size());
+	as3d::VertexBuffer textureCubeVb(vertices, 8 * sizeof(float) * vertexVector.size());
 	delete[] vertices;
 
-	as3d::VertexArray teapotVa;
+	as3d::VertexArray textureCubeVa;
 
-	as3d::BufferLayout teapotLayout;
-	teapotLayout.Push<float>(3);	// Position
-	teapotLayout.Push<float>(3);	// Normal
-	teapotVa.AddBuffer(teapotVb, teapotLayout);
+	as3d::BufferLayout textureCubeLayout;
+	textureCubeLayout.Push<float>(3);	// Position
+	textureCubeLayout.Push<float>(3);	// Normal
+	textureCubeLayout.Push<float>(2);	// UV
+	textureCubeVa.AddBuffer(textureCubeVb, textureCubeLayout);
 
-	as3d::IndexBuffer teapotIb(indexVector.data(), indexVector.size());
+	as3d::IndexBuffer textureCubeIb(indexVector.data(), indexVector.size());
 
-	as3d::Shader teapotShader("src/shaders/vertex_phong.glsl", "src/shaders/frag_phong_material.glsl");
-	teapotShader.Bind();
+	as3d::Shader textureCubeShader("src/shaders/vertex_lighting_map.glsl", "src/shaders/frag_lighting_map.glsl");
+	textureCubeShader.Bind();
 
-	as3d::Mesh teapotMesh(&teapotVa, &teapotIb);
-	as3d::Model teapotModel(&teapotMesh, &teapotShader);
+	as3d::Mesh textureCubeMesh(&textureCubeVa, &textureCubeIb);
+	as3d::Model textureCubeModel(&textureCubeMesh, &textureCubeShader);
+
+	as3d::Texture diffuseMap("src/textures/container2.png");
+	diffuseMap.Bind(0);
+	textureCubeShader.SetInt("material.diffuse", 0);	// Set the texture slot to 0
 
 	///////////////////////////////////////////////////
 	//
@@ -172,21 +180,19 @@ int main()
 
 		glm::mat4 vpMatrix = camera.GetViewProjectionMatrix();
 
-		//mvp = vpMatrix * teapotModel.GetModelMatrix();
-		teapotShader.Bind();
-		teapotShader.SetMatrix4("model", teapotModel.GetModelMatrix());
-		teapotShader.SetMatrix4("viewProjection", vpMatrix);
-		teapotShader.SetMatrix3("normalMatrix", glm::inverseTranspose(teapotModel.GetModelMatrix()));
-		teapotShader.SetVector3("light.ambient", lightModel.GetAmbient());
-		teapotShader.SetVector3("light.diffuse", lightModel.GetDiffuse());
-		teapotShader.SetVector3("light.specular", lightModel.GetSpecular());
-		teapotShader.SetVector3("light.position", lightModel.GetPosition());
-		teapotShader.SetVector3("viewPosition", camera.GetPosition());
-		teapotShader.SetVector3("material.ambient", teapotModel.GetMaterial().ambient);
-		teapotShader.SetVector3("material.diffuse", teapotModel.GetMaterial().diffuse);
-		teapotShader.SetVector3("material.specular",teapotModel.GetMaterial().specular);
-		teapotShader.SetInt("material.shininess", static_cast<int>(std::pow(2, teapotModel.GetMaterial().shininess)));
-		renderer.Draw(teapotModel);
+		//mvp = vpMatrix * textureCubeModel.GetModelMatrix();
+		textureCubeShader.Bind();
+		textureCubeShader.SetMatrix4("model", textureCubeModel.GetModelMatrix());
+		textureCubeShader.SetMatrix4("viewProjection", vpMatrix);
+		textureCubeShader.SetMatrix3("normalMatrix", glm::inverseTranspose(textureCubeModel.GetModelMatrix()));
+		textureCubeShader.SetVector3("light.ambient", lightModel.GetAmbient());
+		textureCubeShader.SetVector3("light.diffuse", lightModel.GetDiffuse());
+		textureCubeShader.SetVector3("light.specular", lightModel.GetSpecular());
+		textureCubeShader.SetVector3("light.position", lightModel.GetPosition());
+		textureCubeShader.SetVector3("viewPosition", camera.GetPosition());
+		textureCubeShader.SetVector3("material.specular",textureCubeModel.GetMaterial().specular);
+		textureCubeShader.SetInt("material.shininess", static_cast<int>(std::pow(2, textureCubeModel.GetMaterial().shininess)));
+		renderer.Draw(textureCubeModel);
 
 		mvp = vpMatrix * lightModel.GetModelMatrix();
 		lightShader.Bind();
@@ -194,7 +200,7 @@ int main()
 		renderer.Draw(lightModel);
 
 		imgui.BeginFrame();
-		teapotModel.DrawControlWindow("Teapot controls");
+		textureCubeModel.DrawControlWindow("TextureCube controls");
 		lightModel.DrawControlWindow("Light controls");
 		renderer.DrawControlWindow("Renderer controls");
 		camera.DrawControlWindow("Camera controls");
