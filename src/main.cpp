@@ -144,8 +144,6 @@ int main()
 
 	as3d::Shader teapotShader("src/shaders/vertex_phong.glsl", "src/shaders/frag_phong_material.glsl");
 	teapotShader.Bind();
-	teapotShader.SetFloat("ambientIntensity", 0.2f);
-	teapotShader.SetVector3("ambientColor", 0.8f, 1.0f, 0.1f);
 
 	as3d::Mesh teapotMesh(&teapotVa, &teapotIb);
 	as3d::Model teapotModel(&teapotMesh, &teapotShader);
