@@ -153,8 +153,10 @@ int main()
 	as3d::Model textureCubeModel(&textureCubeMesh, &textureCubeShader);
 
 	as3d::Texture diffuseMap("src/textures/container2.png");
-	diffuseMap.Bind(0);
 	textureCubeShader.SetInt("material.diffuse", 0);	// Set the texture slot to 0
+
+	as3d::Texture specularMap("src/textures/container2_specular.png");
+	textureCubeShader.SetInt("material.specular", 1);	// Set the texture slot to 1
 
 	///////////////////////////////////////////////////
 	//
@@ -174,6 +176,8 @@ int main()
 	//
 	///////////////////////////////////////////////////
 
+	renderer.SetClearColor(1.0f);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.Clear();
@@ -190,8 +194,11 @@ int main()
 		textureCubeShader.SetVector3("light.specular", lightModel.GetSpecular());
 		textureCubeShader.SetVector3("light.position", lightModel.GetPosition());
 		textureCubeShader.SetVector3("viewPosition", camera.GetPosition());
-		textureCubeShader.SetVector3("material.specular",textureCubeModel.GetMaterial().specular);
 		textureCubeShader.SetInt("material.shininess", static_cast<int>(std::pow(2, textureCubeModel.GetMaterial().shininess)));
+
+		diffuseMap.Bind(0);
+		specularMap.Bind(1);
+
 		renderer.Draw(textureCubeModel);
 
 		mvp = vpMatrix * lightModel.GetModelMatrix();
