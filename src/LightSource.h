@@ -1,17 +1,17 @@
 #pragma once
-#include "Model.h"
+#include "Drawable.h"
 
 namespace as3d
 {
-	class LightModel : public as3d::Model
+	class LightSource : public as3d::Drawable
 	{
 		glm::vec3 ambient;
 		glm::vec3 diffuse;
 		glm::vec3 specular;
 
 	public:
-		LightModel(Mesh* mesh, Shader* shader);
-		~LightModel() = default;
+		LightSource(Model* model);
+		~LightSource() = default;
 
 		void DrawControlWindow(const char* title);
 

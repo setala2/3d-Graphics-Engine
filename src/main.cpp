@@ -11,8 +11,9 @@
 #include "Mesh.h"
 #include "Model.h"
 #include "Camera.h"
-#include "LightModel.h"
+#include "LightSource.h"
 #include "Texture.h"
+#include "Drawable.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -100,10 +101,11 @@ int main()
 	as3d::Shader lightShader("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
 
 	as3d::Mesh lightMesh(&lightVa, &lightIb);
-	as3d::LightModel lightModel(&lightMesh, &lightShader);
+	as3d::Model lightModel(&lightMesh, &lightShader);
+	as3d::LightSource lightObject(&lightModel);
 
-	lightModel.SetPosition(2, 5, -2);
-	lightModel.SetScale(0.25f);
+	lightObject.SetPosition(2, 5, -2);
+	lightObject.SetScale(0.25f);
 
 	///////////////////////////////////////////////////
 	//
@@ -151,6 +153,7 @@ int main()
 
 	as3d::Mesh textureCubeMesh(&textureCubeVa, &textureCubeIb);
 	as3d::Model textureCubeModel(&textureCubeMesh, &textureCubeShader);
+	as3d::Drawable textureCubeObject(&textureCubeModel);
 
 	as3d::Texture diffuseMap("src/textures/container2.png");
 	textureCubeShader.SetInt("material.diffuse", 0);	// Set the texture slot to 0
@@ -186,29 +189,31 @@ int main()
 
 		//mvp = vpMatrix * textureCubeModel.GetModelMatrix();
 		textureCubeShader.Bind();
-		textureCubeShader.SetMatrix4("model", textureCubeModel.GetModelMatrix());
-		textureCubeShader.SetMatrix4("viewProjection", vpMatrix);
-		textureCubeShader.SetMatrix3("normalMatrix", glm::inverseTranspose(textureCubeModel.GetModelMatrix()));
-		textureCubeShader.SetVector3("light.ambient", lightModel.GetAmbient());
-		textureCubeShader.SetVector3("light.diffuse", lightModel.GetDiffuse());
-		textureCubeShader.SetVector3("light.specular", lightModel.GetSpecular());
-		textureCubeShader.SetVector3("light.position", lightModel.GetPosition());
-		textureCubeShader.SetVector3("viewPosition", camera.GetPosition());
-		textureCubeShader.SetInt("material.shininess", static_cast<int>(std::pow(2, textureCubeModel.GetMaterial().shininess)));
 
 		diffuseMap.Bind(0);
 		specularMap.Bind(1);
 
-		renderer.Draw(textureCubeModel);
+		textureCubeShader.SetVector3("light.ambient", lightObject.GetAmbient());
+		textureCubeShader.SetVector3("light.diffuse", lightObject.GetDiffuse());
+		textureCubeShader.SetVector3("light.specular", lightObject.GetSpecular());
+		textureCubeShader.SetVector3("light.position", lightObject.GetPosition());
+		textureCubeShader.SetInt("material.shininess", static_cast<int>(std::pow(2, textureCubeModel.GetMaterial().shininess)));
+		textureCubeShader.SetVector3("viewPosition", camera.GetPosition());
+		textureCubeShader.SetMatrix4("viewProjection", vpMatrix);
 
-		mvp = vpMatrix * lightModel.GetModelMatrix();
+		textureCubeShader.SetMatrix4("model", textureCubeObject.GetModelMatrix());
+		textureCubeShader.SetMatrix3("normalMatrix", glm::inverseTranspose(textureCubeObject.GetModelMatrix()));
+
+		renderer.Draw(textureCubeObject);
+
+		mvp = vpMatrix * lightObject.GetModelMatrix();
 		lightShader.Bind();
 		lightShader.SetMatrix4("mvp", mvp);
-		renderer.Draw(lightModel);
+		renderer.Draw(lightObject);
 
 		imgui.BeginFrame();
-		textureCubeModel.DrawControlWindow("TextureCube controls");
-		lightModel.DrawControlWindow("Light controls");
+		textureCubeObject.DrawControlWindow("TextureCube controls");
+		lightObject.DrawControlWindow("Light controls");
 		renderer.DrawControlWindow("Renderer controls");
 		camera.DrawControlWindow("Camera controls");
 		imgui.EndFrame();

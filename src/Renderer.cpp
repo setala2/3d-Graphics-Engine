@@ -25,6 +25,12 @@ namespace as3d
 		glCheckError(glDrawElements(GL_TRIANGLES, m.GetIndexCount(), m.GetIndexType(), NULL));
 	}
 
+	void Renderer::Draw(const Drawable& d) const
+	{
+		d.Bind();
+		glCheckError(glDrawElements(GL_TRIANGLES, d.GetModel()->GetIndexCount(), d.GetModel()->GetIndexType(), NULL));
+	}
+
 	void Renderer::Clear() const 
 	{
 		glCheckError(glClear(clearFlags));

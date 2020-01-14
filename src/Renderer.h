@@ -5,6 +5,7 @@
 #include "Model.h"
 #include "Gldebug.h"
 #include "imgui.h"
+#include "Drawable.h"
 
 namespace as3d
 {
@@ -23,6 +24,7 @@ namespace as3d
 
 		void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& s) const;
 		void Draw(const Model& m) const;
+		void Draw(const Drawable& m) const;
 		void Clear() const;
 
 		void DrawControlWindow(const char* title);
