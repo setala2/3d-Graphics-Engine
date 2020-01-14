@@ -153,7 +153,10 @@ int main()
 
 	as3d::Mesh textureCubeMesh(&textureCubeVa, &textureCubeIb);
 	as3d::Model textureCubeModel(&textureCubeMesh, &textureCubeShader);
-	as3d::Drawable textureCubeObject(&textureCubeModel);
+
+	std::vector<as3d::Drawable> cubes;
+	for(int i = 0; i < 10; ++i)
+		cubes.emplace_back(&textureCubeModel);
 
 	as3d::Texture diffuseMap("src/textures/container2.png");
 	textureCubeShader.SetInt("material.diffuse", 0);	// Set the texture slot to 0
@@ -181,6 +184,8 @@ int main()
 
 	renderer.SetClearColor(1.0f);
 
+	float time = 0.0f;
+
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.Clear();
@@ -201,10 +206,15 @@ int main()
 		textureCubeShader.SetVector3("viewPosition", camera.GetPosition());
 		textureCubeShader.SetMatrix4("viewProjection", vpMatrix);
 
-		textureCubeShader.SetMatrix4("model", textureCubeObject.GetModelMatrix());
-		textureCubeShader.SetMatrix3("normalMatrix", glm::inverseTranspose(textureCubeObject.GetModelMatrix()));
+		float i = -10.0f;
+		for (std::vector<as3d::Drawable>::iterator it = cubes.begin(); it != cubes.end(); ++it, i += 2.0f)
+		{
+			it->SetPosition(glm::vec3(i, std::sin(time + i), 0.0f));
+			textureCubeShader.SetMatrix4("model", it->GetModelMatrix());
+			textureCubeShader.SetMatrix3("normalMatrix", glm::inverseTranspose(it->GetModelMatrix()));
 
-		renderer.Draw(textureCubeObject);
+			renderer.Draw(*it);
+		}
 
 		mvp = vpMatrix * lightObject.GetModelMatrix();
 		lightShader.Bind();
@@ -212,12 +222,13 @@ int main()
 		renderer.Draw(lightObject);
 
 		imgui.BeginFrame();
-		textureCubeObject.DrawControlWindow("TextureCube controls");
+		//textureCubeObject.DrawControlWindow("TextureCube controls");
 		lightObject.DrawControlWindow("Light controls");
 		renderer.DrawControlWindow("Renderer controls");
 		camera.DrawControlWindow("Camera controls");
 		imgui.EndFrame();
 
+		time += 0.005f;
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
