@@ -19,6 +19,10 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/matrix_inverse.hpp"
 
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
+
 // #include "Objloader/OBJ_Loader.h"
 
 #include <vector>
@@ -39,6 +43,17 @@ int main()
 
 	glewInit();
 
+	/////////////////////////////
+	//
+	// Testing out Assimp
+	//
+	/////////////////////////////
+
+	Assimp::Importer imp;
+	auto model = imp.ReadFile("models/teapot2.obj",
+		aiProcess_Triangulate |
+		aiProcess_JoinIdenticalVertices
+	);
 
 
 	while (!glfwWindowShouldClose(window))
