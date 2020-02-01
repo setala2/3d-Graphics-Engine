@@ -2,7 +2,7 @@
 
 #include "Gldebug.h"
 #include "glm/glm.hpp"
-#include "Model.h"
+#include "ModelOriginal.h"
 
 namespace as3d
 {
