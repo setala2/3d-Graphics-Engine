@@ -8,7 +8,6 @@
 #include "VertexArray.h"
 #include "BufferLayout.h"
 #include "Renderer.h"
-#include "Mesh.h"
 #include "Model.h"
 #include "Camera.h"
 #include "LightSource.h"
