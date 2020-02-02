@@ -8,7 +8,6 @@
 #include "VertexArray.h"
 #include "BufferLayout.h"
 #include "Camera.h"
-#include "Texture.h"
 #include "Model.h"
 
 #include "glm/glm.hpp"
@@ -46,7 +45,7 @@ int main()
 	/////////////////////////////
 
 	glEnable(GL_DEPTH_TEST);
-	as3d::Shader shader("vertex_assimp.glsl", "fragment_assimp.glsl");
+	as3d::Shader shader("src/shaders/vertex_assimp.glsl", "src/shaders/fragment_assimp.glsl");
 	as3d::Model model("src/models/nanosuit/nanosuit.obj");
 
 	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 50.0f));
@@ -54,10 +53,13 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		shader.Bind();
 		shader.SetMatrix4("projection", camera.GetProjectionMatrix());
 		shader.SetMatrix4("view", camera.GetViewMatrix());
-		shader.SetMatrix4("model", glm::mat4(1.0f));
+		auto modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+		shader.SetMatrix4("model", modelMatrix);
 
 		model.Draw(shader);
 

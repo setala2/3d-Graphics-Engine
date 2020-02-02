@@ -25,7 +25,7 @@ namespace as3d
 
 	public:
 		Model(const char* path);
-		void Draw(Shader shader);
+		void Draw(const Shader& shader);
 	};
 
 	GLuint TextureFromFile(const char* path, const std::string& directory);

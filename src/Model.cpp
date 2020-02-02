@@ -127,7 +127,7 @@ namespace as3d
 		return textures;
 	}
 
-	void Model::Draw(Shader shader)
+	void Model::Draw(const Shader& shader)
 	{
 		for (Mesh& m : meshes)
 			m.Draw(shader);
@@ -138,9 +138,10 @@ namespace as3d
 
 		unsigned int handle;
 		int width, height, nChannels;
+		std::string fullPath = directory + "/" + path;
 
 		glCheckError(glGenTextures(1, &handle));
-		stbi_uc* imageData = stbi_load(path, &width, &height, &nChannels, 0);
+		stbi_uc* imageData = stbi_load(fullPath.c_str(), &width, &height, &nChannels, 0);
 		if (imageData)
 		{
 			GLenum format;

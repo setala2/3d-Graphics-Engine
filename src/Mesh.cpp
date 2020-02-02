@@ -10,7 +10,7 @@ namespace as3d
 		Init();
 	}
 
-	void Mesh::Draw(Shader shader)
+	void Mesh::Draw(const Shader& shader)
 	{
 		unsigned int diffuseNr = 1;
 		unsigned int specularNr = 1;
@@ -26,13 +26,13 @@ namespace as3d
 				number = std::to_string(specularNr++);
 
 			shader.SetInt(name + number, i);
-			glBindTexture(GL_TEXTURE_2D, textures[i].handle);
+			glCheckError(glBindTexture(GL_TEXTURE_2D, textures[i].handle));
 		}
-		glActiveTexture(GL_TEXTURE0);
+		glCheckError(glBindVertexArray(vao));
+		glCheckError(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
+		glCheckError(glBindVertexArray(0));
 
-		glBindVertexArray(vao);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		glCheckError(glActiveTexture(GL_TEXTURE0));
 	}
 
 	void Mesh::Init()
@@ -44,6 +44,7 @@ namespace as3d
 
 		glCheckError(glBindVertexArray(vao));
 		glCheckError(glBindBuffer(GL_ARRAY_BUFFER, vbo));
+		glCheckError(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
 
 		// Fill the buffers
 		glCheckError(glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW));
