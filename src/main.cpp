@@ -7,11 +7,9 @@
 #include "Shader.h"
 #include "VertexArray.h"
 #include "BufferLayout.h"
-#include "Renderer.h"
 #include "Camera.h"
-#include "LightSource.h"
 #include "Texture.h"
-#include "Drawable.h"
+#include "Model.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -47,16 +45,26 @@ int main()
 	//
 	/////////////////////////////
 
-	Assimp::Importer imp;
-	auto model = imp.ReadFile("models/teapot2.obj",
-		aiProcess_Triangulate |
-		aiProcess_JoinIdenticalVertices
-	);
+	glEnable(GL_DEPTH_TEST);
+	as3d::Shader shader("vertex_assimp.glsl", "fragment_assimp.glsl");
+	as3d::Model model("src/models/nanosuit/nanosuit.obj");
+
+	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 50.0f));
 
 
 	while (!glfwWindowShouldClose(window))
 	{
-		
+		shader.Bind();
+		shader.SetMatrix4("projection", camera.GetProjectionMatrix());
+		shader.SetMatrix4("view", camera.GetViewMatrix());
+		shader.SetMatrix4("model", glm::mat4(1.0f));
+
+		model.Draw(shader);
+
+		imgui.BeginFrame();
+		camera.DrawControlWindow("camera");
+		imgui.EndFrame();
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
