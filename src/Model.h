@@ -31,7 +31,7 @@ namespace as3d
 
 		void LoadModel(const std::string& path);
 		void ProcessNode(aiNode* node, const aiScene* scene);
-		Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+		void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::vector<Mesh>& meshes);
 		std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
 
 		void Translate();

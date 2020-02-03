@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 
 #include <vector>
 #include <string>
@@ -38,13 +39,13 @@ namespace as3d
 
 		VertexBuffer vbo;
 		IndexBuffer ibo;
+		VertexArray vao;
 
 	public:
 		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<Texture>& textures);
 		void Draw(const Shader& shader);
 
 	private:
-		GLuint vao;
 		void Init();
 	};
 

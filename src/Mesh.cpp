@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "BufferLayout.h"
 
 #include <cstddef>
 
@@ -28,19 +29,16 @@ namespace as3d
 			shader.SetInt("mat." + name + number, i);
 			glCheckError(glBindTexture(GL_TEXTURE_2D, textures[i].handle));
 		}
-		glCheckError(glBindVertexArray(vao));
+		vao.Bind();
 		glCheckError(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
-		glCheckError(glBindVertexArray(0));
+		vao.Unbind();
 
 		glCheckError(glActiveTexture(GL_TEXTURE0));
 	}
 
 	void Mesh::Init()
 	{
-		// Create the vertex array and the buffers
-		glCheckError(glGenVertexArrays(1, &vao));
-
-		glCheckError(glBindVertexArray(vao));
+		vao.Bind();
 		vbo.Bind();
 		ibo.Bind();
 
@@ -49,15 +47,12 @@ namespace as3d
 		ibo.SetData(indices.data(), indices.size());
 
 		// Set up the layout
-		glCheckError(glEnableVertexAttribArray(0));
-		glCheckError(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL));
+		BufferLayout layout;
+		layout.Push<float>(3); // Position
+		layout.Push<float>(3); // Normal
+		layout.Push<float>(2); // UV
 
-		glCheckError(glEnableVertexAttribArray(1));
-		glCheckError(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal)));
-
-		glCheckError(glEnableVertexAttribArray(2));
-		glCheckError(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords)));
-
-		glCheckError(glBindVertexArray(0));
+		vao.AddBuffer(vbo, layout);
+		vao.Unbind();
 	}
 }

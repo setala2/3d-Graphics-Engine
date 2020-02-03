@@ -26,6 +26,7 @@ namespace as3d
 			return;
 		}
 
+		meshes.reserve(scene->mNumMeshes);
 		directory = path.substr(0, path.find_last_of('/'));
 		ProcessNode(scene->mRootNode, scene);
 	}
@@ -36,7 +37,7 @@ namespace as3d
 		for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-			meshes.push_back(ProcessMesh(mesh, scene));
+			ProcessMesh(mesh, scene, meshes);
 		}
 
 		for (unsigned int i = 0; i < node->mNumChildren; ++i)
@@ -45,7 +46,7 @@ namespace as3d
 		}
 	}
 
-	Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+	void Model::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::vector<Mesh>& meshes)
 	{
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
@@ -102,7 +103,7 @@ namespace as3d
 			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 		}
 
-		return Mesh(vertices, indices, textures);
+		meshes.emplace_back(vertices, indices, textures);
 	}
 
 	std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
