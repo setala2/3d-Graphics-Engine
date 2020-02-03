@@ -65,6 +65,7 @@ int main()
 
 		imgui.BeginFrame();
 		camera.DrawControlWindow("camera");
+		model.DrawControlWindow("model");
 		imgui.EndFrame();
 
 		glfwSwapBuffers(window);

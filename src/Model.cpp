@@ -1,14 +1,19 @@
 #include "Model.h"
 #include "stb_image.h"
+#include "imgui.h"
+#include "glm/gtc/matrix_transform.hpp"
+
 #include <iostream>
 
 namespace as3d
 {
 	Model::Model(const char* path)
+		: translation(1.0f), rotation(1.0f), scaling(1.0f), modelMatrix(1.0f)
 	{
 		LoadModel(path);
 	}
 
+	// Reads the model file, stores it's directory and processes each node recursively
 	void Model::LoadModel(const std::string& path)
 	{
 		Assimp::Importer importer;
@@ -26,6 +31,7 @@ namespace as3d
 
 	void Model::ProcessNode(aiNode* node, const aiScene* scene)
 	{
+		// Takes every mesh belonging to this node and stores them in a vector
 		for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
@@ -44,6 +50,7 @@ namespace as3d
 		std::vector<unsigned int> indices;
 		std::vector<Texture> textures;
 
+		vertices.reserve(mesh->mNumVertices);
 		for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
 		{
 			Vertex v;
@@ -75,6 +82,8 @@ namespace as3d
 			vertices.push_back(v);
 		}
 
+		// Every face should have three indices, since we told assimp to triangulate the faces.
+		indices.reserve(static_cast<uint64_t>(mesh->mNumFaces) * 3);
 		for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
 		{
 			// Go through all of the faces and for each one, push all of the indices to our vector
@@ -129,9 +138,19 @@ namespace as3d
 
 	void Model::Draw(const Shader& shader)
 	{
+		shader.SetMatrix4("model", modelMatrix);
 		for (Mesh& m : meshes)
 			m.Draw(shader);
 	}
+
+	void Model::DrawControlWindow(const char* title)
+	{
+		ImGui::Begin(title);
+		if (ImGui::SliderFloat3("Position", &translation.x, -10.0f, 10.0f))
+			modelMatrix = glm::translate(glm::mat4(1.0f), translation);
+		ImGui::End();
+	}
+
 	GLuint TextureFromFile(const char* path, const std::string& directory)
 	{
 		// Mostly copied from https://learnopengl.com/Lighting/Lighting-maps
