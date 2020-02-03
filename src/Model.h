@@ -23,12 +23,21 @@ namespace as3d
 		glm::vec3 translation;
 		glm::vec3 rotation;
 		glm::vec3 scaling;
+
+		glm::mat4 translationMatrix;
+		glm::mat4 rotationMatrix;
+		glm::mat4 scalingMatrix;
 		glm::mat4 modelMatrix;
 
 		void LoadModel(const std::string& path);
 		void ProcessNode(aiNode* node, const aiScene* scene);
 		Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
 		std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
+
+		void Translate();
+		void Rotate();
+		void Scale();
+		void Update();
 
 	public:
 		Model(const char* path);

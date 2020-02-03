@@ -8,7 +8,8 @@
 namespace as3d
 {
 	Model::Model(const char* path)
-		: translation(1.0f), rotation(1.0f), scaling(1.0f), modelMatrix(1.0f)
+		: translation(1.0f), rotation(1.0f), scaling(1.0f), modelMatrix(1.0f),
+		translationMatrix(1.0f), rotationMatrix(1.0f), scalingMatrix(1.0f)
 	{
 		LoadModel(path);
 	}
@@ -136,6 +137,34 @@ namespace as3d
 		return textures;
 	}
 
+	void Model::Translate()
+	{
+		translationMatrix = glm::translate(glm::mat4(1.0f), translation);
+		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+	}
+
+	void Model::Rotate()
+	{
+		rotationMatrix = glm::mat4(1.0f);
+		rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.y), glm::vec3(0.0f, -1.0f, 0.0f));
+		rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.x), glm::vec3(-1.0f, 0.0f, 0.0f));
+		rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, -1.0f));
+		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+	}
+
+	void Model::Scale()
+	{
+		scalingMatrix = glm::scale(glm::mat4(1.0f), scaling);
+		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+	}
+
+	void Model::Update()
+	{
+		Translate();
+		Rotate();
+		Scale();
+	}
+
 	void Model::Draw(const Shader& shader)
 	{
 		shader.SetMatrix4("model", modelMatrix);
@@ -147,7 +176,11 @@ namespace as3d
 	{
 		ImGui::Begin(title);
 		if (ImGui::SliderFloat3("Position", &translation.x, -10.0f, 10.0f))
-			modelMatrix = glm::translate(glm::mat4(1.0f), translation);
+			Translate();
+		if (ImGui::SliderFloat3("Rotation", &rotation.x, -360.0f, 360.0f))
+			Rotate();
+		if (ImGui::SliderFloat3("Scaling", &scaling.x, 0.5f, 2.0f))
+			Scale();
 		ImGui::End();
 	}
 
