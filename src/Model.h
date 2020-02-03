@@ -38,6 +38,7 @@ namespace as3d
 		void Rotate();
 		void Scale();
 		void Update();
+		void Reset();
 
 	public:
 		Model(const char* path);

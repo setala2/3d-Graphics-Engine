@@ -25,7 +25,7 @@ namespace as3d
 			else if (name == "texture_specular")
 				number = std::to_string(specularNr++);
 
-			shader.SetInt(name + number, i);
+			shader.SetInt("mat." + name + number, i);
 			glCheckError(glBindTexture(GL_TEXTURE_2D, textures[i].handle));
 		}
 		glCheckError(glBindVertexArray(vao));

@@ -187,7 +187,7 @@
       <FileType>Document</FileType>
     </None>
     <None Include="src\shaders\fragment_assimp.glsl">
-      <FileType>CppCode</FileType>
+      <FileType>Document</FileType>
     </None>
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />

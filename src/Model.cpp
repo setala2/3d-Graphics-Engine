@@ -165,6 +165,14 @@ namespace as3d
 		Scale();
 	}
 
+	void Model::Reset()
+	{
+		translation = glm::vec3(1.0f);
+		rotation = glm::vec3(1.0f);
+		scaling = glm::vec3(1.0f);
+		Update();
+	}
+
 	void Model::Draw(const Shader& shader)
 	{
 		shader.SetMatrix4("model", modelMatrix);
@@ -181,6 +189,8 @@ namespace as3d
 			Rotate();
 		if (ImGui::SliderFloat3("Scaling", &scaling.x, 0.5f, 2.0f))
 			Scale();
+		if (ImGui::Button("Reset", { 80.0f, 30.0f }))
+			Reset();
 		ImGui::End();
 	}
 
