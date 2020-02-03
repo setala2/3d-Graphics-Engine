@@ -39,15 +39,14 @@ namespace as3d
 	{
 		// Create the vertex array and the buffers
 		glCheckError(glGenVertexArrays(1, &vao));
-		glCheckError(glGenBuffers(1, &vbo));
 		glCheckError(glGenBuffers(1, &ibo));
 
 		glCheckError(glBindVertexArray(vao));
-		glCheckError(glBindBuffer(GL_ARRAY_BUFFER, vbo));
+		vbo.Bind();
 		glCheckError(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
 
 		// Fill the buffers
-		glCheckError(glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW));
+		vbo.SetData(reinterpret_cast<float*>(vertices.data()), vertices.size() * sizeof(Vertex));
 		glCheckError(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW));
 
 		// Set up the layout

@@ -11,10 +11,13 @@ namespace as3d {
 
 	public:
 		VertexBuffer(float* data, std::size_t bufferSize);
+		VertexBuffer();
 		~VertexBuffer();
 
 		void Bind() const;
 		void Unbind() const;
+
+		void SetData(float* data, std::size_t bufferSize) const;
 	};
 
 }
