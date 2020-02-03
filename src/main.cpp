@@ -7,19 +7,18 @@
 #include "Shader.h"
 #include "VertexArray.h"
 #include "BufferLayout.h"
-#include "Renderer.h"
-#include "Mesh.h"
-#include "Model.h"
 #include "Camera.h"
-#include "LightSource.h"
-#include "Texture.h"
-#include "Drawable.h"
+#include "Model.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/matrix_inverse.hpp"
 
-#include "Objloader/OBJ_Loader.h"
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
+
+// #include "Objloader/OBJ_Loader.h"
 
 #include <vector>
 #include <cmath>
@@ -39,196 +38,36 @@ int main()
 
 	glewInit();
 
-	///////////////////////////////////////////////////
+	/////////////////////////////
 	//
-	//		Create a cube shaped model to
-	//		show the position of the light
+	// Testing out Assimp
 	//
-	///////////////////////////////////////////////////
+	/////////////////////////////
 
-	float cubeVertices[] = {
-		// Position				// Color
+	glEnable(GL_DEPTH_TEST);
+	as3d::Shader shader("src/shaders/vertex_assimp.glsl", "src/shaders/fragment_assimp.glsl");
+	as3d::Model model("src/models/nanosuit/nanosuit.obj");
 
-		// Top right front
-		1.0f, 1.0f, 1.0f,		// 1.0f,   1.0f,  1.0f,
-		// Top left front		// 
-		-1.0f, 1.0f, 1.0f,		// 0.0f,   1.0f,  1.0f,
-		// Bottom right front	// 
-		1.0f, -1.0f, 1.0f,		// 1.0f,   0.0f,  1.0f,
-		// Bottom left front	// 
-		-1.0f, -1.0f, 1.0f,		// 0.0f,   0.0f,  1.0f,
-		// Top right back		// 
-		1.0f, 1.0f, -1.0f,		// 1.0f,   1.0f,  0.0f,
-		// Top left back		// 
-		-1.0f, 1.0f, -1.0f,		// 0.0f,   1.0f,  0.0f,
-		// Bottom right back	// 
-		1.0f, -1.0f, -1.0f,		// 1.0f,   0.0f,  0.0f,
-		// Bottom left back		// 
-		-1.0f, -1.0f, -1.0f,	// 0.0f,   0.0f,  0.0f
-	};
+	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 50.0f));
 
-	unsigned int cubeIndices[] = {
-		// Front
-		0,1,2,
-		1,3,2,
-		// Back
-		5,4,6,
-		5,6,7,
-		// Top
-		5,0,4,
-		5,1,0,
-		// Bottom
-		2,3,6,
-		3,7,6,
-		// Left
-		1,5,3,
-		5,7,3,
-		// Right
-		4,0,6,
-		0,2,6
-	};
-
-	as3d::VertexBuffer lightVb(cubeVertices, sizeof(cubeVertices));
-	as3d::IndexBuffer lightIb(cubeIndices, 36);
-
-	as3d::BufferLayout lightLayout;
-	lightLayout.Push<float>(3);
-
-	as3d::VertexArray lightVa;
-	lightVa.AddBuffer(lightVb, lightLayout);
-
-	// Going to use the same shader files as the teapot, for now at least
-	as3d::Shader lightShader("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
-
-	as3d::Mesh lightMesh(&lightVa, &lightIb);
-	as3d::Model lightModel(&lightMesh, &lightShader);
-	as3d::LightSource lightObject(&lightModel);
-
-	lightObject.SetPosition(2, 5, -2);
-	lightObject.SetScale(0.25f);
-
-	///////////////////////////////////////////////////
-	//
-	//		Load and configure the textureCube model
-	//
-	///////////////////////////////////////////////////
-
-	// Load an object file using the loader library
-	objl::Loader objLoader;
-	objLoader.LoadFile("src/models/cube2.obj");
-	const auto& vertexVector = objLoader.LoadedVertices;
-	const auto& indexVector = objLoader.LoadedIndices;
-
-	// Copy the vertex position and normal data to a local buffer (Ignore texture coordinates for now)
-	float* vertices = new float[vertexVector.size() * 8];
-	for (objl::Vertex v : vertexVector)
-	{
-		static unsigned int index = 0;
-		vertices[index++] = v.Position.X;
-		vertices[index++] = v.Position.Y;
-		vertices[index++] = v.Position.Z;
-		vertices[index++] = v.Normal.X;
-		vertices[index++] = v.Normal.Y;
-		vertices[index++] = v.Normal.Z;
-		vertices[index++] = v.TextureCoordinate.X;
-		vertices[index++] = v.TextureCoordinate.Y;
-	}
-
-	// Create the buffer on the GPU and free the memory on the CPU side.
-	as3d::VertexBuffer textureCubeVb(vertices, 8 * sizeof(float) * vertexVector.size());
-	delete[] vertices;
-
-	as3d::VertexArray textureCubeVa;
-
-	as3d::BufferLayout textureCubeLayout;
-	textureCubeLayout.Push<float>(3);	// Position
-	textureCubeLayout.Push<float>(3);	// Normal
-	textureCubeLayout.Push<float>(2);	// UV
-	textureCubeVa.AddBuffer(textureCubeVb, textureCubeLayout);
-
-	as3d::IndexBuffer textureCubeIb(indexVector.data(), indexVector.size());
-
-	as3d::Shader textureCubeShader("src/shaders/vertex_lighting_map.glsl", "src/shaders/frag_lighting_map.glsl");
-	textureCubeShader.Bind();
-
-	as3d::Mesh textureCubeMesh(&textureCubeVa, &textureCubeIb);
-	as3d::Model textureCubeModel(&textureCubeMesh, &textureCubeShader);
-
-	std::vector<as3d::Drawable> cubes;
-	for(int i = 0; i < 10; ++i)
-		cubes.emplace_back(&textureCubeModel);
-
-	as3d::Texture diffuseMap("src/textures/container2.png");
-	textureCubeShader.SetInt("material.diffuse", 0);	// Set the texture slot to 0
-
-	as3d::Texture specularMap("src/textures/container2_specular.png");
-	textureCubeShader.SetInt("material.specular", 1);	// Set the texture slot to 1
-
-	///////////////////////////////////////////////////
-	//
-	//		Create the renderer and the camera
-	//
-	///////////////////////////////////////////////////
-
-	as3d::Renderer renderer;
-
-	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.01f, 20.0f));
-
-	glm::mat4 mvp;
-
-	///////////////////////////////////////////////////
-	//
-	//		Start the loop
-	//
-	///////////////////////////////////////////////////
-
-	renderer.SetClearColor(1.0f);
-
-	float time = 0.0f;
 
 	while (!glfwWindowShouldClose(window))
 	{
-		renderer.Clear();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::mat4 vpMatrix = camera.GetViewProjectionMatrix();
+		shader.Bind();
+		shader.SetMatrix4("projection", camera.GetProjectionMatrix());
+		shader.SetMatrix4("view", camera.GetViewMatrix());
+		shader.SetVector3("cameraPos", camera.GetPosition());
+		auto modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+		shader.SetMatrix4("model", modelMatrix);
 
-		//mvp = vpMatrix * textureCubeModel.GetModelMatrix();
-		textureCubeShader.Bind();
-
-		diffuseMap.Bind(0);
-		specularMap.Bind(1);
-
-		textureCubeShader.SetVector3("light.ambient", lightObject.GetAmbient());
-		textureCubeShader.SetVector3("light.diffuse", lightObject.GetDiffuse());
-		textureCubeShader.SetVector3("light.specular", lightObject.GetSpecular());
-		textureCubeShader.SetVector3("light.position", lightObject.GetPosition());
-		textureCubeShader.SetInt("material.shininess", static_cast<int>(std::pow(2, textureCubeModel.GetMaterial().shininess)));
-		textureCubeShader.SetVector3("viewPosition", camera.GetPosition());
-		textureCubeShader.SetMatrix4("viewProjection", vpMatrix);
-
-		float i = -10.0f;
-		for (std::vector<as3d::Drawable>::iterator it = cubes.begin(); it != cubes.end(); ++it, i += 2.0f)
-		{
-			it->SetPosition(glm::vec3(i, std::sin(time + i), 0.0f));
-			textureCubeShader.SetMatrix4("model", it->GetModelMatrix());
-			textureCubeShader.SetMatrix3("normalMatrix", glm::inverseTranspose(it->GetModelMatrix()));
-
-			renderer.Draw(*it);
-		}
-
-		mvp = vpMatrix * lightObject.GetModelMatrix();
-		lightShader.Bind();
-		lightShader.SetMatrix4("mvp", mvp);
-		renderer.Draw(lightObject);
+		model.Draw(shader);
 
 		imgui.BeginFrame();
-		//textureCubeObject.DrawControlWindow("TextureCube controls");
-		lightObject.DrawControlWindow("Light controls");
-		renderer.DrawControlWindow("Renderer controls");
-		camera.DrawControlWindow("Camera controls");
+		camera.DrawControlWindow("camera");
+		model.DrawControlWindow("model");
 		imgui.EndFrame();
-
-		time += 0.005f;
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

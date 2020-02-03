@@ -1,21 +1,52 @@
 #pragma once
 
-#include "VertexArray.h"
+#include "Gldebug.h"
+#include "glm/glm.hpp"
+#include "Shader.h"
+#include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
+
+#include <vector>
+#include <string>
+
+// My take on the example at https://learnopengl.com/Model-Loading/Mesh
+// I'll likely rewrite this later, and make it use our existing buffer/vertex array classes
 
 namespace as3d
 {
+
+	struct Vertex
+	{
+		glm::vec3 Position;
+		glm::vec3 Normal;
+		glm::vec2 TexCoords;
+	};
+
+	struct Texture
+	{
+		GLuint handle;
+		std::string type;
+		std::string path;
+	};
+
 	class Mesh
 	{
-		friend class Model;
+	public:
+		std::vector<Vertex> vertices;
+		std::vector<unsigned int> indices;
+		std::vector<Texture> textures;
 
-		VertexArray* vertexArray;
-		IndexBuffer* indexBuffer;
+		VertexBuffer vbo;
+		IndexBuffer ibo;
+		VertexArray vao;
 
 	public:
-		Mesh(VertexArray* va, IndexBuffer* ib);
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<Texture>& textures);
+		void Draw(const Shader& shader);
 
-		void Bind() const;
-		void Unbind() const;
+	private:
+		void Init();
 	};
+
 }

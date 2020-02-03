@@ -12,6 +12,12 @@ namespace as3d
 		Unbind();
 	}
 
+	IndexBuffer::IndexBuffer()
+		: type(GL_UNSIGNED_INT)
+	{
+		glCheckError(glGenBuffers(1, &handle));
+	}
+
 	IndexBuffer::~IndexBuffer()
 	{
 		glCheckError(glDeleteBuffers(1, &handle));
@@ -25,6 +31,12 @@ namespace as3d
 	void IndexBuffer::Unbind() const
 	{
 		glCheckError(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+	}
+
+	void IndexBuffer::SetData(const unsigned int* data, std::size_t count)
+	{
+		count = count;
+		glCheckError(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW));
 	}
 
 }

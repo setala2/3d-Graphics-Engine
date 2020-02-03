@@ -2,7 +2,7 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
-#include "Model.h"
+#include "ModelOriginal.h"
 #include "Gldebug.h"
 #include "imgui.h"
 #include "Drawable.h"

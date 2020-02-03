@@ -1,43 +1,51 @@
 #pragma once
 
 #include "Mesh.h"
-#include "Shader.h"
 
-#include "imgui.h"
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
+
 #include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+
+#include <vector>
+#include <string>
 
 namespace as3d
 {
-	struct Material
-	{
-		glm::vec3 ambient;
-		glm::vec3 diffuse;
-		glm::vec3 specular;
-		int shininess;
-
-		Material();
-	};
-
 	class Model
 	{
-		friend class Drawable;
-	protected:
-		Mesh* mesh;
-		Shader* shader;
-		Material material;
+	private:
+		std::vector<Mesh> meshes;
+		std::string directory;
+		std::vector<Texture> loadedTextures;
+
+		glm::vec3 translation;
+		glm::vec3 rotation;
+		glm::vec3 scaling;
+
+		glm::mat4 translationMatrix;
+		glm::mat4 rotationMatrix;
+		glm::mat4 scalingMatrix;
+		glm::mat4 modelMatrix;
+
+		void LoadModel(const std::string& path);
+		void ProcessNode(aiNode* node, const aiScene* scene);
+		void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::vector<Mesh>& meshes);
+		std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
+
+		void Translate();
+		void Rotate();
+		void Scale();
+		void Update();
+		void Reset();
 
 	public:
-		Model(Mesh* m, Shader* s);
-		virtual ~Model() = default;
-
-		void Bind() const;
-		void Unbind() const;
-
-		inline const Material& GetMaterial() const { return material; }
-		
-		inline unsigned int GetIndexCount() const { return mesh->indexBuffer->GetCount(); }
-		inline GLenum GetIndexType() const { return mesh->indexBuffer->GetType(); }
-
+		Model(const char* path);
+		void Draw(const Shader& shader);
+		inline const glm::mat4& GetModelMatrix() const { return modelMatrix; }
+		void DrawControlWindow(const char* title);
 	};
+
+	static GLuint TextureFromFile(const char* path, const std::string& directory);
 }
