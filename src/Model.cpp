@@ -8,7 +8,7 @@
 namespace as3d
 {
 	Model::Model(const char* path)
-		: translation(1.0f), rotation(1.0f), scaling(1.0f), modelMatrix(1.0f),
+		: translation(0.0f), rotation(0.0f), scaling(1.0f), modelMatrix(1.0f),
 		translationMatrix(1.0f), rotationMatrix(1.0f), scalingMatrix(1.0f)
 	{
 		LoadModel(path);

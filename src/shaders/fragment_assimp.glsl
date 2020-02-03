@@ -11,6 +11,7 @@ struct material
 	sampler2D texture_specular1;
 };
 uniform material mat;
+uniform vec3 cameraPos;
 
 void main()
 {
@@ -25,6 +26,11 @@ void main()
 	float diffuseIntensity = max(dot(unitNormal, fragToLight), 0.0f);
 	vec4 diffuse = texture(mat.texture_diffuse1, TexCoords) * diffuseIntensity;
 
-	vec4 specular = vec4(0.0f);
+	float specularStrength = 0.5f;
+	vec3 fragToCamera = normalize(cameraPos - FragPos);
+	vec3 reflectDirection = reflect(-fragToLight, unitNormal);
+	float spec = pow(max(dot(fragToCamera, reflectDirection), 0.0f), 32);
+	vec4 specular = texture(mat.texture_specular1, TexCoords) * specularStrength * spec;
+	
 	color = ambient + diffuse + specular;
 }

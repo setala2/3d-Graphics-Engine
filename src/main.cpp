@@ -58,6 +58,7 @@ int main()
 		shader.Bind();
 		shader.SetMatrix4("projection", camera.GetProjectionMatrix());
 		shader.SetMatrix4("view", camera.GetViewMatrix());
+		shader.SetVector3("cameraPos", camera.GetPosition());
 		auto modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 		shader.SetMatrix4("model", modelMatrix);
 
