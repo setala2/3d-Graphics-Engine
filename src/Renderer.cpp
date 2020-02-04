@@ -10,27 +10,6 @@ namespace as3d
 		EnableDepthTesting(true);
 	}
 
-	void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& s) const
-	{
-		va.Bind();
-		ib.Bind();
-		s.Bind();
-
-		glCheckError(glDrawElements(GL_TRIANGLES, ib.GetCount(), ib.GetType(), NULL));
-	}
-
-	void Renderer::Draw(const Model& m) const
-	{
-		m.Bind();
-		glCheckError(glDrawElements(GL_TRIANGLES, m.GetIndexCount(), m.GetIndexType(), NULL));
-	}
-
-	void Renderer::Draw(const Drawable& d) const
-	{
-		d.Bind();
-		glCheckError(glDrawElements(GL_TRIANGLES, d.GetModel()->GetIndexCount(), d.GetModel()->GetIndexType(), NULL));
-	}
-
 	void Renderer::Clear() const 
 	{
 		glCheckError(glClear(clearFlags));

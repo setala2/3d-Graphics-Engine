@@ -9,6 +9,7 @@
 #include "BufferLayout.h"
 #include "Camera.h"
 #include "Model.h"
+#include "Renderer.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -18,10 +19,6 @@
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 
-// #include "Objloader/OBJ_Loader.h"
-
-#include <vector>
-#include <cmath>
 
 int main()
 {
@@ -44,17 +41,17 @@ int main()
 	//
 	/////////////////////////////
 
-	glEnable(GL_DEPTH_TEST);
 	as3d::Shader shaderNanoSuit("src/shaders/vertex_assimp.glsl", "src/shaders/fragment_assimp.glsl");
 	as3d::Model nanoSuit("src/models/nanosuit/nanosuit.obj");
 	as3d::Model light("src/models/cube.obj");
 	as3d::Shader shaderLight("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
 
+	as3d::Renderer renderer;
 	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 50.0f));
 
 	while (!glfwWindowShouldClose(window))
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		renderer.Clear();
 
 		shaderNanoSuit.Bind();
 		shaderNanoSuit.SetMatrix4("projection", camera.GetProjectionMatrix());
@@ -73,6 +70,7 @@ int main()
 		camera.DrawControlWindow("camera");
 		nanoSuit.DrawControlWindow("model");
 		light.DrawControlWindow("light");
+		renderer.DrawControlWindow("renderer");
 		imgui.EndFrame();
 
 		glfwSwapBuffers(window);

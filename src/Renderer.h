@@ -1,11 +1,6 @@
 #pragma once
-#include "VertexArray.h"
-#include "IndexBuffer.h"
-#include "Shader.h"
-#include "ModelOriginal.h"
 #include "Gldebug.h"
 #include "imgui.h"
-#include "Drawable.h"
 
 namespace as3d
 {
@@ -22,9 +17,6 @@ namespace as3d
 	public:
 		Renderer();
 
-		void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& s) const;
-		void Draw(const Model& m) const;
-		void Draw(const Drawable& m) const;
 		void Clear() const;
 
 		void DrawControlWindow(const char* title);
