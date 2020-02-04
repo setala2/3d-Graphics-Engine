@@ -12,7 +12,7 @@ namespace as3d
 	void Camera::DrawControlWindow(const char* title)
 	{
 		ImGui::Begin(title);
-		if (ImGui::SliderFloat3("position", translation, -20.0f, 20.0f))
+		if (ImGui::SliderFloat3("position", translation, -30.0f, 30.0f))
 			UpdateTranslation();
 		if (ImGui::SliderFloat3("rotation", rotation, -180.0f, 180.0f))
 			UpdateRotation();

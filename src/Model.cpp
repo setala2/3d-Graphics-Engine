@@ -184,7 +184,7 @@ namespace as3d
 	void Model::DrawControlWindow(const char* title)
 	{
 		ImGui::Begin(title);
-		if (ImGui::SliderFloat3("Position", &translation.x, -10.0f, 10.0f))
+		if (ImGui::SliderFloat3("Position", &translation.x, -20.0f, 20.0f))
 			Translate();
 		if (ImGui::SliderFloat3("Rotation", &rotation.x, -360.0f, 360.0f))
 			Rotate();
