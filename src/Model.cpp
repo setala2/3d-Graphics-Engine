@@ -168,8 +168,8 @@ namespace as3d
 
 	void Model::Reset()
 	{
-		translation = glm::vec3(1.0f);
-		rotation = glm::vec3(1.0f);
+		translation = glm::vec3(0.0f);
+		rotation = glm::vec3(0.0f);
 		scaling = glm::vec3(1.0f);
 		Update();
 	}
