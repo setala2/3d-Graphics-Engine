@@ -45,28 +45,34 @@ int main()
 	/////////////////////////////
 
 	glEnable(GL_DEPTH_TEST);
-	as3d::Shader shader("src/shaders/vertex_assimp.glsl", "src/shaders/fragment_assimp.glsl");
-	as3d::Model model("src/models/nanosuit/nanosuit.obj");
+	as3d::Shader shaderNanoSuit("src/shaders/vertex_assimp.glsl", "src/shaders/fragment_assimp.glsl");
+	as3d::Model nanoSuit("src/models/nanosuit/nanosuit.obj");
+	as3d::Model light("src/models/cube.obj");
+	as3d::Shader shaderLight("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
 
 	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 50.0f));
-
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shader.Bind();
-		shader.SetMatrix4("projection", camera.GetProjectionMatrix());
-		shader.SetMatrix4("view", camera.GetViewMatrix());
-		shader.SetVector3("cameraPos", camera.GetPosition());
-		auto modelMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
-		shader.SetMatrix4("model", modelMatrix);
+		shaderNanoSuit.Bind();
+		shaderNanoSuit.SetMatrix4("projection", camera.GetProjectionMatrix());
+		shaderNanoSuit.SetMatrix4("view", camera.GetViewMatrix());
+		shaderNanoSuit.SetVector3("cameraPos", camera.GetPosition());
+		shaderNanoSuit.SetVector3("lightPos", light.GetPosition());
+		nanoSuit.Draw(shaderNanoSuit);
 
-		model.Draw(shader);
+
+		glm::mat4 lightMVP = camera.GetViewProjectionMatrix() * light.GetModelMatrix();
+		shaderLight.Bind();
+		shaderLight.SetMatrix4("mvp", lightMVP);
+		light.Draw(shaderLight);
 
 		imgui.BeginFrame();
 		camera.DrawControlWindow("camera");
-		model.DrawControlWindow("model");
+		nanoSuit.DrawControlWindow("model");
+		light.DrawControlWindow("light");
 		imgui.EndFrame();
 
 		glfwSwapBuffers(window);

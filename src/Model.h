@@ -42,8 +42,11 @@ namespace as3d
 
 	public:
 		Model(const char* path);
-		void Draw(const Shader& shader);
+
 		inline const glm::mat4& GetModelMatrix() const { return modelMatrix; }
+		inline const glm::vec3& GetPosition() const { return translation; }
+
+		void Draw(const Shader& shader);
 		void DrawControlWindow(const char* title);
 	};
 

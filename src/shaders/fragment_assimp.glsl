@@ -12,12 +12,10 @@ struct material
 };
 uniform material mat;
 uniform vec3 cameraPos;
+uniform vec3 lightPos;
 
 void main()
 {
-	// A fixed light position for now
-	vec3 lightPos = vec3(2.0f, 6.0f, 3.0f);
-
 	float ambientIntensity = 0.2f;
 	vec4 ambient = texture(mat.texture_diffuse1, TexCoords) * ambientIntensity;
 
