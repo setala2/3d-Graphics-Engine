@@ -133,6 +133,7 @@ namespace as3d
 				texture.type = typeName;
 				texture.path = str.C_Str();
 				textures.push_back(texture);
+				loadedTextures.push_back(texture);
 			}
 		}
 		return textures;

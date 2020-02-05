@@ -28,6 +28,8 @@ namespace as3d
 		GLuint handle;
 		std::string type;
 		std::string path;
+
+		void Bind(unsigned int slot) const;
 	};
 
 	class Mesh

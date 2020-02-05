@@ -18,7 +18,6 @@ namespace as3d
 
 		for (unsigned int i = 0; i < textures.size(); ++i)
 		{
-			glActiveTexture(GL_TEXTURE0 + i);
 			std::string number;
 			std::string name = textures[i].type;
 			if (name == "texture_diffuse")
@@ -27,13 +26,11 @@ namespace as3d
 				number = std::to_string(specularNr++);
 
 			shader.SetInt("mat." + name + number, i);
-			glCheckError(glBindTexture(GL_TEXTURE_2D, textures[i].handle));
+			textures[i].Bind(i);
 		}
 		vao.Bind();
 		glCheckError(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
 		vao.Unbind();
-
-		glCheckError(glActiveTexture(GL_TEXTURE0));
 	}
 
 	void Mesh::Init()
@@ -55,4 +52,11 @@ namespace as3d
 		vao.AddBuffer(vbo, layout);
 		vao.Unbind();
 	}
+
+	void Texture::Bind(unsigned int slot) const
+	{
+		glCheckError(glActiveTexture(GL_TEXTURE0 + slot));
+		glCheckError(glBindTexture(GL_TEXTURE_2D, handle));
+	}
+
 }

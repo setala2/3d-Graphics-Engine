@@ -19,7 +19,6 @@
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 
-
 int main()
 {
 	GlfwManager glfwManager;
