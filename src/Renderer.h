@@ -10,6 +10,7 @@ namespace as3d
 		bool wireframe;
 		bool bfc;
 		bool depthTest;
+		bool blend;
 
 		const char* on = "on";
 		const char* off = "off";
@@ -28,6 +29,8 @@ namespace as3d
 		void ToggleWireFrame();
 		void ToggleBackFaceCulling();
 		void ToggleDepthTest();	// Can't change the depth function with this
+		void EnableBlending(bool enable, GLenum src = GL_SRC_ALPHA, GLenum dest = GL_ONE_MINUS_SRC_ALPHA);
+		void ToggleBlending();
 
 	private:
 		void SetFlag(GLbitfield flag, bool set);

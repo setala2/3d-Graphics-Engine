@@ -4,7 +4,7 @@ namespace as3d
 {
 	Renderer::Renderer()
 		: clearFlags(GL_COLOR_BUFFER_BIT), wireframe(false),
-		bfc(false)
+		bfc(false), blend(false)
 	{
 		// Enable depth testing by default
 		EnableDepthTesting(true);
@@ -18,6 +18,7 @@ namespace as3d
 	void Renderer::DrawControlWindow(const char* title)
 	{
 		ImGui::Begin(title);
+
 		if (ImGui::Button("Toggle Wireframe"))
 			ToggleWireFrame();
 		ImGui::SameLine();
@@ -32,6 +33,11 @@ namespace as3d
 			ToggleDepthTest();
 		ImGui::SameLine();
 		ImGui::Text(depthTest ? on : off);
+
+		if (ImGui::Button("Toggle Blending"))
+			ToggleBlending();
+		ImGui::SameLine();
+		ImGui::Text(blend ? on : off);
 
 		ImGui::End();
 	}
@@ -95,6 +101,25 @@ namespace as3d
 	void Renderer::ToggleDepthTest()
 	{
 		EnableDepthTesting(!depthTest);
+	}
+
+	void Renderer::EnableBlending(bool enable, GLenum src, GLenum dest)
+	{
+		if (enable)
+		{
+			glCheckError(glEnable(GL_BLEND));
+			glCheckError(glBlendFunc(src, dest));
+		}
+		else
+		{
+			glCheckError(glDisable(GL_BLEND));
+		}
+		blend = enable;
+	}
+
+	void Renderer::ToggleBlending()
+	{
+		EnableBlending(!blend);
 	}
 
 	void Renderer::SetFlag(GLbitfield flag, bool set)
