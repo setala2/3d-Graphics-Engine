@@ -40,10 +40,10 @@ int main()
 	//
 	/////////////////////////////
 
-	as3d::Shader shaderNanoSuit("src/shaders/vertex_assimp.glsl", "src/shaders/fragment_assimp.glsl");
-	as3d::Model nanoSuit("src/models/nanosuit/nanosuit.obj");
-	as3d::Model light("src/models/cube.obj");
-	as3d::Shader shaderLight("src/shaders/vertex.glsl", "src/shaders/frag.glsl");
+	as3d::Shader shaderNanoSuit("res/shaders/vertex_assimp.glsl", "res/shaders/fragment_assimp.glsl");
+	as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
+	as3d::Model light("res/models/cube.obj");
+	as3d::Shader shaderLight("res/shaders/vertex.glsl", "res/shaders/frag.glsl");
 
 	as3d::Renderer renderer;
 	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 50.0f));
