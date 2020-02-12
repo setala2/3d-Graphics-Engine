@@ -2,7 +2,7 @@
 
 namespace as3d {
 
-	VertexBuffer::VertexBuffer(float* data, std::size_t bufferSize)
+	VertexBuffer::VertexBuffer(const float* data, std::size_t bufferSize)
 	{
 		glCheckError(glGenBuffers(1, &handle));
 		Bind();

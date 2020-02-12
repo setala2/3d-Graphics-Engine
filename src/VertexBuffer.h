@@ -10,7 +10,7 @@ namespace as3d {
 		GLuint handle;
 
 	public:
-		VertexBuffer(float* data, std::size_t bufferSize);
+		VertexBuffer(const float* data, std::size_t bufferSize);
 		VertexBuffer();
 		~VertexBuffer();
 

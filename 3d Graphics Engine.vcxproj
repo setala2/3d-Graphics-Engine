@@ -190,6 +190,8 @@
     <None Include="src\shaders\fragment_assimp.glsl">
       <FileType>Document</FileType>
     </None>
+    <ClCompile Include="src\Skybox.cpp" />
+    <ClCompile Include="src\TextureCubemap.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
     <None Include="src\shaders\vertex_lighting_map.glsl" />
@@ -458,6 +460,8 @@
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\Skybox.h" />
+    <ClInclude Include="src\TextureCubemap.h" />
     <ClInclude Include="src\VertexArray.h" />
     <ClInclude Include="src\VertexBuffer.h" />
   </ItemGroup>
