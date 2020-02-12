@@ -44,7 +44,7 @@ namespace as3d
 
 	void Camera::Reset()
 	{
-		SetPosition(0.0f, 0.0f, 0.0f);
+		SetPosition(0.0f, 10.0f, 10.0f);
 		SetRotation(0.0f, 0.0f, 0.0f);
 	}
 
