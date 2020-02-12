@@ -41,10 +41,12 @@ int main()
 	//
 	/////////////////////////////
 
+	/*
 	as3d::Shader shaderNanoSuit("res/shaders/vertex_assimp.glsl", "res/shaders/fragment_assimp.glsl");
 	as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
 	as3d::Model light("res/models/cube.obj");
 	as3d::Shader shaderLight("res/shaders/vertex.glsl", "res/shaders/frag.glsl");
+	*/
 
 	std::vector<std::string> skyboxFiles
 	{
@@ -65,14 +67,14 @@ int main()
 	{
 		renderer.Clear();
 
-		
+		/*
 		shaderNanoSuit.Bind();
 		shaderNanoSuit.SetMatrix4("projection", camera.GetProjectionMatrix());
 		shaderNanoSuit.SetMatrix4("view", camera.GetViewMatrix());
 		shaderNanoSuit.SetVector3("cameraPos", camera.GetPosition());
 		shaderNanoSuit.SetVector3("lightPos", light.GetPosition());
 		nanoSuit.Draw(shaderNanoSuit);
-		
+		*/
 
 		shaderSkybox.Bind();
 		shaderSkybox.SetMatrix4("projection", camera.GetProjectionMatrix());
@@ -88,8 +90,8 @@ int main()
 
 		imgui.BeginFrame();
 		camera.DrawControlWindow("camera");
-		nanoSuit.DrawControlWindow("model");
 		/*
+		nanoSuit.DrawControlWindow("model");
 		light.DrawControlWindow("light");
 		*/
 		renderer.DrawControlWindow("renderer");
