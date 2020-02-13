@@ -75,6 +75,7 @@ int main()
 		shaderNanoSuit.Bind();
 		shaderNanoSuit.SetMatrix4("projection", camera.GetProjectionMatrix());
 		shaderNanoSuit.SetMatrix4("view", camera.GetViewMatrix());
+		shaderNanoSuit.SetMatrix3("normalMatrix", glm::inverseTranspose(nanoSuit.GetModelMatrix()));
 		shaderNanoSuit.SetVector3("cameraPos", camera.GetPosition());
 		shaderNanoSuit.SetVector3("lightPos", light.GetPosition());
 		nanoSuit.Draw(shaderNanoSuit);
