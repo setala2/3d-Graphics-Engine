@@ -1,2 +1,2 @@
 *.vcxproj linguist-vendored
-"3d Graphics Engine"/dependencies/* linguist-vendored
+dependencies/* linguist-vendored
