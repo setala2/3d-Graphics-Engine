@@ -1,6 +1,6 @@
 #include <GL/glew.h>
 
-#include "GlfwManager.h"
+#include "Window.h"
 #include "ImguiManager.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
@@ -30,11 +30,10 @@ int main()
 	//	Set up GLFW, ImGui and GLEW
 	/////////////////////////////////////
 
-	GlfwManager glfwManager;
-	GLFWwindow* window = glfwCreateWindow(1600, 900, "Test window", nullptr, nullptr);
-	glfwMakeContextCurrent(window);
+	as3d::Window window(windowWidth, windowHeight, "Test window");
+	window.MakeCurrent();
 
-	ImguiManager imgui(window);
+	ImguiManager imgui(window.GetPointer());
 
 	glewInit();
 
@@ -70,7 +69,7 @@ int main()
 	as3d::Renderer renderer;
 	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 50.0f));
 
-	while (!glfwWindowShouldClose(window))
+	while (!window.ShouldClose())
 	{
 		renderer.Clear();
 
@@ -103,8 +102,7 @@ int main()
 		renderer.DrawControlWindow("renderer");
 		imgui.EndFrame();
 
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		window.Update();
 	}
 
 	return 0;
