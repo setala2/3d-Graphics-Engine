@@ -42,9 +42,9 @@ int main()
 	////////////////////////////////////
 
 	as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
-	as3d::Shader shaderNanoSuit("res/shaders/vertex_assimp.glsl", "res/shaders/fragment_assimp.glsl");
+	as3d::Shader shaderNanoSuit("res/shaders/nanosuit_vertex.glsl", "res/shaders/nanosuit_fragment.glsl");
 	as3d::Model light("res/models/cube.obj");
-	as3d::Shader shaderLight("res/shaders/vertex.glsl", "res/shaders/frag.glsl");
+	as3d::Shader shaderLight("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
 
 	////////////////////////////////////////
 	//	Load the skybox and its shaders
@@ -60,7 +60,7 @@ int main()
 		"res/textures/skyboxes/mr_02/mr_02bk.jpg"
 	};
 	as3d::Skybox skybox(skyboxFiles);
-	as3d::Shader shaderSkybox("res/shaders/skybox_vertex.glsl", "res/shaders/skybox_frag.glsl");
+	as3d::Shader shaderSkybox("res/shaders/skybox_vertex.glsl", "res/shaders/skybox_fragment.glsl");
 
 	////////////////////////////////////////////////
 	//	Create the renderer and camera objects
