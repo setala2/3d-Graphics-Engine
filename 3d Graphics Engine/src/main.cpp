@@ -11,6 +11,7 @@
 #include "Model.h"
 #include "Renderer.h"
 #include "Skybox.h"
+#include "Input.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -19,6 +20,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+
 
 int main()
 {
@@ -72,6 +74,9 @@ int main()
 	while (!window.ShouldClose())
 	{
 		renderer.Clear();
+
+		// Update the camera position
+		camera.OnUpdate(window.GetDeltaTime());
 
 		// Render the skybox
 		shaderSkybox.Bind();

@@ -1,5 +1,6 @@
 #pragma once
 #include <GLFW/glfw3.h>
+#include <chrono>
 
 namespace as3d
 {
@@ -13,6 +14,7 @@ namespace as3d
 
 		inline unsigned int GetWidth() const  { return width; }
 		inline unsigned int GetHeight() const { return height; }
+		inline float GetDeltaTime() const { return timeSinceUpdate; }
 
 		inline GLFWwindow* GetPointer() const { return glfwPointer; }
 		inline bool ShouldClose() const { return glfwWindowShouldClose(glfwPointer); }
@@ -23,6 +25,8 @@ namespace as3d
 		const char* title;
 
 		GLFWwindow* glfwPointer;
+		double currentTime;
+		float timeSinceUpdate = 0.0f;
 
 		static int windowCount;
 	};

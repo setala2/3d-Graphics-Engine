@@ -1,4 +1,6 @@
 #include "Window.h"
+#include "Input.h"
+
 #include <iostream>
 #include <cassert>
 
@@ -20,6 +22,9 @@ namespace as3d
 		}
 
 		glfwPointer = glfwCreateWindow(width, height, title, nullptr, nullptr);
+		Input::Init(glfwPointer);
+
+		currentTime = glfwGetTime();
 		++windowCount;
 	}
 
@@ -34,5 +39,7 @@ namespace as3d
 	{
 		glfwPollEvents();
 		glfwSwapBuffers(glfwPointer);
+		timeSinceUpdate = static_cast<float>(glfwGetTime() - currentTime);
+		currentTime = glfwGetTime();
 	}
 }
