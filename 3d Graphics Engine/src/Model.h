@@ -16,6 +16,8 @@ namespace as3d
 	class Model
 	{
 	private:
+		using Vertex = Mesh::Vertex;
+
 		std::vector<Mesh> meshes;
 		std::string directory;
 		std::vector<Texture> loadedTextures;
@@ -50,5 +52,4 @@ namespace as3d
 		void DrawControlWindow(const char* title);
 	};
 
-	static GLuint TextureFromFile(const char* path, const std::string& directory);
 }
