@@ -1,5 +1,6 @@
 #pragma once
 #include "Gldebug.h"
+#include <string>
 
 namespace as3d
 {
@@ -10,6 +11,9 @@ namespace as3d
 		int width;
 		int height;
 		int nChannels;
+
+		std::string type = "";
+		std::string path = "";
 
 	public:
 		Texture(const char* path);
