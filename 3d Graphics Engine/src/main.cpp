@@ -25,8 +25,6 @@
 
 int main()
 {
-	as3d::Terrain t;
-
 	constexpr unsigned int windowWidth = 1600;
 	constexpr unsigned int windowHeight = 900;
 	constexpr float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
@@ -67,6 +65,13 @@ int main()
 	as3d::Skybox skybox(skyboxFiles);
 	as3d::Shader shaderSkybox("res/shaders/skybox_vertex.glsl", "res/shaders/skybox_fragment.glsl");
 
+	////////////////////////////////////////
+	//	Create the terrain and its shaders
+	////////////////////////////////////////
+
+	as3d::Terrain terrain("res/textures/terrain/ground1/ground1.png");
+	as3d::Shader shaderTerrain("res/shaders/terrain_vertex.glsl", "res/shaders/terrain_fragment.glsl");
+
 	////////////////////////////////////////////////
 	//	Create the renderer and camera objects
 	////////////////////////////////////////////////
@@ -86,6 +91,12 @@ int main()
 		shaderSkybox.SetMatrix4("projection", camera.GetProjectionMatrix());
 		shaderSkybox.SetMatrix4("view", glm::mat4(glm::mat3(camera.GetViewMatrix())));
 		skybox.Draw(shaderSkybox);
+
+		// Render the terrain
+		shaderTerrain.Bind();
+		shaderTerrain.SetMatrix4("mvp", camera.GetViewProjectionMatrix());
+		shaderTerrain.SetVector3("LightPosition", light.GetPosition());
+		terrain.Draw(shaderTerrain);
 		
 		// Render the nanosuit model
 		shaderNanoSuit.Bind();

@@ -1,13 +1,40 @@
 #include "Terrain.h"
+#include "Gldebug.h"
 
 namespace as3d
 {
 	Terrain::Terrain(const char* texturePath)
 		: texture(texturePath)
 	{
+		// Generate the terrain data
 		vertices.reserve(verticesPerRow * verticesPerRow);
 		indices.reserve(6 * (verticesPerRow - 1) * (verticesPerRow - 1));
 		Generate();
+
+		// Set up the OpenGL stuff
+		vao.Bind();
+		vbo.Bind();
+		ibo.Bind();
+		vbo.SetData(reinterpret_cast<float*>(vertices.data()), sizeof(Vertex) * vertices.size());
+		ibo.SetData(indices.data(), indices.size());
+		as3d::BufferLayout layout;
+		layout.Push<float>(3); // Position
+		layout.Push<float>(3); // Normal
+		layout.Push<float>(2); // UVs
+		vao.AddBuffer(vbo, layout);
+		vbo.Unbind();
+		ibo.Unbind();
+		vao.Unbind();
+	}
+
+	void Terrain::Draw(const Shader& shader)
+	{
+		ibo.Bind();
+		texture.Bind();
+		shader.Bind();
+		vao.Bind();
+
+		glCheckError(glDrawElements(GL_TRIANGLES, ibo.GetCount(), ibo.GetType(), 0));
 	}
 
 	void Terrain::Generate()
@@ -28,8 +55,8 @@ namespace as3d
 				glm::vec3 normals(0.0f, 1.0f, 0.0f);
 
 				glm::vec2 uvs;
-				uvs.x = static_cast<float>(x) / (static_cast<float>(verticesPerRow) - 1);
-				uvs.y = static_cast<float>(z) / (static_cast<float>(verticesPerRow) - 1);
+				uvs.x = static_cast<float>(x) / (static_cast<float>(verticesPerRow) - 1) * 100;
+				uvs.y = static_cast<float>(z) / (static_cast<float>(verticesPerRow) - 1) * 100;
 
 				vertices.push_back({ pos, normals, uvs });
 

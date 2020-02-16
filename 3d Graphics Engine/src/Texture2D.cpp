@@ -23,7 +23,11 @@ namespace as3d
 	void Texture2D::LoadFromFile(const std::string& path, const std::string& directory)
 	{
 		// Mostly copied from https://learnopengl.com/Lighting/Lighting-maps
-		std::string fullPath = directory + "/" + path;
+		std::string fullPath;
+		if (directory != "")
+			fullPath = directory + "/" + path;
+		else
+			fullPath = path;
 
 		glCheckError(glGenTextures(1, &handle));
 		stbi_uc* imageData = stbi_load(fullPath.c_str(), &width, &height, &nChannels, 0);

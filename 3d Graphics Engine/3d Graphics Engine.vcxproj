@@ -110,6 +110,8 @@
     <ClCompile Include="src\Terrain.cpp" />
     <ClCompile Include="src\Texture2D.cpp" />
     <ClCompile Include="src\Window.cpp" />
+    <None Include="res\shaders\terrain_fragment.glsl" />
+    <None Include="res\shaders\terrain_vertex.glsl" />
     <None Include="src\shaders\frag_phong_material.glsl">
       <FileType>Document</FileType>
     </None>
