@@ -35,7 +35,7 @@ namespace as3d
 
 	void IndexBuffer::SetData(const unsigned int* data, std::size_t count)
 	{
-		count = count;
+		this->count = count;
 		glCheckError(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW));
 	}
 

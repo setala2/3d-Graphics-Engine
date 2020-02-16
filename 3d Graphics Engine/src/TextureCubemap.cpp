@@ -1,4 +1,3 @@
-#include "Texture.h"
 #include "TextureCubemap.h"
 
 #include "stb_image.h"
