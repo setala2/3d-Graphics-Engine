@@ -5,7 +5,7 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
-#include "Texture.h"
+#include "Texture2D.h"
 
 #include <glm/glm.hpp>
 
@@ -30,14 +30,14 @@ namespace as3d
 	public:
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
-		std::vector<Texture> textures;
+		std::vector<Texture2D> textures;
 
 		VertexBuffer vbo;
 		IndexBuffer ibo;
 		VertexArray vao;
 
 	public:
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<Texture>& textures);
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<Texture2D>& textures);
 		void Draw(const Shader& shader);
 
 	private:
