@@ -12,6 +12,7 @@
 #include "Renderer.h"
 #include "Skybox.h"
 #include "Input.h"
+#include "Terrain.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -24,6 +25,8 @@
 
 int main()
 {
+	as3d::Terrain t;
+
 	constexpr unsigned int windowWidth = 1600;
 	constexpr unsigned int windowHeight = 900;
 	constexpr float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
