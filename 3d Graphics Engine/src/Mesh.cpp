@@ -5,7 +5,7 @@
 
 namespace as3d
 {
-	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<Texture>& textures)
+	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<Texture2D>& textures)
 		: vertices(vertices), indices(indices), textures(textures)
 	{
 		Init();

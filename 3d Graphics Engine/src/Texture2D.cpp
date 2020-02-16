@@ -1,26 +1,26 @@
-#include "Texture.h"
+#include "Texture2D.h"
 #include "stb_image.h"
 
 namespace as3d
 {
-	Texture::Texture(const std::string& path, const std::string& directory, const std::string& type)
+	Texture2D::Texture2D(const std::string& path, const std::string& directory, const std::string& type)
 		: path(path), type(type)
 	{
 		LoadFromFile(path, directory);
 	}
 
-	void Texture::Bind(unsigned int slot)
+	void Texture2D::Bind(unsigned int slot)
 	{
 		glCheckError(glActiveTexture(GL_TEXTURE0 + slot));	// The GL_TEXTURE slot enums are consecutive numbers so we can do this
 		glCheckError(glBindTexture(GL_TEXTURE_2D, handle));
 	}
 
-	void Texture::Unbind()
+	void Texture2D::Unbind()
 	{
 		glCheckError(glBindTexture(GL_TEXTURE_2D, 0));
 	}
 
-	void Texture::LoadFromFile(const std::string& path, const std::string& directory)
+	void Texture2D::LoadFromFile(const std::string& path, const std::string& directory)
 	{
 		// Mostly copied from https://learnopengl.com/Lighting/Lighting-maps
 		std::string fullPath = directory + "/" + path;

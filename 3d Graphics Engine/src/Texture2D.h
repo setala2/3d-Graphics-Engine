@@ -4,7 +4,7 @@
 
 namespace as3d
 {
-	class Texture
+	class Texture2D
 	{
 		GLuint handle;
 
@@ -16,8 +16,8 @@ namespace as3d
 		std::string path = "";
 
 	public:
-		Texture(const std::string& path, const std::string& directory = "", const std::string& type = "");
-		~Texture() = default;
+		Texture2D(const std::string& path, const std::string& directory = "", const std::string& type = "");
+		~Texture2D() = default;
 
 		void Bind(unsigned int slot = 0);
 		void Unbind();

@@ -18,7 +18,7 @@ namespace as3d
 	private:
 		std::vector<Mesh> meshes;
 		std::string directory;
-		std::vector<Texture> loadedTextures;
+		std::vector<Texture2D> loadedTextures;
 
 		glm::vec3 translation;
 		glm::vec3 rotation;
@@ -32,7 +32,7 @@ namespace as3d
 		void LoadModel(const std::string& path);
 		void ProcessNode(aiNode* node, const aiScene* scene);
 		void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::vector<Mesh>& meshes);
-		std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
+		std::vector<Texture2D> loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
 
 		void Translate();
 		void Rotate();

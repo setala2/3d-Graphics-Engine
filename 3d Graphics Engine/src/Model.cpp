@@ -50,7 +50,7 @@ namespace as3d
 	{
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
-		std::vector<Texture> textures;
+		std::vector<Texture2D> textures;
 
 		vertices.reserve(mesh->mNumVertices);
 		for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
@@ -97,18 +97,18 @@ namespace as3d
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+			std::vector<Texture2D> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-			std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+			std::vector<Texture2D> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 		}
 
 		meshes.emplace_back(vertices, indices, textures);
 	}
 
-	std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
+	std::vector<Texture2D> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
 	{
-		std::vector<Texture> textures;
+		std::vector<Texture2D> textures;
 		for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
 		{
 			aiString str;
@@ -128,7 +128,7 @@ namespace as3d
 
 			if(!alreadyLoaded)
 			{
-				Texture texture(str.C_Str(), directory, typeName);
+				Texture2D texture(str.C_Str(), directory, typeName);
 				textures.push_back(texture);
 				loadedTextures.push_back(texture);
 			}
