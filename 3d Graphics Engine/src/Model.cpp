@@ -118,7 +118,7 @@ namespace as3d
 			bool alreadyLoaded = false;
 			for (unsigned int j = 0; j < loadedTextures.size(); ++j)
 			{
-				if (std::strcmp(loadedTextures[j].path.data(), str.C_Str()) == 0)
+				if (std::strcmp(loadedTextures[j].GetPath().data(), str.C_Str()) == 0)
 				{
 					textures.push_back(loadedTextures[j]);
 					alreadyLoaded = true;
@@ -128,10 +128,7 @@ namespace as3d
 
 			if(!alreadyLoaded)
 			{
-				Texture texture;
-				texture.handle = TextureFromFile(str.C_Str(), directory);
-				texture.type = typeName;
-				texture.path = str.C_Str();
+				Texture texture(str.C_Str(), directory, typeName);
 				textures.push_back(texture);
 				loadedTextures.push_back(texture);
 			}

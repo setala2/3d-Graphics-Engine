@@ -19,7 +19,7 @@ namespace as3d
 		for (unsigned int i = 0; i < textures.size(); ++i)
 		{
 			std::string number;
-			std::string name = textures[i].type;
+			std::string name = textures[i].GetType();
 			if (name == "texture_diffuse")
 				number = std::to_string(diffuseNr++);
 			else if (name == "texture_specular")
@@ -51,12 +51,6 @@ namespace as3d
 
 		vao.AddBuffer(vbo, layout);
 		vao.Unbind();
-	}
-
-	void Texture::Bind(unsigned int slot) const
-	{
-		glCheckError(glActiveTexture(GL_TEXTURE0 + slot));
-		glCheckError(glBindTexture(GL_TEXTURE_2D, handle));
 	}
 
 }

@@ -107,6 +107,7 @@
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Window.cpp" />
     <None Include="src\shaders\frag_phong_material.glsl">
       <FileType>Document</FileType>
@@ -140,6 +141,7 @@
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Skybox.h" />
+    <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\TextureCubemap.h" />
     <ClInclude Include="src\VertexArray.h" />
     <ClInclude Include="src\VertexBuffer.h" />

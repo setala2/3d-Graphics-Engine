@@ -3,11 +3,30 @@
 
 namespace as3d
 {
-	Texture::Texture(const char* path)
+	Texture::Texture(const std::string& path, const std::string& directory, const std::string& type)
+		: path(path), type(type)
+	{
+		LoadFromFile(path, directory);
+	}
+
+	void Texture::Bind(unsigned int slot)
+	{
+		glCheckError(glActiveTexture(GL_TEXTURE0 + slot));	// The GL_TEXTURE slot enums are consecutive numbers so we can do this
+		glCheckError(glBindTexture(GL_TEXTURE_2D, handle));
+	}
+
+	void Texture::Unbind()
+	{
+		glCheckError(glBindTexture(GL_TEXTURE_2D, 0));
+	}
+
+	void Texture::LoadFromFile(const std::string& path, const std::string& directory)
 	{
 		// Mostly copied from https://learnopengl.com/Lighting/Lighting-maps
+		std::string fullPath = directory + "/" + path;
+
 		glCheckError(glGenTextures(1, &handle));
-		stbi_uc* imageData = stbi_load(path, &width, &height, &nChannels, 0);
+		stbi_uc* imageData = stbi_load(fullPath.c_str(), &width, &height, &nChannels, 0);
 		if (imageData)
 		{
 			GLenum format;
@@ -31,20 +50,9 @@ namespace as3d
 			glCheckError(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		}
 		else
-			std::cout << "Failed to load a texture: " << path << '\n';
-		
+			std::cout << "Failed to load a texture: " << fullPath << '\n';
+
 		stbi_image_free(imageData);
-		glCheckError(glBindTexture(GL_TEXTURE_2D, 0));
-	}
-
-	void Texture::Bind(unsigned int slot)
-	{
-		glCheckError(glActiveTexture(GL_TEXTURE0 + slot));	// The GL_TEXTURE slot enums are consecutive numbers so we can do this
-		glCheckError(glBindTexture(GL_TEXTURE_2D, handle));
-	}
-
-	void Texture::Unbind()
-	{
 		glCheckError(glBindTexture(GL_TEXTURE_2D, 0));
 	}
 }

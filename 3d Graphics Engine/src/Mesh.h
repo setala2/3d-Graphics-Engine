@@ -6,6 +6,7 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
+#include "Texture.h"
 
 #include <vector>
 #include <string>
@@ -23,14 +24,14 @@ namespace as3d
 		glm::vec2 TexCoords;
 	};
 
-	struct Texture
+	/*struct Texture
 	{
 		GLuint handle;
 		std::string type;
 		std::string path;
 
 		void Bind(unsigned int slot) const;
-	};
+	};*/
 
 	class Mesh
 	{
