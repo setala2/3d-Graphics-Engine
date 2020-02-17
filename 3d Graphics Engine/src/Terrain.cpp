@@ -1,6 +1,8 @@
 #include "Terrain.h"
 #include "Gldebug.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 namespace as3d
 {
 	Terrain::Terrain(const char* texturePath)
@@ -25,6 +27,9 @@ namespace as3d
 		vbo.Unbind();
 		ibo.Unbind();
 		vao.Unbind();
+
+		// Set up the model matrix
+		modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(offsetX, 0, offsetZ));
 	}
 
 	void Terrain::Draw(const Shader& shader)

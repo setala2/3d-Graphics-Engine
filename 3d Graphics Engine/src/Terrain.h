@@ -8,6 +8,7 @@
 #include "Shader.h"
 
 #include <vector>
+#include <unordered_map>
 #include <glm/glm.hpp>
 
 namespace as3d
@@ -26,6 +27,7 @@ namespace as3d
 		Terrain(const char* texturePath);
 
 		void Draw(const Shader& shader);
+		inline const glm::mat4& GetModelMatrix() { return modelMatrix; }
 
 	private:
 		// Terrain generation code is a modified version of this YouTube tutorial
@@ -35,13 +37,20 @@ namespace as3d
 
 		static constexpr float size = 800;
 		static constexpr int verticesPerRow = 128;
+		const float offsetX = -size / 2;
+		const float offsetZ = -size / 2;
+
+		glm::mat4 modelMatrix;
 
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
 
-		as3d::Texture2D texture;
-		as3d::VertexArray vao;
-		as3d::VertexBuffer vbo;
-		as3d::IndexBuffer ibo;
+		// Will need to rethink how to do this at some point.
+		// Now we have to create (and load from file) a new texture object,
+		// the vao and buffers, for every terrain object we create.
+		Texture2D texture;
+		VertexArray vao;
+		VertexBuffer vbo;
+		IndexBuffer ibo;
 	};
 }

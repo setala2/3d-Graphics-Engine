@@ -94,7 +94,7 @@ int main()
 
 		// Render the terrain
 		shaderTerrain.Bind();
-		shaderTerrain.SetMatrix4("mvp", camera.GetViewProjectionMatrix());
+		shaderTerrain.SetMatrix4("mvp", camera.GetViewProjectionMatrix() * terrain.GetModelMatrix());
 		shaderTerrain.SetVector3("LightPosition", light.GetPosition());
 		terrain.Draw(shaderTerrain);
 		
