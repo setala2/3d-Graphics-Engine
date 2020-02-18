@@ -16,6 +16,7 @@ namespace as3d
 		std::string path = "";
 
 	public:
+		// Can load the texture either by a single, full path, or a file name and a directory.
 		Texture2D(const std::string& path, const std::string& directory = "", const std::string& type = "");
 		~Texture2D() = default;
 
@@ -26,6 +27,6 @@ namespace as3d
 		inline const std::string& GetType() const { return type; }
 
 	private:
-		void LoadFromFile(const std::string& path, const std::string& directory = "");
+		void LoadFromFile(const std::string& fullPath);
 	};
 }

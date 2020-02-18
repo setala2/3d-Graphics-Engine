@@ -4,9 +4,18 @@
 namespace as3d
 {
 	Texture2D::Texture2D(const std::string& path, const std::string& directory, const std::string& type)
-		: path(path), type(type)
+		: type(type)
 	{
-		LoadFromFile(path, directory);
+		// Concatenate the file name and the directory, if they were given separately
+		std::string fullPath;
+		if (directory != "")
+			fullPath = directory + "/" + path;
+		else
+			fullPath = path;
+
+		this->path = fullPath;
+
+		LoadFromFile(fullPath);
 	}
 
 	void Texture2D::Bind(unsigned int slot)
@@ -20,14 +29,9 @@ namespace as3d
 		glCheckError(glBindTexture(GL_TEXTURE_2D, 0));
 	}
 
-	void Texture2D::LoadFromFile(const std::string& path, const std::string& directory)
+	void Texture2D::LoadFromFile(const std::string& fullPath)
 	{
 		// Mostly copied from https://learnopengl.com/Lighting/Lighting-maps
-		std::string fullPath;
-		if (directory != "")
-			fullPath = directory + "/" + path;
-		else
-			fullPath = path;
 
 		glCheckError(glGenTextures(1, &handle));
 		stbi_uc* imageData = stbi_load(fullPath.c_str(), &width, &height, &nChannels, 0);
