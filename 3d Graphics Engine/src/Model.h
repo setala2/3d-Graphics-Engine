@@ -7,6 +7,7 @@
 #include "Shader.h"
 
 #include <glm/glm.hpp>
+#include <assimp/scene.h>
 
 #include <memory>
 #include <vector>
@@ -18,7 +19,7 @@ namespace as3d
 	class Mesh
 	{
 	private:
-		const Texture2D* texture;
+		const Texture2D* texture = nullptr;
 		std::unique_ptr<VertexBuffer> vbo;
 		std::unique_ptr<IndexBuffer>  ibo;
 		std::unique_ptr<VertexArray>  vao;
@@ -33,26 +34,36 @@ namespace as3d
 	{
 	private:
 		std::vector<std::unique_ptr<Node>> children;
-		std::vector<std::unique_ptr<Mesh>> meshes;
+		std::vector<const Mesh*> meshes;
 
 		glm::mat4 accumulatedTransform;
 
 	public:
-		Node(const Model* model);
+		Node(const Model* model, const glm::mat4& transform);
 
-		void Draw(const Shader& shader, glm::mat4 transform) const;
+		void Draw(const Shader& shader, const glm::mat4& transform) const;
 	};
 
 	class Model
 	{
 	private:
 		std::unique_ptr<Node> root;
+
+		// A vector of textures owned by this model. Each mesh has a pointer that 
+		// references its texture in this vector.
 		std::vector<std::unique_ptr<Texture2D>> textures;
+		
+		// A vector of meshes owned by this model. Each node references its meshes
+		// (that are stored here) via a pointer.
+		std::vector<std::unique_ptr<Mesh>> meshes;
 
 		BufferLayout layout;
 
+		void ParseMesh(const aiMesh& mesh);
+		void ParseNode(const aiNode& node);
+
 	public:
-		Model(const char* path);
+		Model(const std::string& path);
 
 		void Draw(const Shader& shader) const;
 	};
