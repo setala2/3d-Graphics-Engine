@@ -14,7 +14,6 @@
 
 namespace as3d
 {
-	class Model;
 
 	class Mesh
 	{
@@ -25,8 +24,9 @@ namespace as3d
 		std::unique_ptr<VertexArray>  vao;
 
 	public:
-		Mesh(const Model* model);
-
+		Mesh(std::unique_ptr<VertexBuffer>& vbo,
+		std::unique_ptr<IndexBuffer>&  ibo,
+		std::unique_ptr<VertexArray>&  vao);
 		void Draw(const Shader& shader) const;
 	};
 
@@ -39,7 +39,7 @@ namespace as3d
 		glm::mat4 accumulatedTransform;
 
 	public:
-		Node(const Model* model, const glm::mat4& transform);
+		Node(const glm::mat4& transform);
 
 		void Draw(const Shader& shader, const glm::mat4& transform) const;
 	};
@@ -47,6 +47,13 @@ namespace as3d
 	class Model
 	{
 	private:
+		struct Vertex
+		{
+			glm::vec3 pos;
+			glm::vec3 norm;
+			glm::vec2 uv;
+		};
+
 		std::unique_ptr<Node> root;
 
 		// A vector of textures owned by this model. Each mesh has a pointer that 
@@ -60,7 +67,7 @@ namespace as3d
 		BufferLayout layout;
 
 		void ParseMesh(const aiMesh& mesh);
-		void ParseNode(const aiNode& node);
+		std::unique_ptr<Node> ParseNode(const aiNode& node);
 
 	public:
 		Model(const std::string& path);

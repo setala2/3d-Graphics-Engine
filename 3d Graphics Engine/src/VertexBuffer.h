@@ -12,6 +12,8 @@ namespace as3d {
 	public:
 		VertexBuffer(const float* data, std::size_t bufferSize);
 		VertexBuffer();
+		VertexBuffer(const VertexBuffer& other) = delete;
+		VertexBuffer& operator=(VertexBuffer& other) = delete;
 		~VertexBuffer();
 
 		void Bind() const;

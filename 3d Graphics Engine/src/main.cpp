@@ -39,6 +39,8 @@ int main()
 	//	Load the models and shaders
 	////////////////////////////////////
 
+	as3d::Model m("res/models/cube2.obj");
+
 	//as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
 	//as3d::Shader shaderNanoSuit("res/shaders/nanosuit_vertex.glsl", "res/shaders/nanosuit_fragment.glsl");
 	//as3d::Model light("res/models/cube.obj");
