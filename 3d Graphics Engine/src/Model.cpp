@@ -17,24 +17,27 @@ namespace as3d
 	{
 		vao->Bind();
 		ibo->Bind();
-		glDrawElements(GL_TRIANGLES, ibo->GetCount(), ibo->GetType(), NULL);
+		glCheckError(glDrawElements(GL_TRIANGLES, ibo->GetCount(), ibo->GetType(), NULL));
 	}
 
-	Node::Node(const glm::mat4& transform)
-		: accumulatedTransform(transform)
+	Node::Node(std::vector<const Mesh*> meshes, const glm::mat4& transform)
+		: meshes(std::move(meshes)), ownTransform(transform)
 	{
 	}
 
-	void Node::Draw(const Shader& shader, const glm::mat4& transform) const
+	void Node::Draw(const Shader& shader, const glm::mat4& accumulatedTransform) const
 	{
+		// Add this node's transform to the accumulated transform
+		const glm::mat4 thisTransform = ownTransform * accumulatedTransform;
+
 		// Draw all of this node's meshes with the current transform
-		shader.SetMatrix4("model", accumulatedTransform * transform);
+		shader.SetMatrix4("model", thisTransform);
 		for (auto& mesh : meshes)
 			mesh->Draw(shader);
 
 		// Draw the child nodes
 		for (auto& child : children)
-			child->Draw(shader, transform);
+			child->Draw(shader, thisTransform);
 	}
 
 	void Model::ParseMesh(const aiMesh& mesh)
@@ -77,6 +80,7 @@ namespace as3d
 			{
 				v.uv = { 0.0f, 0.0f };
 			}
+			vertexData.push_back(v);
 		}
 
 		std::vector<unsigned int> indexData;
@@ -102,7 +106,28 @@ namespace as3d
 
 	std::unique_ptr<Node> Model::ParseNode(const aiNode& node)
 	{
-		return std::make_unique<Node>(glm::mat4(1.0f));
+		// Store references to all of this node's meshes
+		std::vector<const Mesh*> nodeMeshes;
+		nodeMeshes.reserve(node.mNumMeshes);
+		for (std::size_t i = 0; i < node.mNumMeshes; ++i)
+		{
+			nodeMeshes.push_back(meshes[node.mMeshes[i]].get());
+		}
+
+		// Apparently assimp stores the matrix in row major - and glm in column major order, so we'll transpose the matrix
+		const glm::mat4 nodeTransform = glm::transpose(*reinterpret_cast<const glm::mat4*>(&node.mTransformation));
+		
+		// Create the new node
+		auto newNode = std::make_unique<Node>(nodeMeshes, nodeTransform);
+
+		// Create the children of the new node recursively
+		newNode->children.reserve(node.mNumChildren);
+		for (std::size_t i = 0; i < node.mNumChildren; ++i)
+		{
+			newNode->children.push_back(ParseNode(*node.mChildren[i]));
+		}
+
+		return newNode;
 	}
 
 	Model::Model(const std::string& path)

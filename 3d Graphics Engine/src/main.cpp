@@ -39,12 +39,10 @@ int main()
 	//	Load the models and shaders
 	////////////////////////////////////
 
-	as3d::Model m("res/models/cube2.obj");
-
-	//as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
+	as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
 	//as3d::Shader shaderNanoSuit("res/shaders/nanosuit_vertex.glsl", "res/shaders/nanosuit_fragment.glsl");
-	//as3d::Model light("res/models/cube.obj");
-	//as3d::Shader shaderLight("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
+	as3d::Model light("res/models/cube.obj");
+	as3d::Shader shaderLight("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
 
 	////////////////////////////////////////
 	//	Load the skybox and its shaders
@@ -98,6 +96,11 @@ int main()
 		shaderLight.Bind();
 		shaderLight.SetMatrix4("mvp", lightMVP);
 		light.Draw(shaderLight);*/
+
+		shaderLight.Bind();
+		shaderLight.SetMatrix4("vp", camera.GetViewProjectionMatrix());
+		//light.Draw(shaderLight);
+		nanoSuit.Draw(shaderLight);
 		
 		// Render the GUI
 		imgui.BeginFrame();

@@ -14,7 +14,6 @@
 
 namespace as3d
 {
-
 	class Mesh
 	{
 	private:
@@ -32,16 +31,17 @@ namespace as3d
 
 	class Node
 	{
+		friend class Model;
 	private:
 		std::vector<std::unique_ptr<Node>> children;
 		std::vector<const Mesh*> meshes;
 
-		glm::mat4 accumulatedTransform;
+		glm::mat4 ownTransform;
 
 	public:
-		Node(const glm::mat4& transform);
+		Node(std::vector<const Mesh*> meshes, const glm::mat4& transform);
 
-		void Draw(const Shader& shader, const glm::mat4& transform) const;
+		void Draw(const Shader& shader, const glm::mat4& accumulatedTransform) const;
 	};
 
 	class Model
