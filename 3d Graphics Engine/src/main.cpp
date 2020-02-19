@@ -39,10 +39,10 @@ int main()
 	//	Load the models and shaders
 	////////////////////////////////////
 
-	as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
-	as3d::Shader shaderNanoSuit("res/shaders/nanosuit_vertex.glsl", "res/shaders/nanosuit_fragment.glsl");
-	as3d::Model light("res/models/cube.obj");
-	as3d::Shader shaderLight("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
+	//as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
+	//as3d::Shader shaderNanoSuit("res/shaders/nanosuit_vertex.glsl", "res/shaders/nanosuit_fragment.glsl");
+	//as3d::Model light("res/models/cube.obj");
+	//as3d::Shader shaderLight("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
 
 	////////////////////////////////////////
 	//	Load the skybox and its shaders
@@ -81,38 +81,27 @@ int main()
 		// Update the camera position
 		camera.OnUpdate(window.GetDeltaTime());
 
-		// Render the skybox
-		shaderSkybox.Bind();
-		shaderSkybox.SetMatrix4("projection", camera.GetProjectionMatrix());
-		shaderSkybox.SetMatrix4("view", glm::mat4(glm::mat3(camera.GetViewMatrix())));
-		skybox.Draw(shaderSkybox);
-
-		// Render the terrain
-		shaderTerrain.Bind();
-		shaderTerrain.SetMatrix4("mvp", camera.GetViewProjectionMatrix() * terrain.GetModelMatrix());
-		shaderTerrain.SetVector3("LightPosition", light.GetPosition());
-		terrain.Draw(shaderTerrain);
 		
 		// Render the nanosuit model
-		shaderNanoSuit.Bind();
+		/*shaderNanoSuit.Bind();
 		shaderNanoSuit.SetMatrix4("projection", camera.GetProjectionMatrix());
 		shaderNanoSuit.SetMatrix4("view", camera.GetViewMatrix());
 		shaderNanoSuit.SetMatrix3("normalMatrix", glm::inverseTranspose(nanoSuit.GetModelMatrix()));
 		shaderNanoSuit.SetVector3("cameraPos", camera.GetPosition());
 		shaderNanoSuit.SetVector3("lightPos", light.GetPosition());
-		nanoSuit.Draw(shaderNanoSuit);
+		nanoSuit.Draw(shaderNanoSuit);*/
 	
 		// Render the light source
-		glm::mat4 lightMVP = camera.GetViewProjectionMatrix() * light.GetModelMatrix();
+		/*glm::mat4 lightMVP = camera.GetViewProjectionMatrix() * light.GetModelMatrix();
 		shaderLight.Bind();
 		shaderLight.SetMatrix4("mvp", lightMVP);
-		light.Draw(shaderLight);
+		light.Draw(shaderLight);*/
 		
 		// Render the GUI
 		imgui.BeginFrame();
 		camera.DrawControlWindow("camera");
-		nanoSuit.DrawControlWindow("model");
-		light.DrawControlWindow("light");
+		//nanoSuit.DrawControlWindow("model");
+		//light.DrawControlWindow("light");
 		renderer.DrawControlWindow("renderer");
 		imgui.EndFrame();
 

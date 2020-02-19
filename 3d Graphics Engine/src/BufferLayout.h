@@ -23,7 +23,7 @@ namespace as3d
 		}
 	};
 
-	struct  BufferLayout
+	struct BufferLayout
 	{
 		std::vector<LayoutElement> elements;
 		unsigned int stride = 0;
