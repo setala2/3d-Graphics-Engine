@@ -40,9 +40,9 @@ int main()
 	////////////////////////////////////
 
 	as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
+	as3d::Shader shaderNanoSuit("res/shaders/basic_phong_vertex.glsl", "res/shaders/basic_phong_fragment.glsl");
 	//as3d::Shader shaderNanoSuit("res/shaders/nanosuit_vertex.glsl", "res/shaders/nanosuit_fragment.glsl");
-	as3d::Model light("res/models/cube.obj");
-	as3d::Shader shaderLight("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
+
 
 	////////////////////////////////////////
 	//	Load the skybox and its shaders
@@ -73,6 +73,7 @@ int main()
 
 	as3d::Renderer renderer;
 	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 50.0f));
+	renderer.SetClearColor(0.2f, 0.2f, 0.2f);
 
 	while (!window.ShouldClose())
 	{
@@ -81,15 +82,16 @@ int main()
 		// Update the camera position
 		camera.OnUpdate(window.GetDeltaTime());
 
-		
 		// Render the nanosuit model
-		/*shaderNanoSuit.Bind();
-		shaderNanoSuit.SetMatrix4("projection", camera.GetProjectionMatrix());
-		shaderNanoSuit.SetMatrix4("view", camera.GetViewMatrix());
-		shaderNanoSuit.SetMatrix3("normalMatrix", glm::inverseTranspose(nanoSuit.GetModelMatrix()));
-		shaderNanoSuit.SetVector3("cameraPos", camera.GetPosition());
-		shaderNanoSuit.SetVector3("lightPos", light.GetPosition());
-		nanoSuit.Draw(shaderNanoSuit);*/
+		
+		shaderNanoSuit.Bind();
+		
+		shaderNanoSuit.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
+		shaderNanoSuit.SetVector3("materialColor", glm::vec3(0.2f, 0.8f, 0.2f));
+		shaderNanoSuit.SetVector3("lightPosition", glm::vec3(4.0f, 10.0f, 7.0f));
+		//shaderNanoSuit.SetVector3("cameraPos", camera.GetPosition());
+		
+		nanoSuit.Draw(shaderNanoSuit);
 	
 		// Render the light source
 		/*glm::mat4 lightMVP = camera.GetViewProjectionMatrix() * light.GetModelMatrix();
@@ -97,17 +99,14 @@ int main()
 		shaderLight.SetMatrix4("mvp", lightMVP);
 		light.Draw(shaderLight);*/
 
-		shaderLight.Bind();
-		shaderLight.SetMatrix4("vp", camera.GetViewProjectionMatrix());
-		//light.Draw(shaderLight);
-		nanoSuit.Draw(shaderLight);
-		
 		// Render the GUI
 		imgui.BeginFrame();
 		camera.DrawControlWindow("camera");
-		//nanoSuit.DrawControlWindow("model");
+		nanoSuit.DrawControlWindow("models");
 		//light.DrawControlWindow("light");
 		renderer.DrawControlWindow("renderer");
+		//imgui.DrawDemoWindow();
+
 		imgui.EndFrame();
 
 		window.Update();

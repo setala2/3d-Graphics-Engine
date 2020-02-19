@@ -38,3 +38,8 @@ void ImguiManager::EndFrame()
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
+
+void ImguiManager::DrawDemoWindow()
+{
+	ImGui::ShowDemoWindow((bool*)1);
+}

@@ -17,7 +17,7 @@ namespace as3d
 	class Mesh
 	{
 	private:
-		const Texture2D* texture = nullptr;
+		const Texture2D* texture = nullptr;	// All textures are owned by the model instance, this is just a reference
 		std::unique_ptr<VertexBuffer> vbo;
 		std::unique_ptr<IndexBuffer>  ibo;
 		std::unique_ptr<VertexArray>  vao;
@@ -38,8 +38,22 @@ namespace as3d
 
 		glm::mat4 ownTransform;
 
+		glm::mat4 translationMatrix = glm::mat4(1.0f);
+		glm::mat4 rotationMatrix    = glm::mat4(1.0f);
+		glm::mat4 scalingMatrix     = glm::mat4(1.0f);
+
+		glm::vec3 translation = glm::vec3(0.0f);
+		glm::vec3 rotation    = glm::vec3(0.0f);
+		glm::vec3 scaling     = glm::vec3(0.0f);
+
+		std::string name;
+
+	private:
+		void UpdateRotation();
+		void DrawControls();	// Should only be called by Model::DrawControlWindow()
+
 	public:
-		Node(std::vector<const Mesh*> meshes, const glm::mat4& transform);
+		Node(std::vector<const Mesh*> meshes, const glm::mat4& transform, const std::string& name = "");
 
 		void Draw(const Shader& shader, const glm::mat4& accumulatedTransform) const;
 	};
@@ -73,5 +87,6 @@ namespace as3d
 		Model(const std::string& path);
 
 		void Draw(const Shader& shader) const;
+		void DrawControlWindow(const char* title);
 	};
 }

@@ -1,8 +1,11 @@
 #include "Model.h"
 #include "Gldebug.h"
+#include "ImguiManager.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
+
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace as3d
 {
@@ -20,8 +23,29 @@ namespace as3d
 		glCheckError(glDrawElements(GL_TRIANGLES, ibo->GetCount(), ibo->GetType(), NULL));
 	}
 
-	Node::Node(std::vector<const Mesh*> meshes, const glm::mat4& transform)
-		: meshes(std::move(meshes)), ownTransform(transform)
+	void Node::UpdateRotation()
+	{
+		rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0, 1, 0));
+		rotationMatrix = glm::rotate(rotationMatrix,  glm::radians(rotation.x), glm::vec3(1, 0, 0));
+		rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.z), glm::vec3(0, 0, 1));
+		ownTransform = translationMatrix * rotationMatrix * scalingMatrix;
+	}
+
+	void Node::DrawControls()
+	{
+		if (ImGui::TreeNode(name.c_str()))
+		{
+			if(ImGui::SliderFloat3("rotation", &rotation[0], -360.0f, 360.0f, "%.1f"))
+				UpdateRotation();
+			for (const auto& child : children)
+				child->DrawControls();
+
+			ImGui::TreePop();
+		}
+	}
+
+	Node::Node(std::vector<const Mesh*> meshes, const glm::mat4& transform, const std::string& name)
+		: meshes(std::move(meshes)), ownTransform(transform), name(name)
 	{
 	}
 
@@ -31,7 +55,8 @@ namespace as3d
 		const glm::mat4 thisTransform = ownTransform * accumulatedTransform;
 
 		// Draw all of this node's meshes with the current transform
-		shader.SetMatrix4("model", thisTransform);
+		shader.SetMatrix4("modelMatrix", thisTransform);
+		shader.SetMatrix3("normalMatrix", glm::mat3(thisTransform));
 		for (auto& mesh : meshes)
 			mesh->Draw(shader);
 
@@ -118,7 +143,7 @@ namespace as3d
 		const glm::mat4 nodeTransform = glm::transpose(*reinterpret_cast<const glm::mat4*>(&node.mTransformation));
 		
 		// Create the new node
-		auto newNode = std::make_unique<Node>(nodeMeshes, nodeTransform);
+		auto newNode = std::make_unique<Node>(nodeMeshes, nodeTransform, node.mName.C_Str());
 
 		// Create the children of the new node recursively
 		newNode->children.reserve(node.mNumChildren);
@@ -152,5 +177,12 @@ namespace as3d
 	{
 		shader.Bind();
 		root->Draw(shader, glm::mat4(1.0f));
+	}
+
+	void Model::DrawControlWindow(const char* title)
+	{
+		ImGui::Begin(title);
+		root->DrawControls();
+		ImGui::End();
 	}
 }

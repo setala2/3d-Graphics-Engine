@@ -13,4 +13,6 @@ public:
 
 	void BeginFrame();
 	void EndFrame();
+
+	void DrawDemoWindow();
 };
