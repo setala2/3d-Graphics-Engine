@@ -25,7 +25,8 @@ namespace as3d
 	public:
 		Mesh(std::unique_ptr<VertexBuffer>& vbo,
 		std::unique_ptr<IndexBuffer>&  ibo,
-		std::unique_ptr<VertexArray>&  vao);
+		std::unique_ptr<VertexArray>&  vao,
+		const Texture2D* texPointer);
 		void Draw(const Shader& shader) const;
 	};
 
@@ -36,7 +37,8 @@ namespace as3d
 		std::vector<std::unique_ptr<Node>> children;
 		std::vector<const Mesh*> meshes;
 
-		glm::mat4 ownTransform;
+		glm::mat4 parentTransform;
+		glm::mat4 modelMatrix;
 
 		glm::mat4 translationMatrix = glm::mat4(1.0f);
 		glm::mat4 rotationMatrix    = glm::mat4(1.0f);
@@ -49,7 +51,11 @@ namespace as3d
 		std::string name;
 
 	private:
-		void UpdateRotation();
+		void Translate();
+		void Rotate();
+		void Scale();
+		void Update();
+		void Reset();
 		void DrawControls();	// Should only be called by Model::DrawControlWindow()
 
 	public:
@@ -57,7 +63,7 @@ namespace as3d
 
 		void Draw(const Shader& shader, const glm::mat4& accumulatedTransform) const;
 	};
-
+	
 	class Model
 	{
 	private:

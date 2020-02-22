@@ -136,6 +136,7 @@
     <ClInclude Include="src\ImguiManager.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Input.h" />
+    <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />

@@ -11,8 +11,9 @@ namespace as3d
 {
 	Mesh::Mesh(std::unique_ptr<VertexBuffer>& vbo,
 		std::unique_ptr<IndexBuffer>&  ibo,
-		std::unique_ptr<VertexArray>&  vao)
-		: vbo(std::move(vbo)), ibo(std::move(ibo)), vao(std::move(vao))
+		std::unique_ptr<VertexArray>&  vao,
+		const Texture2D* texPointer)
+		: texture(texPointer), vbo(std::move(vbo)), ibo(std::move(ibo)), vao(std::move(vao))
 	{
 	}
 
@@ -23,36 +24,66 @@ namespace as3d
 		glCheckError(glDrawElements(GL_TRIANGLES, ibo->GetCount(), ibo->GetType(), NULL));
 	}
 
-	void Node::UpdateRotation()
+	void Node::Translate()
 	{
-		rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0, 1, 0));
+		translationMatrix = glm::translate(parentTransform, translation);
+		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+	}
+
+	void Node::Rotate()
+	{
+		rotationMatrix = glm::rotate(parentTransform, glm::radians(rotation.y), glm::vec3(0, 1, 0));
 		rotationMatrix = glm::rotate(rotationMatrix,  glm::radians(rotation.x), glm::vec3(1, 0, 0));
 		rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.z), glm::vec3(0, 0, 1));
-		ownTransform = translationMatrix * rotationMatrix * scalingMatrix;
+		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+	}
+
+	void Node::Scale()
+	{
+		scalingMatrix = glm::scale(parentTransform, scaling);
+		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+	}
+
+	void Node::Update()
+	{
+		Scale();
+		Rotate();
+		Translate();
+	}
+
+	void Node::Reset()
+	{
+		translation = glm::vec3(0.0f);
+		rotation = glm::vec3(0.0f);
+		scaling = glm::vec3(0.0f);
+		Update();
 	}
 
 	void Node::DrawControls()
 	{
 		if (ImGui::TreeNode(name.c_str()))
 		{
-			if(ImGui::SliderFloat3("rotation", &rotation[0], -360.0f, 360.0f, "%.1f"))
-				UpdateRotation();
+			if (ImGui::SliderFloat3("translation", &translation[0], -20.0f, 20.0f, "%.1f"))
+				Translate();
+			if (ImGui::SliderFloat3("rotation", &rotation[0], -360.0f, 360.0f, "%.1f"))
+				Rotate();
 			for (const auto& child : children)
 				child->DrawControls();
 
 			ImGui::TreePop();
 		}
+
 	}
 
 	Node::Node(std::vector<const Mesh*> meshes, const glm::mat4& transform, const std::string& name)
-		: meshes(std::move(meshes)), ownTransform(transform), name(name)
+		: meshes(std::move(meshes)), parentTransform(transform), modelMatrix(transform), name(name)
 	{
 	}
 
 	void Node::Draw(const Shader& shader, const glm::mat4& accumulatedTransform) const
 	{
 		// Add this node's transform to the accumulated transform
-		const glm::mat4 thisTransform = ownTransform * accumulatedTransform;
+		const glm::mat4 thisTransform = accumulatedTransform * modelMatrix;
 
 		// Draw all of this node's meshes with the current transform
 		shader.SetMatrix4("modelMatrix", thisTransform);
@@ -126,7 +157,9 @@ namespace as3d
 
 		vao->AddBuffer(*vbo, layout);
 
-		meshes.push_back(std::make_unique<Mesh>(vbo, ibo, vao));
+		const Texture2D* texPointer = nullptr;//textures[mesh.mMaterialIndex].get();
+
+		meshes.push_back(std::make_unique<Mesh>(vbo, ibo, vao, texPointer));
 	}
 
 	std::unique_ptr<Node> Model::ParseNode(const aiNode& node)
@@ -140,7 +173,7 @@ namespace as3d
 		}
 
 		// Apparently assimp stores the matrix in row major - and glm in column major order, so we'll transpose the matrix
-		const glm::mat4 nodeTransform = glm::transpose(*reinterpret_cast<const glm::mat4*>(&node.mTransformation));
+		glm::mat4 nodeTransform = glm::transpose(*reinterpret_cast<const glm::mat4*>(&node.mTransformation));
 		
 		// Create the new node
 		auto newNode = std::make_unique<Node>(nodeMeshes, nodeTransform, node.mName.C_Str());
