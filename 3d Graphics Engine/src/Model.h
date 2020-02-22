@@ -72,6 +72,8 @@ namespace as3d
 		void Draw(const Shader& shader) const;
 		void DrawControlWindow(const char* title);
 
+		inline glm::vec3 GetPosition() const { return root->translation; }
+
 	private:
 		struct Vertex
 		{

@@ -68,7 +68,7 @@ namespace as3d
 	{
 		translation = glm::vec3(0.0f);
 		rotation = glm::vec3(0.0f);
-		scaling = glm::vec3(0.0f);
+		scaling = glm::vec3(1.0f);
 		Update();
 	}
 
@@ -80,6 +80,8 @@ namespace as3d
 				Translate();
 			if (ImGui::SliderFloat3("rotation", &rotation[0], -360.0f, 360.0f, "%.1f"))
 				Rotate();
+			if (ImGui::Button("Reset"))
+				Reset();
 			for (const auto& child : children)
 				child->DrawControls();
 
