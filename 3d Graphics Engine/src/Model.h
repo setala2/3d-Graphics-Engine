@@ -2,9 +2,9 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
-#include "Texture2D.h"
 #include "BufferLayout.h"
 #include "Shader.h"
+#include "Material.h"
 
 #include <glm/glm.hpp>
 #include <assimp/scene.h>
@@ -17,7 +17,7 @@ namespace as3d
 	class Mesh
 	{
 	private:
-		const Texture2D* texture = nullptr;	// All textures are owned by the model instance, this is just a reference
+		const Material* material = nullptr;	// All textures are owned by the model instance, this is just a reference
 		std::unique_ptr<VertexBuffer> vbo;
 		std::unique_ptr<IndexBuffer>  ibo;
 		std::unique_ptr<VertexArray>  vao;
@@ -26,7 +26,7 @@ namespace as3d
 		Mesh(std::unique_ptr<VertexBuffer>& vbo,
 		std::unique_ptr<IndexBuffer>&  ibo,
 		std::unique_ptr<VertexArray>&  vao,
-		const Texture2D* texPointer);
+		const Material* materialPtr);
 		void Draw(const Shader& shader) const;
 	};
 
@@ -66,6 +66,12 @@ namespace as3d
 	
 	class Model
 	{
+	public:
+		Model(const std::string& path);
+
+		void Draw(const Shader& shader) const;
+		void DrawControlWindow(const char* title);
+
 	private:
 		struct Vertex
 		{
@@ -76,9 +82,9 @@ namespace as3d
 
 		std::unique_ptr<Node> root;
 
-		// A vector of textures owned by this model. Each mesh has a pointer that 
-		// references its texture in this vector.
-		std::vector<std::unique_ptr<Texture2D>> textures;
+		// A vector of materials owned by this model. Each mesh has a pointer that 
+		// references its material in this vector.
+		std::vector<std::unique_ptr<Material>> materials;
 		
 		// A vector of meshes owned by this model. Each node references its meshes
 		// (that are stored here) via a pointer.
@@ -86,13 +92,12 @@ namespace as3d
 
 		BufferLayout layout;
 
+		std::string directory;
+
+	private:
 		void ParseMesh(const aiMesh& mesh);
 		std::unique_ptr<Node> ParseNode(const aiNode& node);
+		void ParseMaterial(const aiMaterial& mat);
 
-	public:
-		Model(const std::string& path);
-
-		void Draw(const Shader& shader) const;
-		void DrawControlWindow(const char* title);
 	};
 }

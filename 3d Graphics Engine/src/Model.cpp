@@ -9,11 +9,17 @@
 
 namespace as3d
 {
+	/////////////////////////////////////////////////////
+	//
+	//			Mesh
+	//
+	/////////////////////////////////////////////////////
+
 	Mesh::Mesh(std::unique_ptr<VertexBuffer>& vbo,
 		std::unique_ptr<IndexBuffer>&  ibo,
 		std::unique_ptr<VertexArray>&  vao,
-		const Texture2D* texPointer)
-		: texture(texPointer), vbo(std::move(vbo)), ibo(std::move(ibo)), vao(std::move(vao))
+		const Material* materialPtr)
+		: material(materialPtr), vbo(std::move(vbo)), ibo(std::move(ibo)), vao(std::move(vao))
 	{
 	}
 
@@ -21,8 +27,15 @@ namespace as3d
 	{
 		vao->Bind();
 		ibo->Bind();
+		material->Bind(shader);
 		glCheckError(glDrawElements(GL_TRIANGLES, ibo->GetCount(), ibo->GetType(), NULL));
 	}
+
+	/////////////////////////////////////////////////////
+	//
+	//			Node
+	//
+	/////////////////////////////////////////////////////
 
 	void Node::Translate()
 	{
@@ -96,6 +109,53 @@ namespace as3d
 			child->Draw(shader, thisTransform);
 	}
 
+	/////////////////////////////////////////////////////
+	//
+	//			Model
+	//
+	/////////////////////////////////////////////////////
+
+	Model::Model(const std::string& path)
+	{
+		directory = path.substr(0, path.find_last_of('/'));
+
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+
+		layout.Push<float>(3);	// Vertex position
+		layout.Push<float>(3);	// Vertex normal
+		layout.Push<float>(2);	// Texture coords
+
+		// Parse all of the materials
+		for (std::size_t i = 0; i < scene->mNumMaterials; ++i)
+		{
+			ParseMaterial(*scene->mMaterials[i]);
+		}
+
+		// Parse all of the meshes
+		meshes.reserve(scene->mNumMeshes);
+		for (std::size_t i = 0; i < scene->mNumMeshes; ++i)
+		{
+			ParseMesh(*scene->mMeshes[i]);
+		}
+
+		// Parse all of the nodes
+		root = ParseNode(*scene->mRootNode);
+	}
+
+	void Model::Draw(const Shader& shader) const
+	{
+		shader.Bind();
+		root->Draw(shader, glm::mat4(1.0f));
+	}
+
+	void Model::DrawControlWindow(const char* title)
+	{
+		ImGui::Begin(title);
+		root->DrawControls();
+		ImGui::End();
+	}
+
 	void Model::ParseMesh(const aiMesh& mesh)
 	{
 		std::vector<Vertex> vertexData;
@@ -157,9 +217,9 @@ namespace as3d
 
 		vao->AddBuffer(*vbo, layout);
 
-		const Texture2D* texPointer = nullptr;//textures[mesh.mMaterialIndex].get();
+		const Material* materialPtr = materials[mesh.mMaterialIndex].get();
 
-		meshes.push_back(std::make_unique<Mesh>(vbo, ibo, vao, texPointer));
+		meshes.push_back(std::make_unique<Mesh>(vbo, ibo, vao, materialPtr));
 	}
 
 	std::unique_ptr<Node> Model::ParseNode(const aiNode& node)
@@ -188,34 +248,27 @@ namespace as3d
 		return newNode;
 	}
 
-	Model::Model(const std::string& path)
+	void Model::ParseMaterial(const aiMaterial& mat)
 	{
-		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+		// Could load the different textures in a nested for loop once we start supporting more complex materials
 
-		layout.Push<float>(3);	// Vertex position
-		layout.Push<float>(3);	// Vertex normal
-		layout.Push<float>(2);	// Texture coords
+		auto newMaterial = std::make_unique<Material>();
+		newMaterial->diffuseMaps.reserve(mat.GetTextureCount(aiTextureType_DIFFUSE));
+		newMaterial->specularMaps.reserve(mat.GetTextureCount(aiTextureType_SPECULAR));
 
-		meshes.reserve(scene->mNumMeshes);
-		for (std::size_t i = 0; i < scene->mNumMeshes; ++i)
+		for (std::size_t i = 0; i < mat.GetTextureCount(aiTextureType_DIFFUSE); ++i)
 		{
-			ParseMesh(*scene->mMeshes[i]);
+			aiString path;
+			mat.GetTexture(aiTextureType_DIFFUSE, i, &path);
+			newMaterial->diffuseMaps.push_back(std::make_unique<Texture2D>(path.C_Str(), directory, "texture_diffuse"));
+		}
+		for (std::size_t i = 0; i < mat.GetTextureCount(aiTextureType_SPECULAR); ++i)
+		{
+			aiString path;
+			mat.GetTexture(aiTextureType_SPECULAR, i, &path);
+			newMaterial->specularMaps.push_back(std::make_unique<Texture2D>(path.C_Str(), directory, "texture_specular"));
 		}
 
-		root = ParseNode(*scene->mRootNode);
-	}
-
-	void Model::Draw(const Shader& shader) const
-	{
-		shader.Bind();
-		root->Draw(shader, glm::mat4(1.0f));
-	}
-
-	void Model::DrawControlWindow(const char* title)
-	{
-		ImGui::Begin(title);
-		root->DrawControls();
-		ImGui::End();
+		materials.push_back(std::move(newMaterial));
 	}
 }

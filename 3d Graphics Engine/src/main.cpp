@@ -40,8 +40,8 @@ int main()
 	////////////////////////////////////
 
 	as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
-	as3d::Shader shaderNanoSuit("res/shaders/basic_phong_vertex.glsl", "res/shaders/basic_phong_fragment.glsl");
-	//as3d::Shader shaderNanoSuit("res/shaders/nanosuit_vertex.glsl", "res/shaders/nanosuit_fragment.glsl");
+	//as3d::Shader shaderNanoSuit("res/shaders/basic_phong_vertex.glsl", "res/shaders/basic_phong_fragment.glsl");
+	as3d::Shader shaderNanoSuit("res/shaders/nanosuit_vertex.glsl", "res/shaders/nanosuit_fragment.glsl");
 
 
 	////////////////////////////////////////
@@ -86,10 +86,10 @@ int main()
 		
 		shaderNanoSuit.Bind();
 		
-		shaderNanoSuit.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
-		shaderNanoSuit.SetVector3("materialColor", glm::vec3(0.2f, 0.8f, 0.2f));
+		shaderNanoSuit.SetMatrix4("viewMatrix", camera.GetViewMatrix());
+		shaderNanoSuit.SetMatrix4("projectionMatrix", camera.GetProjectionMatrix());
 		shaderNanoSuit.SetVector3("lightPosition", glm::vec3(4.0f, 10.0f, 7.0f));
-		//shaderNanoSuit.SetVector3("cameraPos", camera.GetPosition());
+		shaderNanoSuit.SetVector3("cameraPosition", camera.GetPosition());
 		
 		nanoSuit.Draw(shaderNanoSuit);
 	
