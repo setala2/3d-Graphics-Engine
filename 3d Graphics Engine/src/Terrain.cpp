@@ -37,6 +37,7 @@ namespace as3d
 		ibo.Bind();
 		texture.Bind();
 		shader.Bind();
+		shader.SetMatrix4("modelMatrix", modelMatrix);
 		vao.Bind();
 
 		glCheckError(glDrawElements(GL_TRIANGLES, ibo.GetCount(), ibo.GetType(), 0));

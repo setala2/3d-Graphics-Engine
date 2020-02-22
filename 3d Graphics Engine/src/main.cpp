@@ -72,7 +72,7 @@ int main()
 	////////////////////////////////////////////////
 
 	as3d::Renderer renderer;
-	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 50.0f));
+	as3d::Camera camera(glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 500.0f));
 	renderer.SetClearColor(0.2f, 0.2f, 0.2f);
 
 	while (!window.ShouldClose())
@@ -82,15 +82,25 @@ int main()
 		// Update the camera position
 		camera.OnUpdate(window.GetDeltaTime());
 
+		// Render the skybox
+		shaderSkybox.Bind();
+		shaderSkybox.SetMatrix4("viewMatrix", glm::mat3(camera.GetViewMatrix()));
+		shaderSkybox.SetMatrix4("projectionMatrix", camera.GetProjectionMatrix());
+		skybox.Draw(shaderSkybox);
+
 		// Render the nanosuit model
 		shaderNanoSuit.Bind();
-		
 		shaderNanoSuit.SetMatrix4("viewMatrix", camera.GetViewMatrix());
 		shaderNanoSuit.SetMatrix4("projectionMatrix", camera.GetProjectionMatrix());
 		shaderNanoSuit.SetVector3("lightPosition", light.GetPosition());
 		shaderNanoSuit.SetVector3("cameraPosition", camera.GetPosition());
-		
 		nanoSuit.Draw(shaderNanoSuit);
+
+		// Render the terrain
+		shaderTerrain.Bind();
+		shaderTerrain.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
+		shaderTerrain.SetVector3("lightPosition", light.GetPosition());
+		terrain.Draw(shaderTerrain);
 	
 		// Render the light source
 		shaderLight.Bind();
