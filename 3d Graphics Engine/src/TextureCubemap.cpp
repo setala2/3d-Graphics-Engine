@@ -20,7 +20,7 @@ namespace as3d
 	void TextureCubemap::LoadTexture(const std::vector<std::string>& filenames)
 	{
 		int width, height, channels;
-		for (std::size_t i = 0; i < filenames.size(); ++i)
+		for (unsigned int i = 0; i < filenames.size(); ++i)
 		{
 			unsigned char* data = stbi_load(filenames[i].c_str(), &width, &height, &channels, 4);
 			if (data)

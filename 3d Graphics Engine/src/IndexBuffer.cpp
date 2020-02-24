@@ -3,7 +3,7 @@
 namespace as3d 
 {
 
-	IndexBuffer::IndexBuffer(const unsigned int* data, std::size_t count)
+	IndexBuffer::IndexBuffer(const unsigned int* data, GLsizei count)
 		: type(GL_UNSIGNED_INT), count(count)
 	{
 		glCheckError(glGenBuffers(1, &handle));
@@ -33,7 +33,7 @@ namespace as3d
 		glCheckError(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 	}
 
-	void IndexBuffer::SetData(const unsigned int* data, std::size_t count)
+	void IndexBuffer::SetData(const unsigned int* data, GLsizei count)
 	{
 		this->count = count;
 		glCheckError(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW));

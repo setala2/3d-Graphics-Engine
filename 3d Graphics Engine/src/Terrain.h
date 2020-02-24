@@ -36,7 +36,7 @@ namespace as3d
 		void Generate();
 
 		static constexpr float size = 800;
-		static constexpr int verticesPerRow = 128;
+		static constexpr unsigned int verticesPerRow = 128;
 		const float offsetX = -size / 2;
 		const float offsetZ = -size / 2;
 

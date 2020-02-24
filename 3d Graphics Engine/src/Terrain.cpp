@@ -18,7 +18,7 @@ namespace as3d
 		vbo.Bind();
 		ibo.Bind();
 		vbo.SetData(reinterpret_cast<float*>(vertices.data()), sizeof(Vertex) * vertices.size());
-		ibo.SetData(indices.data(), indices.size());
+		ibo.SetData(indices.data(), static_cast<GLsizei>(indices.size()));
 		as3d::BufferLayout layout;
 		layout.Push<float>(3); // Position
 		layout.Push<float>(3); // Normal
@@ -42,12 +42,12 @@ namespace as3d
 
 		glCheckError(glDrawElements(GL_TRIANGLES, ibo.GetCount(), ibo.GetType(), 0));
 	}
-
+	
 	void Terrain::Generate()
 	{
-		for(std::size_t z = 0; z < verticesPerRow; ++z)
+		for(unsigned int z = 0; z < verticesPerRow; ++z)
 		{
-			for (std::size_t x = 0; x < verticesPerRow; ++x)
+			for (unsigned int x = 0; x < verticesPerRow; ++x)
 			{
 				//////////////////////////////////////
 				// Create and store the vertex data

@@ -9,18 +9,18 @@ namespace as3d
 	{
 		GLuint handle;
 		GLenum type;
-		unsigned int count;
+		GLsizei count = 0;
 
 	public:
-		IndexBuffer(const unsigned int* data, std::size_t count);
+		IndexBuffer(const unsigned int* data, GLsizei count);
 		IndexBuffer();
 		~IndexBuffer();
 
 		void Bind() const;
 		void Unbind() const;
-		void SetData(const unsigned int* data, std::size_t count);
+		void SetData(const unsigned int* data, GLsizei count);
 
 		inline GLenum GetType() const { return type; }
-		inline unsigned int GetCount() const { return count; }
+		inline GLsizei GetCount() const { return count; }
 	};
 }

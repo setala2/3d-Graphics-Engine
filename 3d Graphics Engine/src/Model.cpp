@@ -214,7 +214,7 @@ namespace as3d
 		}
 
 		auto vbo = std::make_unique<VertexBuffer>(reinterpret_cast<float*>(vertexData.data()), vertexData.size() * sizeof(Vertex));
-		auto ibo = std::make_unique<IndexBuffer>(indexData.data(), indexData.size());
+		auto ibo = std::make_unique<IndexBuffer>(indexData.data(), static_cast<GLsizei>(indexData.size()));
 		auto vao = std::make_unique<VertexArray>();
 
 		vao->AddBuffer(*vbo, layout);
@@ -258,13 +258,13 @@ namespace as3d
 		newMaterial->diffuseMaps.reserve(mat.GetTextureCount(aiTextureType_DIFFUSE));
 		newMaterial->specularMaps.reserve(mat.GetTextureCount(aiTextureType_SPECULAR));
 
-		for (std::size_t i = 0; i < mat.GetTextureCount(aiTextureType_DIFFUSE); ++i)
+		for (unsigned int i = 0; i < mat.GetTextureCount(aiTextureType_DIFFUSE); ++i)
 		{
 			aiString path;
 			mat.GetTexture(aiTextureType_DIFFUSE, i, &path);
 			newMaterial->diffuseMaps.push_back(std::make_unique<Texture2D>(path.C_Str(), directory, "texture_diffuse"));
 		}
-		for (std::size_t i = 0; i < mat.GetTextureCount(aiTextureType_SPECULAR); ++i)
+		for (unsigned int i = 0; i < mat.GetTextureCount(aiTextureType_SPECULAR); ++i)
 		{
 			aiString path;
 			mat.GetTexture(aiTextureType_SPECULAR, i, &path);

@@ -30,14 +30,14 @@ namespace as3d
 		vb.Bind();
 
 		const auto& elements = layout.elements;
-		unsigned int elementOffset = 0;
+		std::size_t elementOffset = 0;
 
 		for (; nextIndex < elements.size(); ++nextIndex)
 		{
 			LayoutElement currentElement = elements[nextIndex];
 			glCheckError(glEnableVertexAttribArray(nextIndex));
 			glCheckError(glVertexAttribPointer(nextIndex, currentElement.count, currentElement.type, GL_FALSE, layout.stride, (const void*)elementOffset));
-			elementOffset += currentElement.count * LayoutElement::GetSizeOf(currentElement.type);
+			elementOffset += currentElement.count * static_cast<std::size_t>(LayoutElement::GetSizeOf(currentElement.type));
 		}
 
 		vb.Unbind();
