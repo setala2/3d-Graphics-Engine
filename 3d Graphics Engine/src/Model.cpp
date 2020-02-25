@@ -45,10 +45,19 @@ namespace as3d
 
 	void Node::Rotate()
 	{
-		rotationMatrix = glm::rotate(parentTransform, glm::radians(rotation.y), glm::vec3(0, 1, 0));
-		rotationMatrix = glm::rotate(rotationMatrix,  glm::radians(rotation.x), glm::vec3(1, 0, 0));
-		rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.z), glm::vec3(0, 0, 1));
+		rotationMatrix = glm::mat4_cast(orientation);
 		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+	}
+
+	void Node::Rotate(glm::vec3 axis, float angle)
+	{
+		glm::quat local;
+		local.w = std::cosf(angle / 2);
+		local.x = axis.x * std::sinf(angle / 2);
+		local.y = axis.y * std::sinf(angle / 2);
+		local.z = axis.z * std::sinf(angle / 2);
+		orientation = local * orientation;
+		Rotate();
 	}
 
 	void Node::Scale()
@@ -67,7 +76,7 @@ namespace as3d
 	void Node::Reset()
 	{
 		translation = glm::vec3(0.0f);
-		rotation = glm::vec3(0.0f);
+		orientation = glm::quat(1,0,0,0);
 		scaling = glm::vec3(1.0f);
 		Update();
 	}
@@ -76,10 +85,34 @@ namespace as3d
 	{
 		if (ImGui::TreeNode(name.c_str()))
 		{
-			if (ImGui::SliderFloat3("translation", &translation[0], -20.0f, 20.0f, "%.1f"))
+			if (ImGui::DragFloat3("translation", &translation[0], 1.0f, 0.0f, 0.0f, "%.1f"))
 				Translate();
-			if (ImGui::SliderFloat3("rotation", &rotation[0], -360.0f, 360.0f, "%.1f"))
-				Rotate();
+			ImGui::PushButtonRepeat(true);
+			if (ImGui::ArrowButton("x", ImGuiDir_Left))
+				Rotate(glm::vec3(1, 0, 0), glm::radians(-rotationSpeed));
+			ImGui::SameLine();
+			ImGui::Text("x");
+			ImGui::SameLine();
+			if (ImGui::ArrowButton("x", ImGuiDir_Right))
+				Rotate(glm::vec3(1, 0, 0), glm::radians(rotationSpeed));
+			ImGui::SameLine();
+			if (ImGui::ArrowButton("y", ImGuiDir_Left))
+				Rotate(glm::vec3(0, 1, 0), glm::radians(-rotationSpeed));
+			ImGui::SameLine();
+			ImGui::Text("y");
+			ImGui::SameLine();
+			if (ImGui::ArrowButton("y", ImGuiDir_Right))
+				Rotate(glm::vec3(0, 1, 0), glm::radians(rotationSpeed));
+			ImGui::SameLine();
+			if (ImGui::ArrowButton("z", ImGuiDir_Left))
+				Rotate(glm::vec3(0, 0, 1), glm::radians(-rotationSpeed));
+			ImGui::SameLine();
+			ImGui::Text("z");
+			ImGui::SameLine();
+			if (ImGui::ArrowButton("z", ImGuiDir_Right))
+				Rotate(glm::vec3(0, 0, 1), glm::radians(rotationSpeed));
+
+			ImGui::PopButtonRepeat();
 			if (ImGui::Button("Reset"))
 				Reset();
 			for (const auto& child : children)
