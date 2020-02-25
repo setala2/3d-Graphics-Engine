@@ -29,7 +29,7 @@ void main()
 	float specularStrength = 0.5f;
 	vec3 fragToCamera = normalize(cameraPosition - FragPosition);
 	vec3 reflectDirection = reflect(-fragToLight, unitNormal);
-	float spec = pow(max(dot(fragToCamera, reflectDirection), 0.0f), 32);
+	float spec = pow(max(dot(fragToCamera, reflectDirection), 0.0f), 64);
 	vec4 specular = texture(mat.texture_specular1, TexCoords) * specularStrength * spec;
 	
 	color = ambient + diffuse + specular;
