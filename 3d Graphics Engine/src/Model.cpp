@@ -97,6 +97,8 @@ namespace as3d
 		{
 			if (ImGui::DragFloat3("position", &translation[0], 0.1f, 0, 0, "%.1f"))
 				Translate();
+			// The numbers shown on the rotation controls will get wrong very quickly, but at least the controls themselves work nicely.
+			// (The numbers correct themselves when calling Reset())
 			if (ImGui::DragFloat("x rotation", &eulerAngles[0], rotationSpeed, 0, 0, "%.1f"))
 				Rotate(glm::vec3(1, 0, 0));
 			if (ImGui::DragFloat("y rotation", &eulerAngles[1], rotationSpeed, 0, 0, "%.1f"))
