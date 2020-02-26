@@ -45,10 +45,28 @@ namespace as3d
 
 	void Node::Rotate()
 	{
-		rotationMatrix = glm::rotate(parentTransform, glm::radians(rotation.y), glm::vec3(0, 1, 0));
-		rotationMatrix = glm::rotate(rotationMatrix,  glm::radians(rotation.x), glm::vec3(1, 0, 0));
-		rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.z), glm::vec3(0, 0, 1));
+		rotationMatrix = glm::mat4_cast(orientation);
 		modelMatrix = translationMatrix * rotationMatrix * scalingMatrix;
+		prevAngles = eulerAngles;
+	}
+
+	void Node::Rotate(glm::vec3 axis)
+	{
+		// Let the angle be the difference between this and last frame.
+		// The dot product takes the correct value from the vector, since the axis has two 0 components and one 1 component.
+		float angle = glm::dot((prevAngles - eulerAngles), axis);
+		angle = glm::radians(angle);
+
+		// Calculate the local rotation quaternion
+		glm::quat local;
+		local.w = std::cosf(angle / 2);
+		local.x = axis.x * std::sinf(angle / 2);
+		local.y = axis.y * std::sinf(angle / 2);
+		local.z = axis.z * std::sinf(angle / 2);
+
+		// Multiply with the local rotation with the current orientation to get the new orientation
+		orientation = local * orientation;
+		Rotate();
 	}
 
 	void Node::Scale()
@@ -67,7 +85,8 @@ namespace as3d
 	void Node::Reset()
 	{
 		translation = glm::vec3(0.0f);
-		rotation = glm::vec3(0.0f);
+		orientation = glm::quat(1,0,0,0);
+		eulerAngles = glm::vec3(0.0f);
 		scaling = glm::vec3(1.0f);
 		Update();
 	}
@@ -76,10 +95,15 @@ namespace as3d
 	{
 		if (ImGui::TreeNode(name.c_str()))
 		{
-			if (ImGui::SliderFloat3("translation", &translation[0], -20.0f, 20.0f, "%.1f"))
+			if (ImGui::DragFloat3("position", &translation[0], 0.1f, 0, 0, "%.1f"))
 				Translate();
-			if (ImGui::SliderFloat3("rotation", &rotation[0], -360.0f, 360.0f, "%.1f"))
-				Rotate();
+			if (ImGui::DragFloat("x rotation", &eulerAngles[0], rotationSpeed, 0, 0, "%.1f"))
+				Rotate(glm::vec3(1, 0, 0));
+			if (ImGui::DragFloat("y rotation", &eulerAngles[1], rotationSpeed, 0, 0, "%.1f"))
+				Rotate(glm::vec3(0, 1, 0));
+			if (ImGui::DragFloat("z rotation", &eulerAngles[2], rotationSpeed, 0, 0, "%.1f"))
+				Rotate(glm::vec3(0, 0, 1));
+			ImGui::SliderFloat("rotation speed", &rotationSpeed, 0.1f, 3.0f, "%.1f");
 			if (ImGui::Button("Reset"))
 				Reset();
 			for (const auto& child : children)
