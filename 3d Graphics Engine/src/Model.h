@@ -47,17 +47,18 @@ namespace as3d
 		glm::quat orientation		= glm::quat(1,0,0,0);
 
 		glm::vec3 translation = glm::vec3(0.0f);
+		glm::vec3 prevAngles  = glm::vec3(0.0f);	// Used to find out the amount of rotation that happened during a frame
 		glm::vec3 eulerAngles = glm::vec3(0.0f);
 		glm::vec3 scaling     = glm::vec3(1.0f);
 
 		std::string name;
 
-		float rotationSpeed = 3.0f;
+		float rotationSpeed = 2.0f;
 
 	private:
 		void Translate();
 		void Rotate();
-		void Rotate(glm::vec3 axis, float angle);
+		void Rotate(glm::vec3 axis);
 		void Scale();
 		void Update();
 		void Reset();
