@@ -3,8 +3,9 @@
 layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec3 aNormal;
 
-uniform mat3 normalMatrix;
-uniform mat4 modelMatrix;
+uniform mat3 normalMatrix;	// The model object sets the normal and model matrices itself,
+uniform mat4 modelMatrix;	// no need to stress about them in the main file
+
 uniform mat4 viewProjectionMatrix;
 
 out vec3 normal;

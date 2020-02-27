@@ -82,8 +82,9 @@ int main()
 		// Render the ball model
 		shaderBall.Bind();
 		shaderBall.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
+		shaderBall.SetVector3("cameraPosition", camera.GetPosition());
 		ball.Draw(shaderBall);
-	
+
 		// Render the GUI
 		imgui.BeginFrame();
 		camera.DrawControlWindow("camera");
