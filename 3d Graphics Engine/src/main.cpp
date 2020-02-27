@@ -39,8 +39,8 @@ int main()
 	//	Load the models and shaders
 	////////////////////////////////////
 
-	as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
-	as3d::Shader shaderNanoSuit("res/shaders/nanosuit_vertex.glsl", "res/shaders/nanosuit_fragment.glsl");
+	as3d::Model ball("res/models/ball.obj");
+	as3d::Shader shaderBall("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
 	as3d::Model light("res/models/cube.obj");
 	as3d::Shader shaderLight("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
 
@@ -89,12 +89,9 @@ int main()
 		skybox.Draw(shaderSkybox);
 
 		// Render the nanosuit model
-		shaderNanoSuit.Bind();
-		shaderNanoSuit.SetMatrix4("viewMatrix", camera.GetViewMatrix());
-		shaderNanoSuit.SetMatrix4("projectionMatrix", camera.GetProjectionMatrix());
-		shaderNanoSuit.SetVector3("lightPosition", light.GetPosition());
-		shaderNanoSuit.SetVector3("cameraPosition", camera.GetPosition());
-		nanoSuit.Draw(shaderNanoSuit);
+		shaderBall.Bind();
+		shaderBall.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
+		ball.Draw(shaderBall);
 
 		// Render the terrain
 		shaderTerrain.Bind();
@@ -110,7 +107,7 @@ int main()
 		// Render the GUI
 		imgui.BeginFrame();
 		camera.DrawControlWindow("camera");
-		nanoSuit.DrawControlWindow("models");
+		ball.DrawControlWindow("models");
 		light.DrawControlWindow("light");
 		renderer.DrawControlWindow("renderer");
 		//imgui.DrawDemoWindow();
