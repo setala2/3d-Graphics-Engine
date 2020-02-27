@@ -64,5 +64,6 @@ namespace as3d
 		Skybox(const std::vector<std::string>& filenames);
 
 		void Draw(const Shader& shader);
+		inline const TextureCubemap& GetCubemap() const { return texture; }
 	};
 }

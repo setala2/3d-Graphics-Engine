@@ -40,9 +40,7 @@ int main()
 	////////////////////////////////////
 
 	as3d::Model ball("res/models/ball.obj");
-	as3d::Shader shaderBall("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
-	as3d::Model light("res/models/cube.obj");
-	as3d::Shader shaderLight("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
+	as3d::Shader shaderBall("res/shaders/reflection_vertex.glsl", "res/shaders/reflection_fragment.glsl");
 
 	////////////////////////////////////////
 	//	Load the skybox and its shaders
@@ -59,13 +57,6 @@ int main()
 	};
 	as3d::Skybox skybox(skyboxFiles);
 	as3d::Shader shaderSkybox("res/shaders/skybox_vertex.glsl", "res/shaders/skybox_fragment.glsl");
-
-	////////////////////////////////////////
-	//	Create the terrain and its shaders
-	////////////////////////////////////////
-
-	as3d::Terrain terrain("res/textures/terrain/ground1/ground1.png");
-	as3d::Shader shaderTerrain("res/shaders/terrain_vertex.glsl", "res/shaders/terrain_fragment.glsl");
 
 	////////////////////////////////////////////////
 	//	Create the renderer and camera objects
@@ -88,27 +79,15 @@ int main()
 		shaderSkybox.SetMatrix4("projectionMatrix", camera.GetProjectionMatrix());
 		skybox.Draw(shaderSkybox);
 
-		// Render the nanosuit model
+		// Render the ball model
 		shaderBall.Bind();
 		shaderBall.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
 		ball.Draw(shaderBall);
-
-		// Render the terrain
-		shaderTerrain.Bind();
-		shaderTerrain.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
-		shaderTerrain.SetVector3("lightPosition", light.GetPosition());
-		terrain.Draw(shaderTerrain);
 	
-		// Render the light source
-		shaderLight.Bind();
-		shaderLight.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
-		light.Draw(shaderLight);
-
 		// Render the GUI
 		imgui.BeginFrame();
 		camera.DrawControlWindow("camera");
 		ball.DrawControlWindow("models");
-		light.DrawControlWindow("light");
 		renderer.DrawControlWindow("renderer");
 		//imgui.DrawDemoWindow();
 
