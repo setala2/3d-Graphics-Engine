@@ -39,8 +39,10 @@ int main()
 	//	Load the models and shaders
 	////////////////////////////////////
 
-	as3d::Model ball("res/models/ball.obj");
-	as3d::Shader shaderBall("res/shaders/reflection_vertex.glsl", "res/shaders/reflection_fragment.glsl");
+	as3d::Model nanoSuit("res/models/nanosuit/nanosuit.obj");
+	as3d::Shader shaderNanoSuit("res/shaders/nanosuit_vertex.glsl", "res/shaders/nanosuit_fragment.glsl");
+	as3d::Model light("res/models/cube.obj");
+	as3d::Shader shaderLight("res/shaders/simple_vertex.glsl", "res/shaders/simple_fragment.glsl");
 
 	////////////////////////////////////////
 	//	Load the skybox and its shaders
@@ -57,6 +59,13 @@ int main()
 	};
 	as3d::Skybox skybox(skyboxFiles);
 	as3d::Shader shaderSkybox("res/shaders/skybox_vertex.glsl", "res/shaders/skybox_fragment.glsl");
+
+	////////////////////////////////////////
+	//	Create the terrain and its shaders
+	////////////////////////////////////////
+
+	as3d::Terrain terrain("res/textures/terrain/ground1/ground1.png");
+	as3d::Shader shaderTerrain("res/shaders/terrain_vertex.glsl", "res/shaders/terrain_fragment.glsl");
 
 	////////////////////////////////////////////////
 	//	Create the renderer and camera objects
@@ -79,16 +88,30 @@ int main()
 		shaderSkybox.SetMatrix4("projectionMatrix", camera.GetProjectionMatrix());
 		skybox.Draw(shaderSkybox);
 
-		// Render the ball model
-		shaderBall.Bind();
-		shaderBall.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
-		shaderBall.SetVector3("cameraPosition", camera.GetPosition());
-		ball.Draw(shaderBall);
+		// Render the nanosuit model
+		shaderNanoSuit.Bind();
+		shaderNanoSuit.SetMatrix4("viewMatrix", camera.GetViewMatrix());
+		shaderNanoSuit.SetMatrix4("projectionMatrix", camera.GetProjectionMatrix());
+		shaderNanoSuit.SetVector3("lightPosition", light.GetPosition());
+		shaderNanoSuit.SetVector3("cameraPosition", camera.GetPosition());
+		nanoSuit.Draw(shaderNanoSuit);
+
+		// Render the terrain
+		shaderTerrain.Bind();
+		shaderTerrain.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
+		shaderTerrain.SetVector3("lightPosition", light.GetPosition());
+		terrain.Draw(shaderTerrain);
+
+		// Render the light source
+		shaderLight.Bind();
+		shaderLight.SetMatrix4("viewProjectionMatrix", camera.GetViewProjectionMatrix());
+		light.Draw(shaderLight);
 
 		// Render the GUI
 		imgui.BeginFrame();
 		camera.DrawControlWindow("camera");
-		ball.DrawControlWindow("models");
+		nanoSuit.DrawControlWindow("models");
+		light.DrawControlWindow("light");
 		renderer.DrawControlWindow("renderer");
 		//imgui.DrawDemoWindow();
 
