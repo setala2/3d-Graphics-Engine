@@ -28,7 +28,7 @@ int main()
 	//	Set up GLFW, ImGui and GLEW
 	/////////////////////////////////////
 
-	as3d::Window window(windowWidth, windowHeight, "Test window");
+	as3d::Window window(windowWidth, windowHeight, "3D Engine");
 	window.MakeCurrent();
 
 	ImguiManager imgui(window.GetPointer());
