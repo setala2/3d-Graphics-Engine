@@ -15,6 +15,7 @@
 
 namespace as3d
 {
+    // A mesh is a set of vertices and indices along with a reference (pointer) to a material. Actual materials are owned by the model instance.
 	class Mesh
 	{
 	private:
@@ -31,6 +32,8 @@ namespace as3d
 		void Draw(const Shader& shader) const;
 	};
 
+    // A node is a set of mesh pointers along with some kind of a transform. The meshes are owned by the model instance.
+    // Nodes can have child nodes in order to accumulate multiple different transforms.
 	class Node
 	{
 		friend class Model;
@@ -70,6 +73,7 @@ namespace as3d
 		void Draw(const Shader& shader, const glm::mat4& accumulatedTransform) const;
 	};
 	
+    // A model is a collection of materials and meshes, along with one root node.
 	class Model
 	{
 	public:
